@@ -15,10 +15,18 @@ module.exports = {
   },
   entry: {
     app: path.join(__dirname, 'src/index.ts'),
+    'service-worker': path.join(__dirname, 'src/service-worker.ts'),
   },
   output: {
     path: path.join(__dirname, 'dist'),
-    filename: '[name]-[contenthash].js',
+    filename: ({ runtime }) => {
+      if (runtime === 'service-worker') {
+        // Ensure that the service worker filename is stable (i.e. doesn't have a hash in it).
+        return '[name].js';
+      }
+
+      return '[name]-[contenthash].js';
+    },
     clean: true,
   },
   resolve: {
@@ -53,6 +61,7 @@ module.exports = {
   plugins: [
     new HtmlWebpackPlugin({
       template: path.join(__dirname, 'src/index.html'),
+      excludeChunks: ['service-worker'],
     }),
     new CopyWebpackPlugin({
       patterns: [{ from: 'src/data', to: 'data' }],
