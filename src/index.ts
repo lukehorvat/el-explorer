@@ -6,10 +6,7 @@ void main();
 
 async function main(): Promise<void> {
   const appEl = document.querySelector('.app')!;
-  const actorDefs = await loadingScreen.render(appEl);
-  const actorDef = actorDefs.find((def) => def.name === 'yeti');
-
-  console.log(actorDef);
+  const actorData = await loadingScreen.render(appEl);
 }
 
 async function registerServiceWorker(): Promise<void> {
