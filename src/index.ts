@@ -1,4 +1,5 @@
 import * as loadingScreen from './lib/loading-screen';
+import { SceneManager } from './lib/scene-manager';
 import './index.css';
 
 void registerServiceWorker();
@@ -6,7 +7,9 @@ void main();
 
 async function main(): Promise<void> {
   const appEl = document.querySelector('.app')!;
-  const actorData = await loadingScreen.render(appEl);
+  await loadingScreen.render(appEl);
+  const sceneManager = new SceneManager();
+  sceneManager.render(appEl);
 }
 
 async function registerServiceWorker(): Promise<void> {
