@@ -36,16 +36,16 @@ export function readCal3DMesh(fileData: Buffer): Cal3DMesh[] {
     throw new Error('Not a valid Cal3D mesh file.');
   }
 
-  const subMeshCount = fileData.readUInt32LE((offset += 4));
+  const subMeshCount = fileData.readInt32LE((offset += 4));
   const subMeshes: Cal3DMesh[] = [];
 
   for (let i = 0; i < subMeshCount; i++) {
-    const materialId = fileData.readUInt32LE((offset += 4));
-    const vertexCount = fileData.readUInt32LE((offset += 4));
-    const faceCount = fileData.readUInt32LE((offset += 4));
-    const lodSteps = fileData.readUInt32LE((offset += 4));
-    const springCount = fileData.readUInt32LE((offset += 4));
-    const mapCount = fileData.readUInt32LE((offset += 4));
+    const materialId = fileData.readInt32LE((offset += 4));
+    const vertexCount = fileData.readInt32LE((offset += 4));
+    const faceCount = fileData.readInt32LE((offset += 4));
+    const lodSteps = fileData.readInt32LE((offset += 4));
+    const springCount = fileData.readInt32LE((offset += 4));
+    const mapCount = fileData.readInt32LE((offset += 4));
     const vertices: number[] = [];
     const normals: number[] = [];
     const uvs: number[] = [];
@@ -61,19 +61,19 @@ export function readCal3DMesh(fileData: Buffer): Cal3DMesh[] {
       normals.push(fileData.readFloatLE((offset += 4)));
       normals.push(fileData.readFloatLE((offset += 4)));
 
-      const collapseId = fileData.readUInt32LE((offset += 4));
-      const faceCollapseCount = fileData.readUInt32LE((offset += 4));
+      const collapseId = fileData.readInt32LE((offset += 4));
+      const faceCollapseCount = fileData.readInt32LE((offset += 4));
 
       for (let k = 0; k < mapCount; k++) {
         uvs.push(fileData.readFloatLE((offset += 4)));
         uvs.push(fileData.readFloatLE((offset += 4)));
       }
 
-      const influenceCount = fileData.readUInt32LE((offset += 4));
-      const influences: any[] = [];
+      const influenceCount = fileData.readInt32LE((offset += 4));
+      const influences: { boneId: number; weight: number }[] = [];
 
       for (let k = 0; k < influenceCount; k++) {
-        const boneId = fileData.readUInt32LE((offset += 4));
+        const boneId = fileData.readInt32LE((offset += 4));
         const weight = fileData.readFloatLE((offset += 4));
         influences.push({ boneId, weight });
       }
@@ -92,8 +92,8 @@ export function readCal3DMesh(fileData: Buffer): Cal3DMesh[] {
     }
 
     for (let j = 0; j < springCount; j++) {
-      const vertexId1 = fileData.readUInt32LE((offset += 4));
-      const vertexId2 = fileData.readUInt32LE((offset += 4));
+      const vertexId1 = fileData.readInt32LE((offset += 4));
+      const vertexId2 = fileData.readInt32LE((offset += 4));
       const springCoefficient = fileData.readFloatLE((offset += 4));
       const idleLength = fileData.readFloatLE((offset += 4));
 

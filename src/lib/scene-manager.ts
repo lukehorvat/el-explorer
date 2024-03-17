@@ -4,12 +4,14 @@ import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
 import { XmlEntitiesExpander } from '../io/xml-entities';
 import { ActorDef, readActorDefs } from '../io/actor-defs';
 import { Cal3DMesh, readCal3DMesh } from '../io/cal3d-meshes';
+import { Cal3DBone, readCal3DSkeleton } from '../io/cal3d-skeletons';
 
 export class SceneManager {
   private static assets: {
     actorDefs: ActorDef[];
     actorSkins: Map<number, THREE.Texture>;
     actorMeshes: Map<number, Cal3DMesh[]>;
+    actorSkeletons: Map<number, Cal3DBone[]>;
   };
 
   private readonly renderer: THREE.Renderer;
@@ -40,6 +42,8 @@ export class SceneManager {
     )!;
     const skin = SceneManager.assets.actorSkins.get(actorDef.type)!;
     const subMeshes = SceneManager.assets.actorMeshes.get(actorDef.type)!;
+    const skeleton = SceneManager.assets.actorSkeletons.get(actorDef.type)!;
+
     const geometry = new THREE.BufferGeometry();
     geometry.setAttribute(
       'position',
@@ -58,6 +62,8 @@ export class SceneManager {
     this.scene.add(mesh);
 
     fixMesh(geometry, skin);
+
+    console.log('skeleton', skeleton);
   }
 
   render(containerEl: Element): void {
@@ -72,7 +78,7 @@ export class SceneManager {
     const delta = this.clock.getDelta();
 
     this.syncRendererSize();
-    this.controls.update(delta);
+    this.controls.update();
 
     this.renderer.render(this.scene, this.camera);
     requestAnimationFrame(this.animate.bind(this));
@@ -113,6 +119,7 @@ export class SceneManager {
     );
     const actorSkins = new Map<number, THREE.Texture>();
     const actorMeshes = new Map<number, Cal3DMesh[]>();
+    const actorSkeletons = new Map<number, Cal3DBone[]>();
 
     for (const actorDef of actorDefs) {
       const skin = await textureLoader.loadAsync(`data/${actorDef.skinPath}`);
@@ -120,19 +127,21 @@ export class SceneManager {
         `data/${actorDef.meshPath}`
       )) as ArrayBuffer;
       const subMeshes = readCal3DMesh(Buffer.from(meshData));
-      // const skeletonData = (await bufferLoader.loadAsync(
-      //   `data/${actorDef.skeletonPath}`
-      // )) as ArrayBuffer;
+      const skeletonData = (await bufferLoader.loadAsync(
+        `data/${actorDef.skeletonPath}`
+      )) as ArrayBuffer;
+      const skeleton = readCal3DSkeleton(Buffer.from(skeletonData));
 
       actorSkins.set(actorDef.type, skin);
       actorMeshes.set(actorDef.type, subMeshes);
-      // actorSkeletons.set(actorDef.type, skeleton);
+      actorSkeletons.set(actorDef.type, skeleton);
     }
 
     this.assets = {
       actorDefs,
       actorSkins,
       actorMeshes,
+      actorSkeletons,
     };
   }
 }
