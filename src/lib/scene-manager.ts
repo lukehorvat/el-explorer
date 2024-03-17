@@ -1,5 +1,6 @@
 import * as THREE from 'three';
 import { DDSLoader } from 'three/addons/loaders/DDSLoader.js';
+import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
 import { XmlEntitiesExpander } from '../io/xml-entities';
 import { ActorDef, readActorDefs } from '../io/actor-defs';
 import { Cal3DMesh, readCal3DMesh } from '../io/cal3d-meshes';
@@ -15,15 +16,48 @@ export class SceneManager {
   private readonly camera: THREE.PerspectiveCamera;
   private readonly scene: THREE.Scene;
   private readonly clock: THREE.Clock;
+  private readonly controls: OrbitControls;
 
   constructor() {
     this.renderer = new THREE.WebGLRenderer({ alpha: true, antialias: true });
     this.camera = new THREE.PerspectiveCamera();
+    this.camera.position.z = 3;
     this.scene = new THREE.Scene();
     this.clock = new THREE.Clock();
 
     const ambientLight = new THREE.AmbientLight('#ffffff');
     this.scene.add(ambientLight);
+
+    this.controls = new OrbitControls(this.camera, this.renderer.domElement);
+    this.controls.autoRotate = true;
+    this.controls.autoRotateSpeed = 3;
+    this.controls.enableDamping = true;
+    this.controls.enableZoom = true;
+    this.controls.enablePan = false;
+
+    const actorDef = SceneManager.assets.actorDefs.find(
+      (def) => def.name === 'yeti'
+    )!;
+    const skin = SceneManager.assets.actorSkins.get(actorDef.type)!;
+    const subMeshes = SceneManager.assets.actorMeshes.get(actorDef.type)!;
+    const geometry = new THREE.BufferGeometry();
+    geometry.setAttribute(
+      'position',
+      new THREE.BufferAttribute(subMeshes[0].vertices, 3)
+    );
+    geometry.setAttribute(
+      'normal',
+      new THREE.BufferAttribute(subMeshes[0].normals, 3)
+    );
+    geometry.setAttribute('uv', new THREE.BufferAttribute(subMeshes[0].uvs, 2));
+    geometry.setIndex(new THREE.BufferAttribute(subMeshes[0].indices, 1));
+    geometry.rotateX(THREE.MathUtils.degToRad(-90));
+    geometry.center();
+    const material = new THREE.MeshBasicMaterial({ map: skin });
+    const mesh = new THREE.Mesh(geometry, material);
+    this.scene.add(mesh);
+
+    fixMesh(geometry, skin);
   }
 
   render(containerEl: Element): void {
@@ -38,6 +72,7 @@ export class SceneManager {
     const delta = this.clock.getDelta();
 
     this.syncRendererSize();
+    this.controls.update(delta);
 
     this.renderer.render(this.scene, this.camera);
     requestAnimationFrame(this.animate.bind(this));
@@ -116,3 +151,26 @@ const ignoredActorDefs = new Set([
   'draegoni male',
   'draegoni female',
 ]);
+
+/**
+ * The .dds texture files don't map onto the mesh geometry correctly for some
+ * reason that I don't understand. Opening them in Gimp and re-exporting them
+ * with the "Flip the image vertically" option enabled seems to fix them, but
+ * I don't want to manually do this for every .dds file. I also want the .dds
+ * files to remain untouched and identical to the ones in the EL client's data
+ * directory.
+ *
+ * So, through some trial and error, I found the following programmatic way of
+ * fixing them.
+ */
+function fixMesh(geometry: THREE.BufferGeometry, texture: THREE.Texture): void {
+  // Swap every U and V pair.
+  const uvs = geometry.getAttribute('uv');
+  for (let i = 0; i < uvs.count; i++) {
+    uvs.setXY(i, uvs.getY(i), uvs.getX(i));
+  }
+
+  // Rotate the texture itself.
+  texture.center.set(0.5, 0.5);
+  texture.rotation = THREE.MathUtils.degToRad(90);
+}
