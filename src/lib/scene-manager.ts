@@ -21,6 +21,7 @@ export class SceneManager {
   private readonly scene: THREE.Scene;
   private readonly clock: THREE.Clock;
   private readonly controls: OrbitControls;
+  private readonly animationMixer: THREE.AnimationMixer;
 
   constructor() {
     this.renderer = new THREE.WebGLRenderer({ alpha: true, antialias: true });
@@ -41,7 +42,7 @@ export class SceneManager {
     this.controls.enablePan = false;
 
     const actorDef = SceneManager.assets.actorDefs.find(
-      (def) => def.name === 'fox'
+      (def) => def.name === 'yeti'
     )!;
     const actorSkin = SceneManager.assets.actorSkins.get(actorDef.type)!;
     const actorMesh = SceneManager.assets.actorMeshes.get(actorDef.type)![0]; // Assume only one submesh...
@@ -84,11 +85,51 @@ export class SceneManager {
     this.scene.add(mesh);
 
     const skeletonHelper = new THREE.SkeletonHelper(mesh);
+    skeletonHelper.visible = false;
     this.scene.add(skeletonHelper);
 
-    // TODO: animation
+    this.animationMixer = new THREE.AnimationMixer(mesh);
+    this.animationMixer.timeScale = 0.6; // TODO
+
     const animation = actorAnimations[0];
-    console.log(animation);
+    const tracks = animation.tracks
+      .map((track) => {
+        const times: number[] = track.keyframes.map(
+          (keyframe) => keyframe.time
+        );
+        const positions = track.keyframes
+          .map((keyframe) => [
+            keyframe.translation.x,
+            keyframe.translation.y,
+            keyframe.translation.z,
+          ])
+          .flat();
+        const rotations = track.keyframes
+          .map((keyframe) => [
+            keyframe.rotation.x,
+            keyframe.rotation.y,
+            keyframe.rotation.z,
+            -keyframe.rotation.w, // Cal3D stores it negated for some reason...
+          ])
+          .flat();
+        const positionTrack = new THREE.VectorKeyframeTrack(
+          `.bones[${track.boneId}].position`,
+          times,
+          positions,
+          THREE.InterpolateSmooth
+        );
+        const rotationTrack = new THREE.QuaternionKeyframeTrack(
+          `.bones[${track.boneId}].quaternion`,
+          times,
+          rotations
+        );
+        return [positionTrack, rotationTrack];
+      })
+      .flat();
+
+    const clip = new THREE.AnimationClip('', -1, tracks);
+    const action = this.animationMixer.clipAction(clip);
+    action.play();
   }
 
   render(containerEl: Element): void {
@@ -104,6 +145,7 @@ export class SceneManager {
 
     this.syncRendererSize();
     this.controls.update();
+    this.animationMixer.update(delta);
 
     this.renderer.render(this.scene, this.camera);
     requestAnimationFrame(this.animate.bind(this));
