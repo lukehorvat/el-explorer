@@ -39,7 +39,7 @@ export class SceneManager {
     this.controls.enablePan = false;
 
     const actorDef = SceneManager.assets.actorDefs.find(
-      (def) => def.name === 'yeti'
+      (def) => def.name === 'fox'
     )!;
     const actorSkin = SceneManager.assets.actorSkins.get(actorDef.type)!;
     const actorMesh = SceneManager.assets.actorMeshes.get(actorDef.type)![0]; // Assume only one submesh...

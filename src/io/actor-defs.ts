@@ -15,6 +15,12 @@ export interface ActorDef {
   skinPath: string;
   meshPath: string;
   skeletonPath: string;
+  animationFrames: {
+    type: string;
+    path: string;
+    kind: number;
+    duration: number;
+  }[];
 }
 
 /**
@@ -51,9 +57,10 @@ function parseActors(el: Element): ActorDef[] {
 function parseActor(el: Element): ActorDef {
   const type = Number(el.getAttribute('id')!);
   const name = el.getAttribute('type')!;
-  let skinPath!: string;
-  let meshPath!: string;
-  let skeletonPath!: string;
+  let skinPath!: ActorDef['skinPath'];
+  let meshPath!: ActorDef['meshPath'];
+  let skeletonPath!: ActorDef['skeletonPath'];
+  const animationFrames: ActorDef['animationFrames'] = [];
 
   for (const child of el.childNodes) {
     if (isElement(child)) {
@@ -98,6 +105,7 @@ function parseActor(el: Element): ActorDef {
           break;
         }
         case 'frames': {
+          parseAnimationFrames(child);
           break;
         }
         case 'shirt': {
@@ -152,7 +160,100 @@ function parseActor(el: Element): ActorDef {
     skinPath,
     meshPath,
     skeletonPath,
+    animationFrames,
   };
+
+  function parseAnimationFrames(el: Element): void {
+    for (const child of el.childNodes) {
+      if (isElement(child)) {
+        switch (child.nodeName) {
+          case 'CAL_IDLE_GROUP': {
+            break;
+          }
+          case 'CAL_walk':
+          case 'CAL_run':
+          case 'CAL_turn_left':
+          case 'CAL_turn_right':
+          case 'CAL_die1':
+          case 'CAL_die2':
+          case 'CAL_pain1':
+          case 'CAL_pain2':
+          case 'CAL_pick':
+          case 'CAL_drop':
+          case 'CAL_idle':
+          case 'CAL_idle2':
+          case 'CAL_idle_sit':
+          case 'CAL_harvest':
+          case 'CAL_attack_cast':
+          case 'CAL_sit_down':
+          case 'CAL_stand_up':
+          case 'CAL_in_combat':
+          case 'CAL_out_combat':
+          case 'CAL_combat_idle':
+          case 'CAL_attack_up_1':
+          case 'CAL_attack_up_2':
+          case 'CAL_attack_up_3':
+          case 'CAL_attack_up_4':
+          case 'CAL_attack_up_5':
+          case 'CAL_attack_up_6':
+          case 'CAL_attack_up_7':
+          case 'CAL_attack_up_8':
+          case 'CAL_attack_up_9':
+          case 'CAL_attack_up_10':
+          case 'CAL_attack_down_1':
+          case 'CAL_attack_down_2':
+          case 'CAL_attack_down_3':
+          case 'CAL_attack_down_4':
+          case 'CAL_attack_down_5':
+          case 'CAL_attack_down_6':
+          case 'CAL_attack_down_7':
+          case 'CAL_attack_down_8':
+          case 'CAL_attack_down_9':
+          case 'CAL_attack_down_10':
+          case 'CAL_in_combat_held':
+          case 'CAL_out_combat_held':
+          case 'CAL_combat_idle_held':
+          case 'CAL_in_combat_held_unarmed':
+          case 'CAL_out_combat_held_unarmed':
+          case 'CAL_combat_idle_held_unarmed':
+          case 'CAL_attack_up_1_held':
+          case 'CAL_attack_up_2_held':
+          case 'CAL_attack_up_3_held':
+          case 'CAL_attack_up_4_held':
+          case 'CAL_attack_up_5_held':
+          case 'CAL_attack_up_6_held':
+          case 'CAL_attack_up_7_held':
+          case 'CAL_attack_up_8_held':
+          case 'CAL_attack_up_9_held':
+          case 'CAL_attack_up_10_held':
+          case 'CAL_attack_down_1_held':
+          case 'CAL_attack_down_2_held':
+          case 'CAL_attack_down_3_held':
+          case 'CAL_attack_down_4_held':
+          case 'CAL_attack_down_5_held':
+          case 'CAL_attack_down_6_held':
+          case 'CAL_attack_down_7_held':
+          case 'CAL_attack_down_8_held':
+          case 'CAL_attack_down_9_held':
+          case 'CAL_attack_down_10_held': {
+            const match = child.textContent!.match(/^(.+) (\d)$/);
+            if (match?.length !== 3) {
+              throw new Error('Bad animation formation encountered.');
+            }
+            const type = child.nodeName;
+            const path = match[1].replace(/^\.\//, '');
+            const kind = Number(match[2]);
+            const duration = Number(child.getAttribute('duration') ?? -1);
+            animationFrames.push({ type, path, kind, duration });
+            break;
+          }
+          default: {
+            throwElementError(el, child);
+          }
+        }
+      }
+    }
+  }
 }
 
 function throwElementError(el: Element, child: Element): void {
