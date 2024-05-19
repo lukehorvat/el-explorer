@@ -23,6 +23,7 @@ export class SceneManager {
   constructor() {
     this.renderer = new THREE.WebGLRenderer({ alpha: true, antialias: true });
     this.camera = new THREE.PerspectiveCamera();
+    this.camera.position.y = 3;
     this.camera.position.z = 3;
     this.scene = new THREE.Scene();
     this.clock = new THREE.Clock();
@@ -38,74 +39,44 @@ export class SceneManager {
     this.controls.enablePan = false;
 
     const actorDef = SceneManager.assets.actorDefs.find(
-      (def) => def.name === 'feros'
+      (def) => def.name === 'yeti'
     )!;
-    const skin = SceneManager.assets.actorSkins.get(actorDef.type)!;
-    const subMeshes = SceneManager.assets.actorMeshes.get(actorDef.type)!;
-    const skeleton = SceneManager.assets.actorSkeletons.get(actorDef.type)!;
+    const actorSkin = SceneManager.assets.actorSkins.get(actorDef.type)!;
+    const actorMesh = SceneManager.assets.actorMeshes.get(actorDef.type)![0]; // Assume only one submesh...
+    const actorSkeleton = SceneManager.assets.actorSkeletons.get(
+      actorDef.type
+    )!;
 
     const mesh = new THREE.SkinnedMesh();
-    mesh.material = new THREE.MeshBasicMaterial({ map: skin });
+    mesh.material = new THREE.MeshBasicMaterial({ map: actorSkin });
     mesh.geometry = new THREE.BufferGeometry();
     mesh.geometry.setAttribute(
       'position',
-      new THREE.BufferAttribute(subMeshes[0].vertices, 3)
+      new THREE.BufferAttribute(actorMesh.vertices, 3)
     );
     mesh.geometry.setAttribute(
       'normal',
-      new THREE.BufferAttribute(subMeshes[0].normals, 3)
+      new THREE.BufferAttribute(actorMesh.normals, 3)
     );
     mesh.geometry.setAttribute(
       'uv',
-      new THREE.BufferAttribute(subMeshes[0].uvs, 2)
+      new THREE.BufferAttribute(actorMesh.uvs, 2)
     );
-    mesh.geometry.setIndex(new THREE.BufferAttribute(subMeshes[0].indices, 1));
+    mesh.geometry.setIndex(new THREE.BufferAttribute(actorMesh.indices, 1));
     mesh.geometry.setAttribute(
       'skinIndex',
-      new THREE.BufferAttribute(subMeshes[0].skinIndices, 4)
+      new THREE.BufferAttribute(actorMesh.skinIndices, 4)
     );
     mesh.geometry.setAttribute(
       'skinWeight',
-      new THREE.BufferAttribute(subMeshes[0].skinWeights, 4)
+      new THREE.BufferAttribute(actorMesh.skinWeights, 4)
     );
-    mesh.rotateX(THREE.MathUtils.degToRad(-90));
-    fixMesh(mesh.geometry, skin);
-    this.scene.add(mesh);
-
-    const bones = skeleton.map((boneData) => {
-      const bone = new THREE.Bone();
-      const translationMatrix = new THREE.Matrix4().makeTranslation(
-        boneData.translation.x,
-        boneData.translation.y,
-        boneData.translation.z
-      );
-      const rotationMatrix = new THREE.Matrix4().makeRotationFromQuaternion(
-        new THREE.Quaternion(
-          boneData.rotation.x,
-          boneData.rotation.y,
-          boneData.rotation.z,
-          -boneData.rotation.w // Cal3D stores it negated for some reason...
-        )
-      );
-      const transformMatrix = new THREE.Matrix4().multiplyMatrices(
-        translationMatrix,
-        rotationMatrix
-      );
-      bone.applyMatrix4(transformMatrix);
-      return bone;
-    });
-
-    bones.forEach((bone, boneId) => {
-      const parentBone = bones[skeleton[boneId].parentId];
-      if (parentBone) {
-        parentBone.add(bone);
-      }
-    });
-
-    const rootBone =
-      bones[skeleton.findIndex((boneData) => boneData.parentId === -1)];
-    mesh.add(rootBone);
+    const bones = composeSkeleton(actorSkeleton);
+    mesh.add(bones[actorSkeleton.findIndex(({ parentId }) => parentId === -1)]); // Assume only one root bone...
     mesh.bind(new THREE.Skeleton(bones));
+    mesh.rotateX(THREE.MathUtils.degToRad(-90));
+    fixMesh(mesh.geometry, actorSkin);
+    this.scene.add(mesh);
 
     const skeletonHelper = new THREE.SkeletonHelper(mesh);
     this.scene.add(skeletonHelper);
@@ -227,4 +198,38 @@ function fixMesh(geometry: THREE.BufferGeometry, texture: THREE.Texture): void {
   // Rotate the texture itself.
   texture.center.set(0.5, 0.5);
   texture.rotation = THREE.MathUtils.degToRad(90);
+}
+
+function composeSkeleton(skeleton: Cal3DBone[]): THREE.Bone[] {
+  const bones = skeleton.map((boneData) => {
+    const bone = new THREE.Bone();
+    const translationMatrix = new THREE.Matrix4().makeTranslation(
+      boneData.translation.x,
+      boneData.translation.y,
+      boneData.translation.z
+    );
+    const rotationMatrix = new THREE.Matrix4().makeRotationFromQuaternion(
+      new THREE.Quaternion(
+        boneData.rotation.x,
+        boneData.rotation.y,
+        boneData.rotation.z,
+        -boneData.rotation.w // Cal3D stores it negated for some reason...
+      )
+    );
+    const transformMatrix = new THREE.Matrix4().multiplyMatrices(
+      translationMatrix,
+      rotationMatrix
+    );
+    bone.applyMatrix4(transformMatrix);
+    return bone;
+  });
+
+  bones.forEach((bone, boneId) => {
+    const parentBone = bones[skeleton[boneId].parentId];
+    if (parentBone) {
+      parentBone.add(bone);
+    }
+  });
+
+  return bones;
 }
