@@ -5,11 +5,9 @@ export interface Cal3DMesh {
   indices: Uint32Array;
   skinIndices: Uint16Array;
   skinWeights: Float32Array;
-  vertexInfo: {
-    collapseId: number;
-    faceCollapseCount: number;
-    weight?: number;
-  }[];
+  vertexCollapseIds: number[];
+  vertexFaceCollapses: number[];
+  vertexWeights: (number | null)[];
   springs: {
     vertexId1: number;
     vertexId2: number;
@@ -50,7 +48,9 @@ export function readCal3DMesh(fileData: Buffer): Cal3DMesh[] {
     const indices: number[] = [];
     const skinIndices: number[] = [];
     const skinWeights: number[] = [];
-    const vertexInfo: Cal3DMesh['vertexInfo'] = [];
+    const vertexCollapseIds: Cal3DMesh['vertexCollapseIds'] = [];
+    const vertexFaceCollapses: Cal3DMesh['vertexFaceCollapses'] = [];
+    const vertexWeights: Cal3DMesh['vertexWeights'] = [];
     const springs: Cal3DMesh['springs'] = [];
 
     for (let j = 0; j < vertexCount; j++) {
@@ -60,9 +60,8 @@ export function readCal3DMesh(fileData: Buffer): Cal3DMesh[] {
       normals.push(fileData.readFloatLE((offset += 4)));
       normals.push(fileData.readFloatLE((offset += 4)));
       normals.push(fileData.readFloatLE((offset += 4)));
-
-      const collapseId = fileData.readInt32LE((offset += 4));
-      const faceCollapseCount = fileData.readInt32LE((offset += 4));
+      vertexCollapseIds.push(fileData.readInt32LE((offset += 4)));
+      vertexFaceCollapses.push(fileData.readInt32LE((offset += 4)));
 
       for (let k = 0; k < mapCount; k++) {
         uvs.push(fileData.readFloatLE((offset += 4)));
@@ -82,16 +81,9 @@ export function readCal3DMesh(fileData: Buffer): Cal3DMesh[] {
         skinWeights.push(0);
       }
 
-      let weight: number | undefined;
-      if (springCount > 0) {
-        weight = fileData.readFloatLE((offset += 4));
-      }
-
-      vertexInfo.push({
-        collapseId,
-        faceCollapseCount,
-        weight,
-      });
+      vertexWeights.push(
+        springCount > 0 ? fileData.readFloatLE((offset += 4)) : null
+      );
     }
 
     for (let j = 0; j < springCount; j++) {
@@ -121,7 +113,9 @@ export function readCal3DMesh(fileData: Buffer): Cal3DMesh[] {
       indices: new Uint32Array(indices),
       skinIndices: new Uint16Array(skinIndices),
       skinWeights: new Float32Array(skinWeights),
-      vertexInfo,
+      vertexCollapseIds,
+      vertexFaceCollapses,
+      vertexWeights,
       springs,
       materialId,
       lodSteps,
