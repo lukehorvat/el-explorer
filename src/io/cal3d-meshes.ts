@@ -73,7 +73,7 @@ export function readCal3DMesh(fileData: Buffer): Cal3DMesh[] {
       const influences: { boneId: number; weight: number }[] = [];
 
       for (let k = 0; k < influenceCount; k++) {
-        const boneId = fileData.readInt32LE((offset += 4));
+        const boneId = fileData.readUInt32LE((offset += 4));
         const weight = fileData.readFloatLE((offset += 4));
         influences.push({ boneId, weight });
       }
