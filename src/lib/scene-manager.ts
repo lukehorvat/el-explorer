@@ -5,6 +5,7 @@ import { XmlEntitiesExpander } from '../io/xml-entities';
 import { ActorDef, readActorDefs } from '../io/actor-defs';
 import { Cal3DMesh, readCal3DMesh } from '../io/cal3d-meshes';
 import { Cal3DBone, readCal3DSkeleton } from '../io/cal3d-skeletons';
+import { Cal3DAnimation, readCal3DAnimation } from '../io/cal3d-animations';
 
 export class SceneManager {
   private static assets: {
@@ -12,6 +13,7 @@ export class SceneManager {
     actorSkins: Map<number, THREE.Texture>;
     actorMeshes: Map<number, Cal3DMesh[]>;
     actorSkeletons: Map<number, Cal3DBone[]>;
+    actorAnimations: Map<number, Cal3DAnimation[]>;
   };
 
   private readonly renderer: THREE.Renderer;
@@ -44,6 +46,9 @@ export class SceneManager {
     const actorSkin = SceneManager.assets.actorSkins.get(actorDef.type)!;
     const actorMesh = SceneManager.assets.actorMeshes.get(actorDef.type)![0]; // Assume only one submesh...
     const actorSkeleton = SceneManager.assets.actorSkeletons.get(
+      actorDef.type
+    )!;
+    const actorAnimations = SceneManager.assets.actorAnimations.get(
       actorDef.type
     )!;
 
@@ -80,6 +85,10 @@ export class SceneManager {
 
     const skeletonHelper = new THREE.SkeletonHelper(mesh);
     this.scene.add(skeletonHelper);
+
+    // TODO: animation
+    const animation = actorAnimations[0];
+    console.log(animation);
   }
 
   render(containerEl: Element): void {
@@ -136,6 +145,7 @@ export class SceneManager {
     const actorSkins = new Map<number, THREE.Texture>();
     const actorMeshes = new Map<number, Cal3DMesh[]>();
     const actorSkeletons = new Map<number, Cal3DBone[]>();
+    const actorAnimations = new Map<number, Cal3DAnimation[]>();
 
     for (const actorDef of actorDefs) {
       const skin = await textureLoader.loadAsync(`data/${actorDef.skinPath}`);
@@ -147,10 +157,20 @@ export class SceneManager {
         `data/${actorDef.skeletonPath}`
       )) as ArrayBuffer;
       const skeleton = readCal3DSkeleton(Buffer.from(skeletonData));
+      const animations: Cal3DAnimation[] = []; // maybe store as a Map (where key is animationFrame.type)?
+
+      for (const animationFrame of actorDef.animationFrames) {
+        const animationData = (await bufferLoader.loadAsync(
+          `data/${animationFrame.path}`
+        )) as ArrayBuffer;
+        const animation = readCal3DAnimation(Buffer.from(animationData));
+        animations.push(animation);
+      }
 
       actorSkins.set(actorDef.type, skin);
       actorMeshes.set(actorDef.type, subMeshes);
       actorSkeletons.set(actorDef.type, skeleton);
+      actorAnimations.set(actorDef.type, animations);
     }
 
     this.assets = {
@@ -158,6 +178,7 @@ export class SceneManager {
       actorSkins,
       actorMeshes,
       actorSkeletons,
+      actorAnimations,
     };
   }
 }

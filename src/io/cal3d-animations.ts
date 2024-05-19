@@ -1,5 +1,22 @@
 export interface Cal3DAnimation {
   duration: number;
+  tracks: {
+    boneId: number;
+    keyframes: {
+      time: number;
+      translation: {
+        x: number;
+        y: number;
+        z: number;
+      };
+      rotation: {
+        x: number;
+        y: number;
+        z: number;
+        w: number;
+      };
+    }[];
+  }[];
 }
 
 /**
@@ -18,8 +35,42 @@ export function readCal3DAnimation(fileData: Buffer): Cal3DAnimation {
 
   const duration = fileData.readFloatLE((offset += 4));
   const trackCount = fileData.readInt32LE((offset += 4));
+  const tracks: Cal3DAnimation['tracks'] = [];
+
+  for (let i = 0; i < trackCount; i++) {
+    const boneId = fileData.readInt32LE((offset += 4));
+    const keyframeCount = fileData.readInt32LE((offset += 4));
+    const keyframes: Cal3DAnimation['tracks'][0]['keyframes'] = [];
+
+    for (let j = 0; j < keyframeCount; j++) {
+      const time = fileData.readFloatLE((offset += 4));
+      const translation = {
+        x: fileData.readFloatLE((offset += 4)),
+        y: fileData.readFloatLE((offset += 4)),
+        z: fileData.readFloatLE((offset += 4)),
+      };
+      const rotation = {
+        x: fileData.readFloatLE((offset += 4)),
+        y: fileData.readFloatLE((offset += 4)),
+        z: fileData.readFloatLE((offset += 4)),
+        w: fileData.readFloatLE((offset += 4)),
+      };
+
+      keyframes.push({
+        time,
+        translation,
+        rotation,
+      });
+    }
+
+    tracks.push({
+      boneId,
+      keyframes,
+    });
+  }
 
   return {
     duration,
+    tracks,
   };
 }
