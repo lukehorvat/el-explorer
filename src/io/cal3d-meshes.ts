@@ -3,13 +3,11 @@ export interface Cal3DMesh {
   normals: Float32Array;
   uvs: Float32Array;
   indices: Uint32Array;
+  skinIndices: Uint16Array;
+  skinWeights: Float32Array;
   vertexInfo: {
     collapseId: number;
     faceCollapseCount: number;
-    influences: {
-      boneId: number;
-      weight: number;
-    }[];
     weight?: number;
   }[];
   springs: {
@@ -50,6 +48,8 @@ export function readCal3DMesh(fileData: Buffer): Cal3DMesh[] {
     const normals: number[] = [];
     const uvs: number[] = [];
     const indices: number[] = [];
+    const skinIndices: number[] = [];
+    const skinWeights: number[] = [];
     const vertexInfo: Cal3DMesh['vertexInfo'] = [];
     const springs: Cal3DMesh['springs'] = [];
 
@@ -69,13 +69,17 @@ export function readCal3DMesh(fileData: Buffer): Cal3DMesh[] {
         uvs.push(fileData.readFloatLE((offset += 4)));
       }
 
-      const influenceCount = fileData.readInt32LE((offset += 4));
-      const influences: { boneId: number; weight: number }[] = [];
+      const boneInfluenceCount = fileData.readInt32LE((offset += 4));
+      for (let k = 0; k < boneInfluenceCount; k++) {
+        skinIndices.push(fileData.readUInt32LE((offset += 4)));
+        skinWeights.push(fileData.readFloatLE((offset += 4)));
+      }
 
-      for (let k = 0; k < influenceCount; k++) {
-        const boneId = fileData.readUInt32LE((offset += 4));
-        const weight = fileData.readFloatLE((offset += 4));
-        influences.push({ boneId, weight });
+      // Each vertex can be influenced by up to 4 bones. For vertices with
+      // less than 4 bone influences, pad the skinning arrays with zeroes.
+      for (let k = 0; k < 4 - boneInfluenceCount; k++) {
+        skinIndices.push(0);
+        skinWeights.push(0);
       }
 
       let weight: number | undefined;
@@ -86,7 +90,6 @@ export function readCal3DMesh(fileData: Buffer): Cal3DMesh[] {
       vertexInfo.push({
         collapseId,
         faceCollapseCount,
-        influences,
         weight,
       });
     }
@@ -116,6 +119,8 @@ export function readCal3DMesh(fileData: Buffer): Cal3DMesh[] {
       normals: new Float32Array(normals),
       uvs: new Float32Array(uvs),
       indices: new Uint32Array(indices),
+      skinIndices: new Uint16Array(skinIndices),
+      skinWeights: new Float32Array(skinWeights),
       vertexInfo,
       springs,
       materialId,

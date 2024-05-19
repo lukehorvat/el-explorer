@@ -44,51 +44,33 @@ export class SceneManager {
     const subMeshes = SceneManager.assets.actorMeshes.get(actorDef.type)!;
     const skeleton = SceneManager.assets.actorSkeletons.get(actorDef.type)!;
 
-    const geometry = new THREE.BufferGeometry();
-    geometry.setAttribute(
+    const mesh = new THREE.SkinnedMesh();
+    mesh.material = new THREE.MeshBasicMaterial({ map: skin });
+    mesh.geometry = new THREE.BufferGeometry();
+    mesh.geometry.setAttribute(
       'position',
       new THREE.BufferAttribute(subMeshes[0].vertices, 3)
     );
-    geometry.setAttribute(
+    mesh.geometry.setAttribute(
       'normal',
       new THREE.BufferAttribute(subMeshes[0].normals, 3)
     );
-    geometry.setAttribute('uv', new THREE.BufferAttribute(subMeshes[0].uvs, 2));
-    geometry.setIndex(new THREE.BufferAttribute(subMeshes[0].indices, 1));
-    const skinIndices: number[] = [];
-    subMeshes[0].vertexInfo.forEach((v) => {
-      skinIndices.push(
-        v.influences[0]?.boneId || 0,
-        v.influences[1]?.boneId || 0,
-        v.influences[2]?.boneId || 0,
-        v.influences[3]?.boneId || 0
-      );
-    });
-    geometry.setAttribute(
+    mesh.geometry.setAttribute(
+      'uv',
+      new THREE.BufferAttribute(subMeshes[0].uvs, 2)
+    );
+    mesh.geometry.setIndex(new THREE.BufferAttribute(subMeshes[0].indices, 1));
+    mesh.geometry.setAttribute(
       'skinIndex',
-      new THREE.BufferAttribute(new Uint16Array(skinIndices), 4)
+      new THREE.BufferAttribute(subMeshes[0].skinIndices, 4)
     );
-    const skinWeights: number[] = [];
-    subMeshes[0].vertexInfo.forEach((v) => {
-      skinWeights.push(
-        v.influences[0]?.weight || 0,
-        v.influences[1]?.weight || 0,
-        v.influences[2]?.weight || 0,
-        v.influences[3]?.weight || 0
-      );
-    });
-    geometry.setAttribute(
+    mesh.geometry.setAttribute(
       'skinWeight',
-      new THREE.BufferAttribute(new Float32Array(skinWeights), 4)
+      new THREE.BufferAttribute(subMeshes[0].skinWeights, 4)
     );
-
-    // geometry.rotateX(THREE.MathUtils.degToRad(-90));
-    // geometry.center();
-    const material = new THREE.MeshBasicMaterial({ map: skin });
-    const mesh = new THREE.SkinnedMesh(geometry, material);
+    mesh.rotateX(THREE.MathUtils.degToRad(-90));
+    fixMesh(mesh.geometry, skin);
     this.scene.add(mesh);
-
-    fixMesh(geometry, skin);
 
     const bones = skeleton.map((boneData) => {
       const bone = new THREE.Bone();
