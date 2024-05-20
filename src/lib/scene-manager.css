@@ -1,6 +1,21 @@
-canvas.scene {
-  width: 100%;
+.thing {
+  display: flex;
+  flex-direction: column;
   height: 100%;
+}
+
+.top-bar,
+.bottom-bar {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 10px;
+}
+
+.scene {
   display: block;
+  flex: 1;
+  min-height: 0;
+  background: #000;
   -webkit-tap-highlight-color: transparent; /* Prevent Chrome's blue highlight when tapping on mobile. */
 }

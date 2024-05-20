@@ -16,12 +16,12 @@ export class SceneManager {
   constructor(assetCache: AssetCache) {
     this.assetCache = assetCache;
     this.renderer = new THREE.WebGLRenderer({ alpha: true, antialias: true });
-    this.renderer.domElement.className = 'scene';
     this.renderer.outputColorSpace = THREE.LinearSRGBColorSpace;
     this.renderer.shadowMap.enabled = true;
     this.camera = new THREE.PerspectiveCamera();
+    this.camera.position.x = 0;
     this.camera.position.y = 3;
-    this.camera.position.z = 3;
+    this.camera.position.z = 4;
     this.scene = new THREE.Scene();
     this.clock = new THREE.Clock();
 
@@ -151,7 +151,23 @@ export class SceneManager {
   }
 
   render(containerEl: Element): void {
-    containerEl.appendChild(this.renderer.domElement);
+    const div = document.createElement('div');
+    div.className = 'thing';
+    containerEl.appendChild(div);
+
+    const topBarEl = document.createElement('div');
+    topBarEl.className = 'top-bar';
+    topBarEl.textContent = 'Creatures of EL';
+    div.appendChild(topBarEl);
+
+    this.renderer.domElement.className = 'scene';
+    div.appendChild(this.renderer.domElement);
+
+    const bottomBarEl = document.createElement('div');
+    bottomBarEl.className = 'bottom-bar';
+    bottomBarEl.textContent = 'TODO';
+    div.appendChild(bottomBarEl);
+
     requestAnimationFrame(this.animate.bind(this));
   }
 
