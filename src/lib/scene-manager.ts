@@ -6,6 +6,7 @@ import { ActorDef, readActorDefs } from '../io/actor-defs';
 import { Cal3DMesh, readCal3DMesh } from '../io/cal3d-meshes';
 import { Cal3DBone, readCal3DSkeleton } from '../io/cal3d-skeletons';
 import { Cal3DAnimation, readCal3DAnimation } from '../io/cal3d-animations';
+import './scene-manager.css';
 
 export class SceneManager {
   private static assets: {
@@ -25,6 +26,7 @@ export class SceneManager {
 
   constructor() {
     this.renderer = new THREE.WebGLRenderer({ alpha: true, antialias: true });
+    this.renderer.domElement.className = 'scene';
     this.camera = new THREE.PerspectiveCamera();
     this.camera.position.y = 3;
     this.camera.position.z = 3;

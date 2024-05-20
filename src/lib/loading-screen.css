@@ -1,0 +1,24 @@
+.loading {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  text-align: center;
+}
+
+.loading .description {
+  margin-bottom: 100px;
+}
+
+.loading .status {
+  font-style: italic;
+  text-transform: uppercase;
+  animation: bounce 1s ease-in-out infinite alternate;
+}
+
+@keyframes bounce {
+  100% {
+    transform: translateY(40px);
+    filter: opacity(50%);
+  }
+}
