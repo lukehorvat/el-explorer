@@ -2,7 +2,6 @@ import * as THREE from 'three';
 import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
 import { assetCache } from './asset-cache';
 import { Cal3DBone } from '../io/cal3d-skeletons';
-import './scene-manager.css';
 
 export class SceneManager {
   private readonly renderer: THREE.WebGLRenderer;
@@ -12,8 +11,12 @@ export class SceneManager {
   private readonly controls: OrbitControls;
   private readonly animationMixer: THREE.AnimationMixer;
 
-  constructor() {
-    this.renderer = new THREE.WebGLRenderer({ alpha: true, antialias: true });
+  constructor(canvas: HTMLCanvasElement) {
+    this.renderer = new THREE.WebGLRenderer({
+      canvas,
+      alpha: true,
+      antialias: true,
+    });
     this.renderer.outputColorSpace = THREE.LinearSRGBColorSpace;
     this.renderer.shadowMap.enabled = true;
     this.camera = new THREE.PerspectiveCamera();
@@ -148,24 +151,7 @@ export class SceneManager {
     action.play();
   }
 
-  render(containerEl: Element): void {
-    const div = document.createElement('div');
-    div.className = 'thing';
-    containerEl.appendChild(div);
-
-    const topBarEl = document.createElement('div');
-    topBarEl.className = 'top-bar';
-    topBarEl.textContent = 'Creatures of EL';
-    div.appendChild(topBarEl);
-
-    this.renderer.domElement.className = 'scene';
-    div.appendChild(this.renderer.domElement);
-
-    const bottomBarEl = document.createElement('div');
-    bottomBarEl.className = 'bottom-bar';
-    bottomBarEl.textContent = 'TODO';
-    div.appendChild(bottomBarEl);
-
+  render(): void {
     requestAnimationFrame(this.animate.bind(this));
   }
 

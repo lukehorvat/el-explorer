@@ -1,13 +1,7 @@
 html,
 body,
-.app {
-  width: 100%;
+#root {
   height: 100%;
   margin: 0;
   padding: 0;
-  border: 0;
-  overflow: hidden;
-  background: #181c20;
-  color: #8c92a4;
-  font-family: -apple-system, BlinkMacSystemFont, sans-serif;
 }

@@ -1,16 +1,11 @@
-import * as loadingScreen from './lib/loading-screen';
-import { SceneManager } from './lib/scene-manager';
+import React from 'react';
+import { createRoot } from 'react-dom/client';
+import { App } from './components/App';
 import './index.css';
 
 void registerServiceWorker();
-void main();
 
-async function main(): Promise<void> {
-  const appEl = document.querySelector('.app')!;
-  await loadingScreen.render(appEl);
-  const sceneManager = new SceneManager();
-  sceneManager.render(appEl);
-}
+createRoot(document.getElementById('root')!).render(<App />);
 
 async function registerServiceWorker(): Promise<void> {
   if ('serviceWorker' in navigator) {

@@ -14,7 +14,7 @@ module.exports = {
     },
   },
   entry: {
-    app: path.join(__dirname, 'src/index.ts'),
+    app: path.join(__dirname, 'src/index.tsx'),
     'service-worker': path.join(__dirname, 'src/service-worker.ts'),
   },
   output: {
