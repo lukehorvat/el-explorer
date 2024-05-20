@@ -21,11 +21,12 @@ export async function render(containerEl: Element): Promise<AssetCache> {
 
   const statusEl = document.createElement('div');
   statusEl.className = 'status';
-  statusEl.textContent = 'Loading...';
   loadingEl.appendChild(statusEl);
 
-  await assetCache.loadAssets();
-  loadingEl.remove();
+  for await (const loadingMessage of assetCache.loadAssets()) {
+    statusEl.textContent = loadingMessage;
+  }
 
+  loadingEl.remove();
   return assetCache;
 }
