@@ -1,11 +1,10 @@
 import * as THREE from 'three';
 import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
-import { AssetCache } from './asset-cache';
+import { assetCache } from './asset-cache';
 import { Cal3DBone } from '../io/cal3d-skeletons';
 import './scene-manager.css';
 
 export class SceneManager {
-  private readonly assetCache: AssetCache;
   private readonly renderer: THREE.WebGLRenderer;
   private readonly camera: THREE.PerspectiveCamera;
   private readonly scene: THREE.Scene;
@@ -13,8 +12,7 @@ export class SceneManager {
   private readonly controls: OrbitControls;
   private readonly animationMixer: THREE.AnimationMixer;
 
-  constructor(assetCache: AssetCache) {
-    this.assetCache = assetCache;
+  constructor() {
     this.renderer = new THREE.WebGLRenderer({ alpha: true, antialias: true });
     this.renderer.outputColorSpace = THREE.LinearSRGBColorSpace;
     this.renderer.shadowMap.enabled = true;
@@ -52,13 +50,13 @@ export class SceneManager {
     this.controls.enableZoom = true;
     this.controls.enablePan = false;
 
-    const actorDef = [...this.assetCache.actorDefs.values()].find(
-      (def) => def.name === 'fox'
+    const actorDef = [...assetCache.actorDefs.values()].find(
+      (def) => def.name === 'yeti'
     )!;
-    const actorSkin = this.assetCache.actorSkins.get(actorDef.type)!;
-    const actorMesh = this.assetCache.actorMeshes.get(actorDef.type)![0]; // Assume only one submesh...
-    const actorSkeleton = this.assetCache.actorSkeletons.get(actorDef.type)!;
-    const actorAnimations = this.assetCache.actorAnimations.get(actorDef.type)!;
+    const actorSkin = assetCache.actorSkins.get(actorDef.type)!;
+    const actorMesh = assetCache.actorMeshes.get(actorDef.type)![0]; // Assume only one submesh...
+    const actorSkeleton = assetCache.actorSkeletons.get(actorDef.type)!;
+    const actorAnimations = assetCache.actorAnimations.get(actorDef.type)!;
 
     const mesh = new THREE.SkinnedMesh();
     mesh.material = new THREE.MeshBasicMaterial({ map: actorSkin });

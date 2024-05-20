@@ -6,7 +6,7 @@ import { Cal3DMesh, readCal3DMesh } from '../io/cal3d-meshes';
 import { Cal3DBone, readCal3DSkeleton } from '../io/cal3d-skeletons';
 import { Cal3DAnimation, readCal3DAnimation } from '../io/cal3d-animations';
 
-export class AssetCache {
+class AssetCache {
   readonly actorDefs: Map<number, ActorDef>;
   readonly actorSkins: Map<number, THREE.Texture>;
   readonly actorMeshes: Map<number, Cal3DMesh[]>;
@@ -135,3 +135,5 @@ const ignoredActorDefs = new Set([
   'draegoni male',
   'draegoni female',
 ]);
+
+export const assetCache = new AssetCache();
