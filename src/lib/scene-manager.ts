@@ -42,7 +42,7 @@ export class SceneManager {
     this.controls.enablePan = false;
 
     const actorDef = SceneManager.assets.actorDefs.find(
-      (def) => def.name === 'yeti'
+      (def) => def.name === 'fox'
     )!;
     const actorSkin = SceneManager.assets.actorSkins.get(actorDef.type)!;
     const actorMesh = SceneManager.assets.actorMeshes.get(actorDef.type)![0]; // Assume only one submesh...
@@ -89,9 +89,12 @@ export class SceneManager {
     this.scene.add(skeletonHelper);
 
     this.animationMixer = new THREE.AnimationMixer(mesh);
-    this.animationMixer.timeScale = 0.6; // TODO
 
-    const animation = actorAnimations[0];
+    const animationIndex = actorDef.animationFrames.findIndex(
+      (frame) => frame.type === 'CAL_die1'
+    );
+    const animationFrame = actorDef.animationFrames[animationIndex];
+    const animation = actorAnimations[animationIndex];
     const tracks = animation.tracks
       .map((track) => {
         const times: number[] = track.keyframes.map(
@@ -129,6 +132,13 @@ export class SceneManager {
 
     const clip = new THREE.AnimationClip('', -1, tracks);
     const action = this.animationMixer.clipAction(clip);
+    action.timeScale =
+      // If a custom animation duration was defined, override the natural duration.
+      animationFrame.duration > 0
+        ? clip.duration / (animationFrame.duration / 1000)
+        : 1;
+    action.loop = THREE.LoopOnce;
+    action.clampWhenFinished = true;
     action.play();
   }
 
@@ -199,7 +209,7 @@ export class SceneManager {
         `data/${actorDef.skeletonPath}`
       )) as ArrayBuffer;
       const skeleton = readCal3DSkeleton(Buffer.from(skeletonData));
-      const animations: Cal3DAnimation[] = []; // maybe store as a Map (where key is animationFrame.type)?
+      const animations: Cal3DAnimation[] = [];
 
       for (const animationFrame of actorDef.animationFrames) {
         const animationData = (await bufferLoader.loadAsync(
