@@ -7,8 +7,8 @@ void main();
 
 async function main(): Promise<void> {
   const appEl = document.querySelector('.app')!;
-  await loadingScreen.render(appEl);
-  const sceneManager = new SceneManager();
+  const assetCache = await loadingScreen.render(appEl);
+  const sceneManager = new SceneManager(assetCache);
   sceneManager.render(appEl);
 }
 

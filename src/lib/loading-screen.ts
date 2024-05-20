@@ -1,7 +1,9 @@
-import { SceneManager } from './scene-manager';
+import { AssetCache } from './asset-cache';
 import './loading-screen.css';
 
-export async function render(containerEl: Element): Promise<void> {
+export async function render(containerEl: Element): Promise<AssetCache> {
+  const assetCache = new AssetCache();
+
   const loadingEl = document.createElement('div');
   loadingEl.className = 'loading';
   containerEl.appendChild(loadingEl);
@@ -22,6 +24,8 @@ export async function render(containerEl: Element): Promise<void> {
   statusEl.textContent = 'Loading...';
   loadingEl.appendChild(statusEl);
 
-  await SceneManager.loadAssets();
+  await assetCache.loadAssets();
   loadingEl.remove();
+
+  return assetCache;
 }

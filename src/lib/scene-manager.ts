@@ -1,22 +1,11 @@
 import * as THREE from 'three';
-import { DDSLoader } from 'three/addons/loaders/DDSLoader.js';
 import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
-import { XmlEntitiesExpander } from '../io/xml-entities';
-import { ActorDef, readActorDefs } from '../io/actor-defs';
-import { Cal3DMesh, readCal3DMesh } from '../io/cal3d-meshes';
-import { Cal3DBone, readCal3DSkeleton } from '../io/cal3d-skeletons';
-import { Cal3DAnimation, readCal3DAnimation } from '../io/cal3d-animations';
+import { AssetCache } from './asset-cache';
+import { Cal3DBone } from '../io/cal3d-skeletons';
 import './scene-manager.css';
 
 export class SceneManager {
-  private static assets: {
-    actorDefs: ActorDef[];
-    actorSkins: Map<number, THREE.Texture>;
-    actorMeshes: Map<number, Cal3DMesh[]>;
-    actorSkeletons: Map<number, Cal3DBone[]>;
-    actorAnimations: Map<number, Cal3DAnimation[]>;
-  };
-
+  private readonly assetCache: AssetCache;
   private readonly renderer: THREE.Renderer;
   private readonly camera: THREE.PerspectiveCamera;
   private readonly scene: THREE.Scene;
@@ -24,7 +13,8 @@ export class SceneManager {
   private readonly controls: OrbitControls;
   private readonly animationMixer: THREE.AnimationMixer;
 
-  constructor() {
+  constructor(assetCache: AssetCache) {
+    this.assetCache = assetCache;
     this.renderer = new THREE.WebGLRenderer({ alpha: true, antialias: true });
     this.renderer.domElement.className = 'scene';
     this.camera = new THREE.PerspectiveCamera();
@@ -43,17 +33,13 @@ export class SceneManager {
     this.controls.enableZoom = true;
     this.controls.enablePan = false;
 
-    const actorDef = SceneManager.assets.actorDefs.find(
+    const actorDef = [...this.assetCache.actorDefs.values()].find(
       (def) => def.name === 'fox'
     )!;
-    const actorSkin = SceneManager.assets.actorSkins.get(actorDef.type)!;
-    const actorMesh = SceneManager.assets.actorMeshes.get(actorDef.type)![0]; // Assume only one submesh...
-    const actorSkeleton = SceneManager.assets.actorSkeletons.get(
-      actorDef.type
-    )!;
-    const actorAnimations = SceneManager.assets.actorAnimations.get(
-      actorDef.type
-    )!;
+    const actorSkin = this.assetCache.actorSkins.get(actorDef.type)!;
+    const actorMesh = this.assetCache.actorMeshes.get(actorDef.type)![0]; // Assume only one submesh...
+    const actorSkeleton = this.assetCache.actorSkeletons.get(actorDef.type)!;
+    const actorAnimations = this.assetCache.actorAnimations.get(actorDef.type)!;
 
     const mesh = new THREE.SkinnedMesh();
     mesh.material = new THREE.MeshBasicMaterial({ map: actorSkin });
@@ -177,80 +163,7 @@ export class SceneManager {
       this.camera.updateProjectionMatrix();
     }
   }
-
-  static async loadAssets(): Promise<void> {
-    const textLoader = new THREE.FileLoader();
-    const bufferLoader = new THREE.FileLoader();
-    bufferLoader.setResponseType('arraybuffer');
-    const textureLoader = new DDSLoader();
-    const xml = (await textLoader.loadAsync(
-      'data/actor_defs/actor_defs.xml'
-    )) as string;
-    const xmlExpander = new XmlEntitiesExpander(xml);
-    const entityXmls = (await Promise.all(
-      xmlExpander.entityUris.map((entityUri) =>
-        textLoader.loadAsync(`data/actor_defs/${entityUri}`)
-      )
-    )) as string[];
-    const expandedXml = xmlExpander.expand(entityXmls);
-    const actorDefs = readActorDefs(expandedXml).filter(
-      (def) => !ignoredActorDefs.has(def.name)
-    );
-    const actorSkins = new Map<number, THREE.Texture>();
-    const actorMeshes = new Map<number, Cal3DMesh[]>();
-    const actorSkeletons = new Map<number, Cal3DBone[]>();
-    const actorAnimations = new Map<number, Cal3DAnimation[]>();
-
-    for (const actorDef of actorDefs) {
-      const skin = await textureLoader.loadAsync(`data/${actorDef.skinPath}`);
-      const meshData = (await bufferLoader.loadAsync(
-        `data/${actorDef.meshPath}`
-      )) as ArrayBuffer;
-      const subMeshes = readCal3DMesh(Buffer.from(meshData));
-      const skeletonData = (await bufferLoader.loadAsync(
-        `data/${actorDef.skeletonPath}`
-      )) as ArrayBuffer;
-      const skeleton = readCal3DSkeleton(Buffer.from(skeletonData));
-      const animations: Cal3DAnimation[] = [];
-
-      for (const animationFrame of actorDef.animationFrames) {
-        const animationData = (await bufferLoader.loadAsync(
-          `data/${animationFrame.path}`
-        )) as ArrayBuffer;
-        const animation = readCal3DAnimation(Buffer.from(animationData));
-        animations.push(animation);
-      }
-
-      actorSkins.set(actorDef.type, skin);
-      actorMeshes.set(actorDef.type, subMeshes);
-      actorSkeletons.set(actorDef.type, skeleton);
-      actorAnimations.set(actorDef.type, animations);
-    }
-
-    this.assets = {
-      actorDefs,
-      actorSkins,
-      actorMeshes,
-      actorSkeletons,
-      actorAnimations,
-    };
-  }
 }
-
-const ignoredActorDefs = new Set([
-  'human male',
-  'human female',
-  'elf male',
-  'elf female',
-  'dwarf male',
-  'dwarf female',
-  'gnome male',
-  'gnome female',
-  'orchan male',
-  'orchan female',
-  'draegoni male',
-  'draegoni female',
-]);
 
 /**
  * The .dds texture files don't map onto the mesh geometry correctly for some
