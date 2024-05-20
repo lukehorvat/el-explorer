@@ -6,11 +6,3 @@
   color: #8c92a4;
   font-family: -apple-system, BlinkMacSystemFont, sans-serif;
 }
-
-.TopBar,
-.BottomBar {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 10px;
-}

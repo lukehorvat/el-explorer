@@ -1,6 +1,8 @@
 import React from 'react';
 import { useAtomValue } from 'jotai';
 import { atoms } from '../lib/atoms';
+import { TopBar } from './TopBar';
+import { BottomBar } from './BottomBar';
 import { Loading } from './Loading';
 import { Scene } from './Scene';
 import './App.css';
@@ -10,9 +12,9 @@ export function App(): React.JSX.Element {
 
   return (
     <div className="App">
-      <div className="TopBar">Creatures of EL</div>
+      <TopBar />
       {isLoaded ? <Scene /> : <Loading />}
-      <div className="BottomBar">TODO</div>
+      <BottomBar />
     </div>
   );
 }
