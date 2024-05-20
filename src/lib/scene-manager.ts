@@ -6,7 +6,7 @@ import './scene-manager.css';
 
 export class SceneManager {
   private readonly assetCache: AssetCache;
-  private readonly renderer: THREE.Renderer;
+  private readonly renderer: THREE.WebGLRenderer;
   private readonly camera: THREE.PerspectiveCamera;
   private readonly scene: THREE.Scene;
   private readonly clock: THREE.Clock;
@@ -17,6 +17,7 @@ export class SceneManager {
     this.assetCache = assetCache;
     this.renderer = new THREE.WebGLRenderer({ alpha: true, antialias: true });
     this.renderer.domElement.className = 'scene';
+    this.renderer.outputColorSpace = THREE.LinearSRGBColorSpace;
     this.camera = new THREE.PerspectiveCamera();
     this.camera.position.y = 3;
     this.camera.position.z = 3;
