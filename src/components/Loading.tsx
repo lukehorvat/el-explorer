@@ -1,9 +1,11 @@
 import React, { useEffect, useState } from 'react';
+import { useSetAtom } from 'jotai';
+import { atoms } from '../lib/atoms';
 import { assetCache } from '../lib/asset-cache';
 import './Loading.css';
 
-export function Loading(props: { onLoaded: () => void }): React.JSX.Element {
-  const loadingMessage = useLoadingMessage(props.onLoaded);
+export function Loading(): React.JSX.Element {
+  const loadingMessage = useLoadingMessage();
 
   return (
     <div className="Loading">
@@ -12,16 +14,19 @@ export function Loading(props: { onLoaded: () => void }): React.JSX.Element {
   );
 }
 
-function useLoadingMessage(onLoaded: () => void): string {
+function useLoadingMessage(): string {
   const [loadingMessage, setLoadingMessage] = useState('Loading...');
+  const setIsLoaded = useSetAtom(atoms.isLoaded);
 
   useEffect(() => {
-    void load().then(onLoaded);
+    void load();
 
     async function load(): Promise<void> {
       for await (const message of assetCache.loadAssets()) {
         setLoadingMessage(message);
       }
+
+      setIsLoaded(true);
     }
   }, []);
 
