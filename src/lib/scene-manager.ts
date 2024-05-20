@@ -18,14 +18,32 @@ export class SceneManager {
     this.renderer = new THREE.WebGLRenderer({ alpha: true, antialias: true });
     this.renderer.domElement.className = 'scene';
     this.renderer.outputColorSpace = THREE.LinearSRGBColorSpace;
+    this.renderer.shadowMap.enabled = true;
     this.camera = new THREE.PerspectiveCamera();
     this.camera.position.y = 3;
     this.camera.position.z = 3;
     this.scene = new THREE.Scene();
     this.clock = new THREE.Clock();
 
-    const ambientLight = new THREE.AmbientLight('#ffffff');
-    this.scene.add(ambientLight);
+    const hemisphereLight = new THREE.HemisphereLight('#fff', '#fff', Math.PI);
+    hemisphereLight.position.y = 20;
+    this.scene.add(hemisphereLight);
+
+    const directionalLight = new THREE.DirectionalLight('#fff', Math.PI / 2);
+    directionalLight.position.set(10, 10, -5);
+    directionalLight.castShadow = true;
+    directionalLight.shadow.camera.top = 2;
+    directionalLight.shadow.camera.right = 2;
+    directionalLight.shadow.camera.bottom = -2;
+    directionalLight.shadow.camera.left = -2;
+    this.scene.add(directionalLight);
+
+    const ground = new THREE.Mesh();
+    ground.material = new THREE.MeshPhysicalMaterial({ color: '#ccc' });
+    ground.geometry = new THREE.CircleGeometry(2, 100);
+    ground.rotation.x = THREE.MathUtils.degToRad(-90);
+    ground.receiveShadow = true;
+    this.scene.add(ground);
 
     this.controls = new OrbitControls(this.camera, this.renderer.domElement);
     this.controls.autoRotate = true;
@@ -69,8 +87,9 @@ export class SceneManager {
     const bones = composeSkeleton(actorSkeleton);
     mesh.add(bones[actorSkeleton.findIndex(({ parentId }) => parentId === -1)]); // Assume only one root bone...
     mesh.bind(new THREE.Skeleton(bones));
-    mesh.rotateX(THREE.MathUtils.degToRad(-90));
+    mesh.rotation.x = THREE.MathUtils.degToRad(-90);
     fixMesh(mesh.geometry, actorSkin);
+    mesh.castShadow = true;
     this.scene.add(mesh);
 
     const skeletonHelper = new THREE.SkeletonHelper(mesh);
@@ -80,7 +99,7 @@ export class SceneManager {
     this.animationMixer = new THREE.AnimationMixer(mesh);
 
     const animationIndex = actorDef.animationFrames.findIndex(
-      (frame) => frame.type === 'CAL_die1'
+      (frame) => frame.type === 'CAL_walk'
     );
     const animationFrame = actorDef.animationFrames[animationIndex];
     const animation = actorAnimations[animationIndex];
@@ -126,8 +145,8 @@ export class SceneManager {
       animationFrame.duration > 0
         ? clip.duration / (animationFrame.duration / 1000)
         : 1;
-    action.loop = THREE.LoopOnce;
-    action.clampWhenFinished = true;
+    // action.loop = THREE.LoopOnce;
+    // action.clampWhenFinished = true;
     action.play();
   }
 
