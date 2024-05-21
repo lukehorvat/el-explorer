@@ -1,6 +1,6 @@
 import React from 'react';
 import { useAtom, useAtomValue } from 'jotai';
-import { atoms } from '../lib/atoms';
+import { atoms } from '../lib/state';
 import { assetCache } from '../lib/asset-cache';
 import './BottomBar.css';
 
@@ -11,8 +11,8 @@ export function BottomBar(): React.JSX.Element {
   const [animationType, setAnimationType] = useAtom(atoms.animationType);
   const [loopAnimation, setLoopAnimation] = useAtom(atoms.loopAnimation);
   const [showMesh, setShowMesh] = useAtom(atoms.showMesh);
-  const [showSkeleton, setShowSkeleton] = useAtom(atoms.showSkeleton);
   const [showWireframe, setShowWireframe] = useAtom(atoms.showWireframe);
+  const [showSkeleton, setShowSkeleton] = useAtom(atoms.showSkeleton);
   const [showGround, setShowGround] = useAtom(atoms.showGround);
   const [showStats, setShowStats] = useAtom(atoms.showStats);
   const [autoRotate, setAutoRotate] = useAtom(atoms.autoRotate);
@@ -54,7 +54,27 @@ export function BottomBar(): React.JSX.Element {
               type="checkbox"
               checked={showMesh}
               onChange={(event) => {
-                setShowMesh(event.target.checked);
+                const { checked } = event.target;
+                setShowMesh(checked);
+
+                if (!checked) {
+                  setShowWireframe(false);
+                }
+              }}
+            />
+          </div>
+          <div>
+            <label>Wireframe:</label>
+            <input
+              type="checkbox"
+              checked={showWireframe}
+              onChange={(event) => {
+                const { checked } = event.target;
+                setShowWireframe(checked);
+
+                if (checked) {
+                  setShowMesh(true);
+                }
               }}
             />
           </div>
@@ -65,16 +85,6 @@ export function BottomBar(): React.JSX.Element {
               checked={showSkeleton}
               onChange={(event) => {
                 setShowSkeleton(event.target.checked);
-              }}
-            />
-          </div>
-          <div>
-            <label>Wireframe:</label>
-            <input
-              type="checkbox"
-              checked={showWireframe}
-              onChange={(event) => {
-                setShowWireframe(event.target.checked);
               }}
             />
           </div>

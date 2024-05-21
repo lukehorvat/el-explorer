@@ -1,6 +1,6 @@
 import React from 'react';
 import { useAtomValue } from 'jotai';
-import { atoms } from '../lib/atoms';
+import { atoms } from '../lib/state';
 import { TopBar } from './TopBar';
 import { BottomBar } from './BottomBar';
 import { Loading } from './Loading';

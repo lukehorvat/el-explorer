@@ -1,12 +1,12 @@
-import { atom } from 'jotai';
+import { atom, createStore } from 'jotai';
 
 const isLoaded = atom<boolean>(false);
 const actorType = atom<number>(77); // Initially default to Feros.
 const animationType = atom<string | null>(null); // TODO: Reset when actorType changes?
 const loopAnimation = atom<boolean>(true);
 const showMesh = atom<boolean>(true);
-const showSkeleton = atom<boolean>(false);
 const showWireframe = atom<boolean>(false);
+const showSkeleton = atom<boolean>(false);
 const showGround = atom<boolean>(true);
 const showStats = atom<boolean>(false);
 const autoRotate = atom<boolean>(true);
@@ -17,9 +17,11 @@ export const atoms = {
   animationType,
   loopAnimation,
   showMesh,
-  showSkeleton,
   showWireframe,
+  showSkeleton,
   showGround,
   showStats,
   autoRotate,
 };
+
+export const store = createStore();

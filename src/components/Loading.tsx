@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useSetAtom } from 'jotai';
-import { atoms } from '../lib/atoms';
+import { atoms } from '../lib/state';
 import { assetCache } from '../lib/asset-cache';
 import './Loading.css';
 

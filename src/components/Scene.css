@@ -6,3 +6,14 @@
   cursor: move;
   -webkit-tap-highlight-color: transparent; /* Prevent Chrome's blue highlight when tapping on mobile. */
 }
+
+.Stats {
+  top: 60px !important;
+  right: 10px !important;
+  left: unset !important;
+  bottom: unset !important;
+}
+
+.Stats.hidden {
+  display: none;
+}
