@@ -12,11 +12,11 @@ export class SceneManager {
   private readonly scene: THREE.Scene;
   private readonly camera: THREE.PerspectiveCamera;
   private readonly ground: THREE.Mesh;
-  private readonly mesh: THREE.SkinnedMesh;
-  private readonly animationMixer: THREE.AnimationMixer;
-  private readonly skeletonHelper: THREE.SkeletonHelper;
   private readonly orbitControls: OrbitControls;
   private readonly stats: Stats;
+  private mesh!: THREE.SkinnedMesh;
+  private animationMixer!: THREE.AnimationMixer;
+  private skeletonHelper!: THREE.SkeletonHelper;
 
   constructor(canvas: HTMLCanvasElement) {
     this.renderer = new THREE.WebGLRenderer({
@@ -53,56 +53,6 @@ export class SceneManager {
     this.ground.receiveShadow = true;
     this.scene.add(this.ground);
 
-    const actorDef = [...assetCache.actorDefs.values()].find(
-      (def) => def.name === 'yeti'
-    )!;
-    const actorSkin = assetCache.actorSkins.get(actorDef.type)!;
-    const actorMesh = assetCache.actorMeshes.get(actorDef.type)![0]; // Assume only one submesh...
-    const actorSkeleton = assetCache.actorSkeletons.get(actorDef.type)!;
-    const actorAnimations = assetCache.actorAnimations.get(actorDef.type)!;
-
-    this.mesh = new THREE.SkinnedMesh();
-    this.mesh.material = new THREE.MeshBasicMaterial({ map: actorSkin });
-    this.mesh.geometry = new THREE.BufferGeometry();
-    this.mesh.geometry.setAttribute(
-      'position',
-      new THREE.BufferAttribute(actorMesh.vertices, 3)
-    );
-    this.mesh.geometry.setAttribute(
-      'normal',
-      new THREE.BufferAttribute(actorMesh.normals, 3)
-    );
-    this.mesh.geometry.setAttribute(
-      'uv',
-      new THREE.BufferAttribute(actorMesh.uvs, 2)
-    );
-    this.mesh.geometry.setIndex(
-      new THREE.BufferAttribute(actorMesh.indices, 1)
-    );
-    this.mesh.geometry.setAttribute(
-      'skinIndex',
-      new THREE.BufferAttribute(actorMesh.skinIndices, 4)
-    );
-    this.mesh.geometry.setAttribute(
-      'skinWeight',
-      new THREE.BufferAttribute(actorMesh.skinWeights, 4)
-    );
-    const bones = composeSkeleton(actorSkeleton);
-    this.mesh.add(
-      // Assume only one root bone...
-      bones[actorSkeleton.findIndex(({ parentId }) => parentId === -1)]
-    );
-    this.mesh.bind(new THREE.Skeleton(bones));
-    this.mesh.rotation.x = THREE.MathUtils.degToRad(-90);
-    fixMesh(this.mesh.geometry, actorSkin);
-    this.mesh.castShadow = true;
-    this.scene.add(this.mesh);
-
-    this.animationMixer = new THREE.AnimationMixer(this.mesh);
-
-    this.skeletonHelper = new THREE.SkeletonHelper(this.mesh);
-    this.scene.add(this.skeletonHelper);
-
     this.orbitControls = new OrbitControls(this.camera, canvas);
     this.orbitControls.autoRotateSpeed = 3;
     this.orbitControls.enableDamping = true;
@@ -112,57 +62,6 @@ export class SceneManager {
     this.stats = new Stats();
     this.stats.dom.className = 'Stats';
     document.body.appendChild(this.stats.dom);
-
-    const animationIndex = actorDef.animationFrames.findIndex(
-      (frame) => frame.type === 'CAL_walk'
-    );
-    const animationFrame = actorDef.animationFrames[animationIndex];
-    const animation = actorAnimations[animationIndex];
-    const tracks = animation.tracks
-      .map((track) => {
-        const times: number[] = track.keyframes.map(
-          (keyframe) => keyframe.time
-        );
-        const positions = track.keyframes
-          .map((keyframe) => [
-            keyframe.translation.x,
-            keyframe.translation.y,
-            keyframe.translation.z,
-          ])
-          .flat();
-        const rotations = track.keyframes
-          .map((keyframe) => [
-            keyframe.rotation.x,
-            keyframe.rotation.y,
-            keyframe.rotation.z,
-            -keyframe.rotation.w, // Cal3D stores it negated for some reason...
-          ])
-          .flat();
-        const positionTrack = new THREE.VectorKeyframeTrack(
-          `.bones[${track.boneId}].position`,
-          times,
-          positions,
-          THREE.InterpolateSmooth
-        );
-        const rotationTrack = new THREE.QuaternionKeyframeTrack(
-          `.bones[${track.boneId}].quaternion`,
-          times,
-          rotations
-        );
-        return [positionTrack, rotationTrack];
-      })
-      .flat();
-
-    const clip = new THREE.AnimationClip('', -1, tracks);
-    const action = this.animationMixer.clipAction(clip);
-    action.timeScale =
-      // If a custom animation duration was defined, override the natural duration.
-      animationFrame.duration > 0
-        ? clip.duration / (animationFrame.duration / 1000)
-        : 1;
-    // action.loop = THREE.LoopOnce;
-    // action.clampWhenFinished = true;
-    action.play();
 
     this.handleStateChanges();
   }
@@ -225,8 +124,114 @@ export class SceneManager {
   }
 
   private onActorType(): void {
+    if (this.mesh) {
+      this.scene.remove(this.mesh);
+    }
+
+    if (this.skeletonHelper) {
+      this.scene.remove(this.skeletonHelper);
+      this.skeletonHelper.dispose();
+    }
+
     const actorType = store.get(atoms.actorType);
-    // TODO
+    const actorDef = assetCache.actorDefs.get(actorType)!;
+    const actorSkin = assetCache.actorSkins.get(actorType)!;
+    const actorMesh = assetCache.actorMeshes.get(actorType)![0]; // Assume only one submesh...
+    const actorSkeleton = assetCache.actorSkeletons.get(actorType)!;
+    const actorAnimations = assetCache.actorAnimations.get(actorType)!;
+
+    this.mesh = new THREE.SkinnedMesh();
+    this.mesh.material = new THREE.MeshBasicMaterial({ map: actorSkin });
+    this.mesh.geometry = new THREE.BufferGeometry();
+    this.mesh.geometry.setAttribute(
+      'position',
+      new THREE.BufferAttribute(actorMesh.vertices, 3)
+    );
+    this.mesh.geometry.setAttribute(
+      'normal',
+      new THREE.BufferAttribute(actorMesh.normals, 3)
+    );
+    this.mesh.geometry.setAttribute(
+      'uv',
+      new THREE.BufferAttribute(actorMesh.uvs, 2)
+    );
+    this.mesh.geometry.setIndex(
+      new THREE.BufferAttribute(actorMesh.indices, 1)
+    );
+    this.mesh.geometry.setAttribute(
+      'skinIndex',
+      new THREE.BufferAttribute(actorMesh.skinIndices, 4)
+    );
+    this.mesh.geometry.setAttribute(
+      'skinWeight',
+      new THREE.BufferAttribute(actorMesh.skinWeights, 4)
+    );
+    const bones = composeSkeleton(actorSkeleton);
+    this.mesh.add(
+      // Assume only one root bone...
+      bones[actorSkeleton.findIndex(({ parentId }) => parentId === -1)]
+    );
+    this.mesh.bind(new THREE.Skeleton(bones));
+    this.mesh.rotation.x = THREE.MathUtils.degToRad(-90);
+    fixMesh(this.mesh.geometry, actorSkin);
+    this.mesh.castShadow = true;
+    this.scene.add(this.mesh);
+
+    this.animationMixer = new THREE.AnimationMixer(this.mesh);
+
+    this.skeletonHelper = new THREE.SkeletonHelper(this.mesh);
+    this.scene.add(this.skeletonHelper);
+
+    const animationIndex = actorDef.animationFrames.findIndex(
+      (frame) => frame.type === 'CAL_walk'
+    );
+    const animationFrame = actorDef.animationFrames[animationIndex];
+    const animation = actorAnimations[animationIndex];
+    const tracks = animation.tracks
+      .map((track) => {
+        const times: number[] = track.keyframes.map(
+          (keyframe) => keyframe.time
+        );
+        const positions = track.keyframes
+          .map((keyframe) => [
+            keyframe.translation.x,
+            keyframe.translation.y,
+            keyframe.translation.z,
+          ])
+          .flat();
+        const rotations = track.keyframes
+          .map((keyframe) => [
+            keyframe.rotation.x,
+            keyframe.rotation.y,
+            keyframe.rotation.z,
+            -keyframe.rotation.w, // Cal3D stores it negated for some reason...
+          ])
+          .flat();
+        const positionTrack = new THREE.VectorKeyframeTrack(
+          `.bones[${track.boneId}].position`,
+          times,
+          positions,
+          THREE.InterpolateSmooth
+        );
+        const rotationTrack = new THREE.QuaternionKeyframeTrack(
+          `.bones[${track.boneId}].quaternion`,
+          times,
+          rotations
+        );
+        return [positionTrack, rotationTrack];
+      })
+      .flat();
+
+    const clip = new THREE.AnimationClip('', -1, tracks);
+    const action = this.animationMixer.clipAction(clip);
+    action.timeScale =
+      // If a custom animation duration was defined, override the natural duration.
+      animationFrame.duration > 0
+        ? clip.duration / (animationFrame.duration / 1000)
+        : 1;
+    // action.loop = THREE.LoopOnce;
+    // action.clampWhenFinished = true;
+    action.play();
   }
 
   private onAnimationType(): void {
@@ -283,10 +288,11 @@ export class SceneManager {
  */
 function fixMesh(geometry: THREE.BufferGeometry, texture: THREE.Texture): void {
   // Swap every U and V pair.
-  const uvs = geometry.getAttribute('uv');
+  const uvs = geometry.getAttribute('uv').clone();
   for (let i = 0; i < uvs.count; i++) {
     uvs.setXY(i, uvs.getY(i), uvs.getX(i));
   }
+  geometry.setAttribute('uv', uvs);
 
   // Rotate the texture itself.
   texture.center.set(0.5, 0.5);
