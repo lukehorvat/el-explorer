@@ -8,28 +8,107 @@ export function BottomBar(): React.JSX.Element {
   const isLoaded = useAtomValue(atoms.isLoaded);
   const actorType = useAtomValue(atoms.actorType);
   const actorDef = assetCache.actorDefs.get(actorType);
-  const [actorAnimation, setActorAnimation] = useAtom(atoms.actorAnimation);
+  const [animationType, setAnimationType] = useAtom(atoms.animationType);
+  const [loopAnimation, setLoopAnimation] = useAtom(atoms.loopAnimation);
+  const [showMesh, setShowMesh] = useAtom(atoms.showMesh);
+  const [showSkeleton, setShowSkeleton] = useAtom(atoms.showSkeleton);
+  const [showWireframe, setShowWireframe] = useAtom(atoms.showWireframe);
+  const [showGround, setShowGround] = useAtom(atoms.showGround);
+  const [showStats, setShowStats] = useAtom(atoms.showStats);
+  const [autoRotate, setAutoRotate] = useAtom(atoms.autoRotate);
 
   return (
     <div className="BottomBar">
       {isLoaded && (
-        <div>
-          <label>Animation:</label>
-          <select
-            className="AnimationSelect"
-            value={actorAnimation ?? ''}
-            onChange={(event) => {
-              setActorAnimation(event.target.value || null);
-            }}
-          >
-            <option value="">None</option>
-            {actorDef!.animationFrames.map((frame) => (
-              <option value={frame.type} key={frame.type}>
-                {frame.type.replace(/^CAL_/, '')}
-              </option>
-            ))}
-          </select>
-        </div>
+        <>
+          <div>
+            <label>Animation type:</label>
+            <select
+              className="AnimationSelect"
+              value={animationType ?? ''}
+              onChange={(event) => {
+                setAnimationType(event.target.value || null);
+              }}
+            >
+              <option value="">None</option>
+              {actorDef!.animationFrames.map((frame) => (
+                <option value={frame.type} key={frame.type}>
+                  {frame.type.replace(/^CAL_/, '')}
+                </option>
+              ))}
+            </select>
+          </div>
+          <div>
+            <label>Loop animation:</label>
+            <input
+              type="checkbox"
+              checked={loopAnimation}
+              onChange={(event) => {
+                setLoopAnimation(event.target.checked);
+              }}
+            />
+          </div>
+          <div>
+            <label>Mesh:</label>
+            <input
+              type="checkbox"
+              checked={showMesh}
+              onChange={(event) => {
+                setShowMesh(event.target.checked);
+              }}
+            />
+          </div>
+          <div>
+            <label>Skeleton:</label>
+            <input
+              type="checkbox"
+              checked={showSkeleton}
+              onChange={(event) => {
+                setShowSkeleton(event.target.checked);
+              }}
+            />
+          </div>
+          <div>
+            <label>Wireframe:</label>
+            <input
+              type="checkbox"
+              checked={showWireframe}
+              onChange={(event) => {
+                setShowWireframe(event.target.checked);
+              }}
+            />
+          </div>
+          <div>
+            <label>Ground:</label>
+            <input
+              type="checkbox"
+              checked={showGround}
+              onChange={(event) => {
+                setShowGround(event.target.checked);
+              }}
+            />
+          </div>
+          <div>
+            <label>Auto rotate:</label>
+            <input
+              type="checkbox"
+              checked={autoRotate}
+              onChange={(event) => {
+                setAutoRotate(event.target.checked);
+              }}
+            />
+          </div>
+          <div>
+            <label>Stats:</label>
+            <input
+              type="checkbox"
+              checked={showStats}
+              onChange={(event) => {
+                setShowStats(event.target.checked);
+              }}
+            />
+          </div>
+        </>
       )}
     </div>
   );
