@@ -6,3 +6,8 @@
   min-height: 50px;
   box-sizing: border-box;
 }
+
+.AnimationSelect {
+  text-align: center;
+  margin: 0 5px;
+}
