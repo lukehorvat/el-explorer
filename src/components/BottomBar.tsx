@@ -46,6 +46,7 @@ export function BottomBar(): React.JSX.Element {
               onChange={(event) => {
                 setLoopAnimation(event.target.checked);
               }}
+              disabled={!animationType}
             />
           </div>
           <div>

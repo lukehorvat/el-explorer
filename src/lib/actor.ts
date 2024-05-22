@@ -58,68 +58,90 @@ export class Actor extends THREE.Group {
     this.add(this.skeletonHelper);
 
     this.animationMixer = new THREE.AnimationMixer(this.mesh);
+    this.prepareAnimationClips();
   }
 
+  /**
+   * Play the specified animation type.
+   */
   playAnimation(animationType: string | null, looped?: boolean): void {
-    this.animationMixer.stopAllAction();
-
+    // Revert back to default pose if no animation type specified.
     if (!animationType) {
+      this.animationMixer.stopAllAction();
       this.mesh.pose();
       return;
     }
 
+    const clip = THREE.AnimationClip.findByName(
+      this.mesh.animations,
+      animationType
+    );
+    const action = this.animationMixer.existingAction(clip)!;
+    action.loop = looped ? THREE.LoopRepeat : THREE.LoopOnce;
+
+    // Play the animation (if not already playing).
+    if (!action.isRunning()) {
+      this.animationMixer.stopAllAction();
+      action.play();
+    }
+  }
+
+  /**
+   * Prepare cached animation "clips" and "actions" that can be played on demand.
+   */
+  private prepareAnimationClips(): void {
     const actorDef = assetCache.actorDefs.get(this.actorType)!;
     const actorAnimations = assetCache.actorAnimations.get(this.actorType)!;
-    const animationIndex = actorDef.animationFrames.findIndex(
-      (frame) => frame.type === animationType
-    );
-    const animationFrame = actorDef.animationFrames[animationIndex];
-    const animation = actorAnimations[animationIndex];
-    const tracks = animation.tracks
-      .map((track) => {
-        const times: number[] = track.keyframes.map(
-          (keyframe) => keyframe.time
-        );
-        const positions = track.keyframes
-          .map((keyframe) => [
-            keyframe.translation.x,
-            keyframe.translation.y,
-            keyframe.translation.z,
-          ])
-          .flat();
-        const rotations = track.keyframes
-          .map((keyframe) => [
-            keyframe.rotation.x,
-            keyframe.rotation.y,
-            keyframe.rotation.z,
-            -keyframe.rotation.w, // Cal3D stores it negated for some reason...
-          ])
-          .flat();
-        const positionTrack = new THREE.VectorKeyframeTrack(
-          `.bones[${track.boneId}].position`,
-          times,
-          positions,
-          THREE.InterpolateSmooth
-        );
-        const rotationTrack = new THREE.QuaternionKeyframeTrack(
-          `.bones[${track.boneId}].quaternion`,
-          times,
-          rotations
-        );
-        return [positionTrack, rotationTrack];
-      })
-      .flat();
+    const clips = actorDef.animationFrames.map((animationFrame, index) => {
+      const animation = actorAnimations[index];
+      const tracks = animation.tracks
+        .map((track) => {
+          const times: number[] = track.keyframes.map(
+            (keyframe) => keyframe.time
+          );
+          const positions = track.keyframes
+            .map((keyframe) => [
+              keyframe.translation.x,
+              keyframe.translation.y,
+              keyframe.translation.z,
+            ])
+            .flat();
+          const rotations = track.keyframes
+            .map((keyframe) => [
+              keyframe.rotation.x,
+              keyframe.rotation.y,
+              keyframe.rotation.z,
+              -keyframe.rotation.w, // Cal3D stores it negated for some reason...
+            ])
+            .flat();
+          const positionTrack = new THREE.VectorKeyframeTrack(
+            `.bones[${track.boneId}].position`,
+            times,
+            positions,
+            THREE.InterpolateSmooth
+          );
+          const rotationTrack = new THREE.QuaternionKeyframeTrack(
+            `.bones[${track.boneId}].quaternion`,
+            times,
+            rotations
+          );
+          return [positionTrack, rotationTrack];
+        })
+        .flat();
 
-    const clip = new THREE.AnimationClip('', -1, tracks);
-    const action = this.animationMixer.clipAction(clip);
-    action.timeScale =
-      // If a custom animation duration was defined, override the natural duration.
-      animationFrame.duration > 0
-        ? clip.duration / (animationFrame.duration / 1000)
-        : 1;
-    action.loop = looped ? THREE.LoopRepeat : THREE.LoopOnce;
-    action.clampWhenFinished = !looped;
-    action.play();
+      const clip = new THREE.AnimationClip(animationFrame.type, -1, tracks);
+      const action = this.animationMixer.clipAction(clip);
+      action.clampWhenFinished = true;
+      action.timeScale =
+        // If a custom duration is defined, override the natural duration.
+        animationFrame.duration > 0
+          ? clip.duration / (animationFrame.duration / 1000)
+          : 1;
+
+      return clip;
+    });
+
+    this.mesh.animations = clips;
   }
 
   dispose(): void {
@@ -129,8 +151,8 @@ export class Actor extends THREE.Group {
     this.mesh.geometry.dispose();
     (this.mesh.material as THREE.MeshBasicMaterial).dispose();
     this.skeletonHelper.dispose();
-
-    // TODO: Can we remove animation mixer?
+    this.animationMixer.stopAllAction();
+    this.animationMixer.uncacheRoot(this.mesh);
   }
 }
 
