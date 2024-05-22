@@ -1,5 +1,6 @@
 import * as THREE from 'three';
 import { assetCache } from './asset-cache';
+import { Cal3DAnimation } from '../io/cal3d-animations';
 
 export class Actor extends THREE.Group {
   readonly actorType: number;
@@ -54,7 +55,7 @@ export class Actor extends THREE.Group {
   }
 
   /**
-   * Play the specified animation type.
+   * Play the specified animation.
    */
   playAnimation(animationType: string | null, looped?: boolean): void {
     // Revert back to default pose if no animation type specified.
@@ -86,41 +87,7 @@ export class Actor extends THREE.Group {
     const actorAnimations = assetCache.actorAnimations.get(this.actorType)!;
     const clips = actorDef.animationFrames.map((animationFrame) => {
       const animation = actorAnimations.get(animationFrame.type)!;
-      const tracks = animation.tracks
-        .map((track) => {
-          const times: number[] = track.keyframes.map(
-            (keyframe) => keyframe.time
-          );
-          const positions = track.keyframes
-            .map((keyframe) => [
-              keyframe.translation.x,
-              keyframe.translation.y,
-              keyframe.translation.z,
-            ])
-            .flat();
-          const rotations = track.keyframes
-            .map((keyframe) => [
-              keyframe.rotation.x,
-              keyframe.rotation.y,
-              keyframe.rotation.z,
-              -keyframe.rotation.w, // Cal3D stores it negated for some reason...
-            ])
-            .flat();
-          const positionTrack = new THREE.VectorKeyframeTrack(
-            `.bones[${track.boneId}].position`,
-            times,
-            positions,
-            THREE.InterpolateSmooth
-          );
-          const rotationTrack = new THREE.QuaternionKeyframeTrack(
-            `.bones[${track.boneId}].quaternion`,
-            times,
-            rotations
-          );
-          return [positionTrack, rotationTrack];
-        })
-        .flat();
-
+      const tracks = this.createAnimationKeyframeTracks(animation);
       const clip = new THREE.AnimationClip(animationFrame.type, -1, tracks);
       const action = this.animationMixer.clipAction(clip);
       action.clampWhenFinished = true;
@@ -129,11 +96,50 @@ export class Actor extends THREE.Group {
         animationFrame.duration > 0
           ? clip.duration / (animationFrame.duration / 1000)
           : 1;
-
       return clip;
     });
 
     this.mesh.animations = clips;
+  }
+
+  /**
+   * Transform a Cal3D animation into Three.js-compatible keyframe tracks.
+   *
+   * See: https://threejs.org/docs/manual/en/introduction/Animation-system.html
+   */
+  private createAnimationKeyframeTracks(
+    animation: Cal3DAnimation
+  ): THREE.KeyframeTrack[] {
+    const trackTimes = animation.tracks.map((track) => {
+      return track.keyframes.map((keyframe) => keyframe.time);
+    });
+    const trackTranslations = animation.tracks.map((track) => {
+      return track.keyframes
+        .map((keyframe) => keyframe.translation)
+        .map(({ x, y, z }) => [x, y, z])
+        .flat();
+    });
+    const trackRotations = animation.tracks.map((track) => {
+      return track.keyframes
+        .map((keyframe) => keyframe.rotation)
+        .map(({ x, y, z, w }) => [x, y, z, -w]) // Cal3D stores W negated for some reason...
+        .flat();
+    });
+    return animation.tracks
+      .map((track, i) => [
+        new THREE.VectorKeyframeTrack(
+          `.bones[${track.boneId}].position`,
+          trackTimes[i],
+          trackTranslations[i],
+          THREE.InterpolateSmooth
+        ),
+        new THREE.QuaternionKeyframeTrack(
+          `.bones[${track.boneId}].quaternion`,
+          trackTimes[i],
+          trackRotations[i]
+        ),
+      ])
+      .flat();
   }
 
   /**
@@ -153,7 +159,7 @@ export class Actor extends THREE.Group {
           bone.rotation.x,
           bone.rotation.y,
           bone.rotation.z,
-          -bone.rotation.w // Cal3D stores it negated for some reason...
+          -bone.rotation.w // Cal3D stores W negated for some reason...
         )
       );
       return new THREE.Matrix4().multiplyMatrices(
