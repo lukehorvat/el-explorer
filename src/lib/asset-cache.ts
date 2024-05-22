@@ -11,8 +11,8 @@ class AssetCache {
   readonly actorDefs: Map<number, ActorDef>;
   readonly actorSkins: Map<number, THREE.Texture>;
   readonly actorMeshes: Map<number, Cal3DMesh[]>;
-  readonly actorSkeletons: Map<number, Cal3DBone[]>;
-  readonly actorAnimations: Map<number, Cal3DAnimation[]>;
+  readonly actorSkeletons: Map<number, Map<number, Cal3DBone>>;
+  readonly actorAnimations: Map<number, Map<string, Cal3DAnimation>>;
   readonly customAssets: /* "Custom" = not bundled with EL client; not from /data. */ {
     textures: Map<string, THREE.Texture>;
   };
@@ -111,14 +111,14 @@ class AssetCache {
 
   private async loadActorAnimations(): Promise<void> {
     for (const actorDef of this.actorDefs.values()) {
-      const animations: Cal3DAnimation[] = [];
+      const animations = new Map<string, Cal3DAnimation>();
 
       for (const animationFrame of actorDef.animationFrames) {
         const animationData = (await this.bufferLoader.loadAsync(
           `data/${animationFrame.path}`
         )) as ArrayBuffer;
         const animation = readCal3DAnimation(Buffer.from(animationData));
-        animations.push(animation);
+        animations.set(animationFrame.type, animation);
       }
 
       this.actorAnimations.set(actorDef.type, animations);

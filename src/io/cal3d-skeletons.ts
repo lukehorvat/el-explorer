@@ -33,7 +33,7 @@ export interface Cal3DBone {
  * Implemented according to the spec defined here:
  * https://github.com/mp3butcher/Cal3D/blob/cf9cb3ec1df6bf6afa0d7ccf72f98ed4484694f4/cal3d/fileformats.txt.in#L52
  */
-export function readCal3DSkeleton(fileData: Buffer): Cal3DBone[] {
+export function readCal3DSkeleton(fileData: Buffer): Map<number, Cal3DBone> {
   let offset = 0;
 
   const magicToken = fileData.toString('ascii', offset, (offset += 4));
@@ -42,7 +42,7 @@ export function readCal3DSkeleton(fileData: Buffer): Cal3DBone[] {
   }
 
   const bonesCount = fileData.readInt32LE((offset += 4));
-  const bones: Cal3DBone[] = [];
+  const skeleton = new Map<number, Cal3DBone>();
 
   for (let i = 0; i < bonesCount; i++) {
     const nameLength = fileData.readInt32LE((offset += 4));
@@ -81,7 +81,7 @@ export function readCal3DSkeleton(fileData: Buffer): Cal3DBone[] {
       childIds.push(fileData.readInt32LE((offset += 4)));
     }
 
-    bones.push({
+    skeleton.set(i, {
       id: i,
       name,
       translation,
@@ -93,5 +93,5 @@ export function readCal3DSkeleton(fileData: Buffer): Cal3DBone[] {
     });
   }
 
-  return bones;
+  return skeleton;
 }
