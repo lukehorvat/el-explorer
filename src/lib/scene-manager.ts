@@ -2,6 +2,7 @@ import * as THREE from 'three';
 import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
 import Stats from 'three/addons/libs/stats.module.js';
 import { Atom } from 'jotai';
+import { assetCache } from './asset-cache';
 import { atoms, store } from './state';
 import { Actor } from './actor';
 
@@ -44,7 +45,10 @@ export class SceneManager {
     this.scene.add(directionalLight);
 
     this.ground = new THREE.Mesh();
-    this.ground.material = new THREE.MeshPhysicalMaterial({ color: '#ccc' });
+    this.ground.material = new THREE.MeshPhysicalMaterial({
+      map: assetCache.customAssets.textures.get('ground')!,
+      color: '#ccc',
+    });
     this.ground.geometry = new THREE.CircleGeometry(2, 100);
     this.ground.rotation.x = THREE.MathUtils.degToRad(-90);
     this.ground.receiveShadow = true;
