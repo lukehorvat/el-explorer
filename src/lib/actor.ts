@@ -3,6 +3,7 @@ import { assetCache } from './asset-cache';
 import { Cal3DBone } from '../io/cal3d-skeletons';
 
 export class Actor extends THREE.Group {
+  readonly actorType: number;
   readonly mesh: THREE.SkinnedMesh;
   readonly skeletonHelper: THREE.SkeletonHelper;
   readonly animationMixer: THREE.AnimationMixer;
@@ -10,6 +11,7 @@ export class Actor extends THREE.Group {
   constructor(actorType: number) {
     super();
 
+    this.actorType = actorType;
     const actorDef = assetCache.actorDefs.get(actorType)!;
     const actorSkin = assetCache.actorSkins.get(actorType)!;
     const actorMesh = assetCache.actorMeshes.get(actorType)![0]; // Assume only one submesh...

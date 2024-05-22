@@ -1,7 +1,6 @@
 import * as THREE from 'three';
 import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
 import Stats from 'three/addons/libs/stats.module.js';
-import { Atom } from 'jotai';
 import { assetCache } from './asset-cache';
 import { atoms, store } from './state';
 import { Actor } from './actor';
@@ -67,6 +66,9 @@ export class SceneManager {
     this.handleStateChanges();
   }
 
+  /**
+   * Start the animation frame loop.
+   */
   render(): void {
     requestAnimationFrame(this.animate.bind(this));
   }
@@ -103,81 +105,46 @@ export class SceneManager {
   }
 
   /**
-   * Render the initial state and any state changes.
+   * Sync the rendered scene with the current state.
+   */
+  private syncState(): void {
+    const actorType = store.get(atoms.actorType);
+    const animationType = store.get(atoms.animationType);
+    const loopAnimation = store.get(atoms.loopAnimation);
+    const showMesh = store.get(atoms.showMesh);
+    const showWireframe = store.get(atoms.showWireframe);
+    const showSkeleton = store.get(atoms.showSkeleton);
+    const showGround = store.get(atoms.showGround);
+    const showStats = store.get(atoms.showStats);
+    const autoRotate = store.get(atoms.autoRotate);
+
+    if (!this.actor || this.actor.actorType !== actorType) {
+      if (this.actor) {
+        this.scene.remove(this.actor);
+        this.actor.dispose();
+      }
+
+      this.actor = new Actor(actorType);
+      this.scene.add(this.actor);
+    }
+
+    this.actor.mesh.visible = showMesh;
+    (this.actor.mesh.material as THREE.MeshBasicMaterial).wireframe =
+      showWireframe;
+    this.actor.skeletonHelper.visible = showSkeleton;
+    this.ground.visible = showGround;
+    this.stats.dom.classList.toggle('hidden', !showStats);
+    this.orbitControls.autoRotate = autoRotate;
+  }
+
+  /**
+   * Ensure that the scene is synced with the initial state and any state changes.
    */
   private handleStateChanges(): void {
-    const subscribers = new Map<Atom<any>, () => void>([
-      [atoms.actorType, this.onActorType.bind(this)],
-      [atoms.animationType, this.onAnimationType.bind(this)],
-      [atoms.loopAnimation, this.onLoopAnimation.bind(this)],
-      [atoms.showMesh, this.onShowMesh.bind(this)],
-      [atoms.showWireframe, this.onShowWireframe.bind(this)],
-      [atoms.showSkeleton, this.onShowSkeleton.bind(this)],
-      [atoms.showGround, this.onShowGround.bind(this)],
-      [atoms.showStats, this.onShowStats.bind(this)],
-      [atoms.autoRotate, this.onAutoRotate.bind(this)],
-    ]);
+    this.syncState();
 
-    for (const [atom, subscriber] of subscribers) {
-      subscriber();
-      store.sub(atom, subscriber);
+    for (const atom of Object.values(atoms)) {
+      store.sub(atom, this.syncState.bind(this));
     }
-  }
-
-  private onActorType(): void {
-    if (this.actor) {
-      this.scene.remove(this.actor);
-      this.actor.dispose();
-    }
-
-    const actorType = store.get(atoms.actorType);
-    this.actor = new Actor(actorType);
-    this.scene.add(this.actor);
-
-    // Sync the current state with the new actor.
-    this.onShowMesh();
-    this.onShowWireframe();
-    this.onShowSkeleton();
-  }
-
-  private onAnimationType(): void {
-    const animationType = store.get(atoms.animationType);
-    // TODO
-  }
-
-  private onLoopAnimation(): void {
-    const loopAnimation = store.get(atoms.loopAnimation);
-    // TODO
-  }
-
-  private onShowMesh(): void {
-    const showMesh = store.get(atoms.showMesh);
-    this.actor!.mesh.visible = showMesh;
-  }
-
-  private onShowWireframe(): void {
-    const showWireframe = store.get(atoms.showWireframe);
-    (this.actor!.mesh.material as THREE.MeshBasicMaterial).wireframe =
-      showWireframe;
-  }
-
-  private onShowSkeleton(): void {
-    const showSkeleton = store.get(atoms.showSkeleton);
-    this.actor!.skeletonHelper.visible = showSkeleton;
-  }
-
-  private onShowGround(): void {
-    const showGround = store.get(atoms.showGround);
-    this.ground.visible = showGround;
-  }
-
-  private onShowStats(): void {
-    const showStats = store.get(atoms.showStats);
-    this.stats.dom.classList.toggle('hidden', !showStats);
-  }
-
-  private onAutoRotate(): void {
-    const autoRotate = store.get(atoms.autoRotate);
-    this.orbitControls.autoRotate = autoRotate;
   }
 }
