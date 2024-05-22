@@ -128,6 +128,7 @@ export class SceneManager {
       this.scene.add(this.actor);
     }
 
+    this.actor.playAnimation(animationType, loopAnimation);
     this.actor.mesh.visible = showMesh;
     (this.actor.mesh.material as THREE.MeshBasicMaterial).wireframe =
       showWireframe;

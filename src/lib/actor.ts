@@ -12,11 +12,9 @@ export class Actor extends THREE.Group {
     super();
 
     this.actorType = actorType;
-    const actorDef = assetCache.actorDefs.get(actorType)!;
     const actorSkin = assetCache.actorSkins.get(actorType)!;
     const actorMesh = assetCache.actorMeshes.get(actorType)![0]; // Assume only one submesh...
     const actorSkeleton = assetCache.actorSkeletons.get(actorType)!;
-    const actorAnimations = assetCache.actorAnimations.get(actorType)!;
 
     this.mesh = new THREE.SkinnedMesh();
     this.mesh.material = new THREE.MeshBasicMaterial({ map: actorSkin });
@@ -60,8 +58,20 @@ export class Actor extends THREE.Group {
     this.add(this.skeletonHelper);
 
     this.animationMixer = new THREE.AnimationMixer(this.mesh);
+  }
+
+  playAnimation(animationType: string | null, looped?: boolean): void {
+    this.animationMixer.stopAllAction();
+
+    if (!animationType) {
+      this.mesh.pose();
+      return;
+    }
+
+    const actorDef = assetCache.actorDefs.get(this.actorType)!;
+    const actorAnimations = assetCache.actorAnimations.get(this.actorType)!;
     const animationIndex = actorDef.animationFrames.findIndex(
-      (frame) => frame.type === 'CAL_walk'
+      (frame) => frame.type === animationType
     );
     const animationFrame = actorDef.animationFrames[animationIndex];
     const animation = actorAnimations[animationIndex];
@@ -107,8 +117,8 @@ export class Actor extends THREE.Group {
       animationFrame.duration > 0
         ? clip.duration / (animationFrame.duration / 1000)
         : 1;
-    // action.loop = THREE.LoopOnce;
-    // action.clampWhenFinished = true;
+    action.loop = looped ? THREE.LoopRepeat : THREE.LoopOnce;
+    action.clampWhenFinished = !looped;
     action.play();
   }
 
