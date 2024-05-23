@@ -13,7 +13,7 @@ export class Actor extends THREE.Group {
 
     this.actorType = actorType;
     const actorSkin = assetCache.actorSkins.get(actorType)!;
-    const actorMesh = assetCache.actorMeshes.get(actorType)![0]; // Assume only one submesh...
+    const actorMesh = assetCache.actorMeshes.get(actorType)!;
 
     this.mesh = new THREE.SkinnedMesh();
     this.mesh.material = new THREE.MeshBasicMaterial({ map: actorSkin });

@@ -10,7 +10,7 @@ import groundImageUrl from '../images/ground.jpg';
 class AssetCache {
   readonly actorDefs: Map<number, ActorDef>;
   readonly actorSkins: Map<number, THREE.Texture>;
-  readonly actorMeshes: Map<number, Cal3DMesh[]>;
+  readonly actorMeshes: Map<number, Cal3DMesh>;
   readonly actorSkeletons: Map<number, Map<number, Cal3DBone>>;
   readonly actorAnimations: Map<number, Map<string, Cal3DAnimation>>;
   readonly customAssets: /* "Custom" = not bundled with EL client; not from /data. */ {
@@ -95,7 +95,8 @@ class AssetCache {
         `data/${actorDef.meshPath}`
       )) as ArrayBuffer;
       const subMeshes = readCal3DMesh(Buffer.from(meshData));
-      this.actorMeshes.set(actorDef.type, subMeshes);
+      const mesh = subMeshes[0]; // EL's actors only have one sub-mesh. 🤷‍♂️
+      this.actorMeshes.set(actorDef.type, mesh);
     }
   }
 
