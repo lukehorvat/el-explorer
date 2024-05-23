@@ -3,7 +3,13 @@ import { atom, createStore } from 'jotai';
 const isLoaded = atom<boolean>(false);
 const actorType = atom<number>(77); // Initially default to Feros.
 const skinType = atom<
-  'texture' | 'wireframe' | 'vectors' | 'metal' | 'silhouette' | null
+  | 'texture'
+  | 'wireframe'
+  | 'vectors'
+  | 'metal'
+  | 'crystal'
+  | 'silhouette'
+  | null
 >('texture');
 const showSkeleton = atom<boolean>(false);
 const showGround = atom<boolean>(true);

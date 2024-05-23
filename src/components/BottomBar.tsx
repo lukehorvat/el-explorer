@@ -34,6 +34,7 @@ export function BottomBar(): React.JSX.Element {
               <option value="wireframe">Wireframe</option>
               <option value="vectors">Vectors</option>
               <option value="metal">Metal</option>
+              <option value="crystal">Crystal</option>
               <option value="silhouette">Silhouette</option>
             </select>
           </div>

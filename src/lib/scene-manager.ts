@@ -154,6 +154,21 @@ export class SceneManager {
           ior: 20,
         });
         break;
+      case 'crystal':
+        this.actor.mesh.material = new THREE.MeshPhysicalMaterial({
+          color: '#fff',
+          emissive: '#f653a6',
+          sheenColor: '#8ab9f1',
+          emissiveIntensity: 0.5,
+          sheen: 3,
+          roughness: 0.3,
+          thickness: 2,
+          transmission: 1,
+          ior: 2,
+          flatShading: true,
+          anisotropy: 20,
+        });
+        break;
       case 'silhouette':
         this.actor.mesh.material = new THREE.MeshBasicMaterial({
           color: '#a2a4a5',
