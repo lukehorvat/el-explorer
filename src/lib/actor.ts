@@ -12,34 +12,32 @@ export class Actor extends THREE.Group {
     super();
 
     this.actorType = actorType;
-    const actorSkin = assetCache.actorSkins.get(actorType)!;
-    const actorMesh = assetCache.actorMeshes.get(actorType)!;
+    const skin = assetCache.actorSkins.get(actorType)!;
+    const calMesh = assetCache.actorMeshes.get(actorType)!;
 
     this.mesh = new THREE.SkinnedMesh();
-    this.mesh.material = new THREE.MeshBasicMaterial({ map: actorSkin });
+    this.mesh.material = new THREE.MeshBasicMaterial({ map: skin });
     this.mesh.geometry = new THREE.BufferGeometry();
     this.mesh.geometry.setAttribute(
       'position',
-      new THREE.BufferAttribute(actorMesh.vertices, 3)
+      new THREE.BufferAttribute(calMesh.vertices, 3)
     );
     this.mesh.geometry.setAttribute(
       'normal',
-      new THREE.BufferAttribute(actorMesh.normals, 3)
+      new THREE.BufferAttribute(calMesh.normals, 3)
     );
     this.mesh.geometry.setAttribute(
       'uv',
-      new THREE.BufferAttribute(actorMesh.uvs, 2)
+      new THREE.BufferAttribute(calMesh.uvs, 2)
     );
-    this.mesh.geometry.setIndex(
-      new THREE.BufferAttribute(actorMesh.indices, 1)
-    );
+    this.mesh.geometry.setIndex(new THREE.BufferAttribute(calMesh.indices, 1));
     this.mesh.geometry.setAttribute(
       'skinIndex',
-      new THREE.BufferAttribute(actorMesh.skinIndices, 4)
+      new THREE.BufferAttribute(calMesh.skinIndices, 4)
     );
     this.mesh.geometry.setAttribute(
       'skinWeight',
-      new THREE.BufferAttribute(actorMesh.skinWeights, 4)
+      new THREE.BufferAttribute(calMesh.skinWeights, 4)
     );
     this.fixMeshTexture();
     this.composeSkeleton();
@@ -84,15 +82,15 @@ export class Actor extends THREE.Group {
    */
   private prepareAnimationClips(): void {
     const actorDef = assetCache.actorDefs.get(this.actorType)!;
-    const actorAnimations = assetCache.actorAnimations.get(this.actorType)!;
+    const calAnimations = assetCache.actorAnimations.get(this.actorType)!;
     const clips = actorDef.animationFrames.map((animationFrame) => {
-      const animation = actorAnimations.get(animationFrame.type)!;
-      const tracks = this.createAnimationKeyframeTracks(animation);
+      const calAnimation = calAnimations.get(animationFrame.type)!;
+      const tracks = this.createAnimationKeyframeTracks(calAnimation);
       const clip = new THREE.AnimationClip(animationFrame.type, -1, tracks);
       const action = this.animationMixer.clipAction(clip);
       action.clampWhenFinished = true;
       action.timeScale =
-        // If a custom duration is defined, override the natural duration.
+        // Override the natural duration when a custom duration is defined.
         animationFrame.duration > 0
           ? clip.duration / (animationFrame.duration / 1000)
           : 1;
@@ -108,24 +106,24 @@ export class Actor extends THREE.Group {
    * See: https://threejs.org/docs/manual/en/introduction/Animation-system.html
    */
   private createAnimationKeyframeTracks(
-    animation: Cal3DAnimation
+    calAnimation: Cal3DAnimation
   ): THREE.KeyframeTrack[] {
-    const trackTimes = animation.tracks.map((track) => {
+    const trackTimes = calAnimation.tracks.map((track) => {
       return track.keyframes.map((keyframe) => keyframe.time);
     });
-    const trackTranslations = animation.tracks.map((track) => {
+    const trackTranslations = calAnimation.tracks.map((track) => {
       return track.keyframes
         .map((keyframe) => keyframe.translation)
         .map(({ x, y, z }) => [x, y, z])
         .flat();
     });
-    const trackRotations = animation.tracks.map((track) => {
+    const trackRotations = calAnimation.tracks.map((track) => {
       return track.keyframes
         .map((keyframe) => keyframe.rotation)
         .map(({ x, y, z, w }) => [x, y, z, -w]) // Cal3D stores W negated for some reason...
         .flat();
     });
-    return animation.tracks
+    return calAnimation.tracks
       .map((track, i) => [
         new THREE.VectorKeyframeTrack(
           `.bones[${track.boneId}].position`,
@@ -147,19 +145,19 @@ export class Actor extends THREE.Group {
    * it to the mesh.
    */
   private composeSkeleton(): void {
-    const actorSkeleton = assetCache.actorSkeletons.get(this.actorType)!;
-    const boneMatrices = [...actorSkeleton.values()].map((bone) => {
+    const calSkeleton = assetCache.actorSkeletons.get(this.actorType)!;
+    const boneMatrices = [...calSkeleton.values()].map((calBone) => {
       const translationMatrix = new THREE.Matrix4().makeTranslation(
-        bone.translation.x,
-        bone.translation.y,
-        bone.translation.z
+        calBone.translation.x,
+        calBone.translation.y,
+        calBone.translation.z
       );
       const rotationMatrix = new THREE.Matrix4().makeRotationFromQuaternion(
         new THREE.Quaternion(
-          bone.rotation.x,
-          bone.rotation.y,
-          bone.rotation.z,
-          -bone.rotation.w // Cal3D stores W negated for some reason...
+          calBone.rotation.x,
+          calBone.rotation.y,
+          calBone.rotation.z,
+          -calBone.rotation.w // Cal3D stores W negated for some reason...
         )
       );
       return new THREE.Matrix4().multiplyMatrices(
@@ -174,7 +172,7 @@ export class Actor extends THREE.Group {
     });
 
     bones.forEach((bone, boneId) => {
-      const parentBone = bones[actorSkeleton.get(boneId)!.parentId];
+      const parentBone = bones[calSkeleton.get(boneId)!.parentId];
       if (parentBone) {
         parentBone.add(bone);
       }
@@ -204,15 +202,14 @@ export class Actor extends THREE.Group {
     this.mesh.geometry.setAttribute('uv', uvs);
 
     // Rotate the texture itself.
-    const actorSkin = assetCache.actorSkins.get(this.actorType)!;
-    actorSkin.center.set(0.5, 0.5);
-    actorSkin.rotation = THREE.MathUtils.degToRad(90);
+    const skin = assetCache.actorSkins.get(this.actorType)!;
+    skin.center.set(0.5, 0.5);
+    skin.rotation = THREE.MathUtils.degToRad(90);
   }
 
   dispose(): void {
     this.remove(this.mesh);
     this.remove(this.skeletonHelper);
-
     this.mesh.geometry.dispose();
     (this.mesh.material as THREE.MeshBasicMaterial).dispose();
     this.skeletonHelper.dispose();
