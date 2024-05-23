@@ -141,6 +141,19 @@ export class SceneManager {
       case 'vectors':
         this.actor.mesh.material = new THREE.MeshNormalMaterial();
         break;
+      case 'metal':
+        this.actor.mesh.material = new THREE.MeshPhysicalMaterial({
+          color: '#fff',
+          emissive: '#cd7f32',
+          emissiveIntensity: 0.5,
+          roughness: 0.4,
+          metalness: 0.4,
+          thickness: 2,
+          transmission: 1,
+          iridescence: 4,
+          ior: 20,
+        });
+        break;
       case 'silhouette':
         this.actor.mesh.material = new THREE.MeshBasicMaterial({
           color: '#a2a4a5',
