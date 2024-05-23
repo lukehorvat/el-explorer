@@ -5,6 +5,7 @@ import { Cal3DAnimation } from '../io/cal3d-animations';
 export class Actor extends THREE.Group {
   readonly actorType: number;
   readonly mesh: THREE.SkinnedMesh;
+  readonly material: THREE.MeshBasicMaterial; // Allows original material to be restored if changed.
   readonly skeletonHelper: THREE.SkeletonHelper;
   readonly animationMixer: THREE.AnimationMixer;
 
@@ -16,7 +17,9 @@ export class Actor extends THREE.Group {
     const calMesh = assetCache.actorMeshes.get(actorType)!;
 
     this.mesh = new THREE.SkinnedMesh();
-    this.mesh.material = new THREE.MeshBasicMaterial({ map: skin });
+    this.material = this.mesh.material = new THREE.MeshBasicMaterial({
+      map: skin,
+    });
     this.mesh.geometry = new THREE.BufferGeometry();
     this.mesh.geometry.setAttribute(
       'position',

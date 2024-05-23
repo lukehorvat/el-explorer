@@ -7,20 +7,45 @@ import './BottomBar.css';
 export function BottomBar(): React.JSX.Element {
   const isLoaded = useAtomValue(atoms.isLoaded);
   const actorType = useAtomValue(atoms.actorType);
-  const actorDef = assetCache.actorDefs.get(actorType);
-  const [animationType, setAnimationType] = useAtom(atoms.animationType);
-  const [loopAnimation, setLoopAnimation] = useAtom(atoms.loopAnimation);
-  const [showMesh, setShowMesh] = useAtom(atoms.showMesh);
-  const [showWireframe, setShowWireframe] = useAtom(atoms.showWireframe);
+  const [skinType, setSkinType] = useAtom(atoms.skinType);
   const [showSkeleton, setShowSkeleton] = useAtom(atoms.showSkeleton);
   const [showGround, setShowGround] = useAtom(atoms.showGround);
   const [showStats, setShowStats] = useAtom(atoms.showStats);
   const [autoRotate, setAutoRotate] = useAtom(atoms.autoRotate);
+  const [animationType, setAnimationType] = useAtom(atoms.animationType);
+  const [loopAnimation, setLoopAnimation] = useAtom(atoms.loopAnimation);
+  const actorDef = assetCache.actorDefs.get(actorType)!;
 
   return (
     <div className="BottomBar">
       {isLoaded && (
         <>
+          <div>
+            <label>Skin:</label>
+            <select
+              className="SkinSelect"
+              value={skinType ?? ''}
+              onChange={(event) => {
+                setSkinType((event.target.value || null) as typeof skinType);
+              }}
+            >
+              <option value="">None</option>
+              <option value="texture">Texture</option>
+              <option value="wireframe">Wireframe</option>
+              <option value="vectors">Vectors</option>
+              <option value="silhouette">Silhouette</option>
+            </select>
+          </div>
+          <div>
+            <label>Skeleton:</label>
+            <input
+              type="checkbox"
+              checked={showSkeleton}
+              onChange={(event) => {
+                setShowSkeleton(event.target.checked);
+              }}
+            />
+          </div>
           <div>
             <label>Animation type:</label>
             <select
@@ -31,7 +56,7 @@ export function BottomBar(): React.JSX.Element {
               }}
             >
               <option value="">None</option>
-              {actorDef!.animationFrames.map((frame) => (
+              {actorDef.animationFrames.map((frame) => (
                 <option value={frame.type} key={frame.type}>
                   {frame.type.replace(/^CAL_/, '')}
                 </option>
@@ -47,46 +72,6 @@ export function BottomBar(): React.JSX.Element {
                 setLoopAnimation(event.target.checked);
               }}
               disabled={!animationType}
-            />
-          </div>
-          <div>
-            <label>Mesh:</label>
-            <input
-              type="checkbox"
-              checked={showMesh}
-              onChange={(event) => {
-                const { checked } = event.target;
-                setShowMesh(checked);
-
-                if (!checked) {
-                  setShowWireframe(false);
-                }
-              }}
-            />
-          </div>
-          <div>
-            <label>Wireframe:</label>
-            <input
-              type="checkbox"
-              checked={showWireframe}
-              onChange={(event) => {
-                const { checked } = event.target;
-                setShowWireframe(checked);
-
-                if (checked) {
-                  setShowMesh(true);
-                }
-              }}
-            />
-          </div>
-          <div>
-            <label>Skeleton:</label>
-            <input
-              type="checkbox"
-              checked={showSkeleton}
-              onChange={(event) => {
-                setShowSkeleton(event.target.checked);
-              }}
             />
           </div>
           <div>

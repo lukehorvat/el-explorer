@@ -109,14 +109,13 @@ export class SceneManager {
    */
   private syncState(): void {
     const actorType = store.get(atoms.actorType);
-    const animationType = store.get(atoms.animationType);
-    const loopAnimation = store.get(atoms.loopAnimation);
-    const showMesh = store.get(atoms.showMesh);
-    const showWireframe = store.get(atoms.showWireframe);
+    const skinType = store.get(atoms.skinType);
     const showSkeleton = store.get(atoms.showSkeleton);
     const showGround = store.get(atoms.showGround);
     const showStats = store.get(atoms.showStats);
     const autoRotate = store.get(atoms.autoRotate);
+    const animationType = store.get(atoms.animationType);
+    const loopAnimation = store.get(atoms.loopAnimation);
 
     if (!this.actor || this.actor.actorType !== actorType) {
       if (this.actor) {
@@ -128,11 +127,29 @@ export class SceneManager {
       this.scene.add(this.actor);
     }
 
-    this.actor.playAnimation(animationType, loopAnimation);
-    this.actor.mesh.visible = showMesh;
-    (this.actor.mesh.material as THREE.MeshBasicMaterial).wireframe =
-      showWireframe;
+    this.actor.mesh.visible = !!skinType;
+    switch (skinType) {
+      case 'texture':
+        this.actor.mesh.material = this.actor.material;
+        break;
+      case 'wireframe':
+        this.actor.mesh.material = new THREE.MeshBasicMaterial({
+          color: '#00cc8d',
+          wireframe: true,
+        });
+        break;
+      case 'vectors':
+        this.actor.mesh.material = new THREE.MeshNormalMaterial();
+        break;
+      case 'silhouette':
+        this.actor.mesh.material = new THREE.MeshBasicMaterial({
+          color: '#a2a4a5',
+        });
+        break;
+    }
+
     this.actor.skeletonHelper.visible = showSkeleton;
+    this.actor.playAnimation(animationType, loopAnimation);
     this.ground.visible = showGround;
     this.stats.dom.classList.toggle('hidden', !showStats);
     this.orbitControls.autoRotate = autoRotate;
