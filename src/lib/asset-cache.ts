@@ -85,6 +85,7 @@ class AssetCache {
   private async loadActorSkins(): Promise<void> {
     for (const actorDef of this.actorDefs.values()) {
       const skin = await this.ddsLoader.loadAsync(`data/${actorDef.skinPath}`);
+      skin.wrapS = skin.wrapT = THREE.RepeatWrapping;
       this.actorSkins.set(actorDef.type, skin);
     }
   }

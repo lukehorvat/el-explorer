@@ -42,10 +42,8 @@ export class Actor extends THREE.Group {
       'skinWeight',
       new THREE.BufferAttribute(calMesh.skinWeights, 4)
     );
-    this.fixMeshTexture();
-    this.composeSkeleton();
-    this.mesh.rotation.x = THREE.MathUtils.degToRad(-90);
     this.mesh.castShadow = true;
+    this.composeSkeleton();
     this.add(this.mesh);
 
     this.skeletonHelper = new THREE.SkeletonHelper(this.mesh);
@@ -123,7 +121,7 @@ export class Actor extends THREE.Group {
     const trackRotations = calAnimation.tracks.map((track) => {
       return track.keyframes
         .map((keyframe) => keyframe.rotation)
-        .map(({ x, y, z, w }) => [x, y, z, -w]) // Cal3D stores W negated for some reason...
+        .map(({ x, y, z, w }) => [x, y, z, w])
         .flat();
     });
     return calAnimation.tracks
@@ -151,17 +149,10 @@ export class Actor extends THREE.Group {
     const calSkeleton = assetCache.actorSkeletons.get(this.actorType)!;
     const boneMatrices = [...calSkeleton.values()].map((calBone) => {
       const translationMatrix = new THREE.Matrix4().makeTranslation(
-        calBone.translation.x,
-        calBone.translation.y,
-        calBone.translation.z
+        new THREE.Vector3().copy(calBone.translation)
       );
       const rotationMatrix = new THREE.Matrix4().makeRotationFromQuaternion(
-        new THREE.Quaternion(
-          calBone.rotation.x,
-          calBone.rotation.y,
-          calBone.rotation.z,
-          -calBone.rotation.w // Cal3D stores W negated for some reason...
-        )
+        new THREE.Quaternion().copy(calBone.rotation)
       );
       return new THREE.Matrix4().multiplyMatrices(
         translationMatrix,
@@ -183,31 +174,6 @@ export class Actor extends THREE.Group {
 
     this.mesh.add(bones.find((bone) => !bone.parent)!); // Assume only one root bone...
     this.mesh.bind(new THREE.Skeleton(bones));
-  }
-
-  /**
-   * The .dds texture files don't map onto the mesh geometry correctly for some
-   * reason that I don't understand. Opening them in Gimp and re-exporting them
-   * with the "Flip the image vertically" option enabled seems to fix them, but
-   * I don't want to manually do this for every .dds file. I also want the .dds
-   * files to remain untouched and identical to the ones in the EL client's data
-   * directory.
-   *
-   * So, through some trial and error, I found the following programmatic way of
-   * fixing them.
-   */
-  private fixMeshTexture(): void {
-    // Swap every U and V pair.
-    const uvs = this.mesh.geometry.getAttribute('uv').clone();
-    for (let i = 0; i < uvs.count; i++) {
-      uvs.setXY(i, uvs.getY(i), uvs.getX(i));
-    }
-    this.mesh.geometry.setAttribute('uv', uvs);
-
-    // Rotate the texture itself.
-    const skin = assetCache.actorSkins.get(this.actorType)!;
-    skin.center.set(0.5, 0.5);
-    skin.rotation = THREE.MathUtils.degToRad(90);
   }
 
   dispose(): void {

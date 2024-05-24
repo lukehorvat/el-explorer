@@ -1,28 +1,17 @@
+import {
+  Quaternion,
+  Vector3,
+  leftZUpToRightYUpQ,
+  leftZUpToRightYUpV3,
+} from './utils';
+
 export interface Cal3DBone {
   id: number;
   name: string;
-  translation: {
-    x: number;
-    y: number;
-    z: number;
-  };
-  rotation: {
-    x: number;
-    y: number;
-    z: number;
-    w: number;
-  };
-  localTranslation: {
-    x: number;
-    y: number;
-    z: number;
-  };
-  localRotation: {
-    x: number;
-    y: number;
-    z: number;
-    w: number;
-  };
+  translation: Vector3;
+  rotation: Quaternion;
+  localTranslation: Vector3;
+  localRotation: Quaternion;
   parentId: number;
   childIds: number[];
 }
@@ -51,28 +40,28 @@ export function readCal3DSkeleton(fileData: Buffer): Map<number, Cal3DBone> {
       (offset += 4),
       (offset += nameLength)
     );
-    const translation = {
+    const translation = leftZUpToRightYUpV3({
       x: fileData.readFloatLE(offset),
       y: fileData.readFloatLE((offset += 4)),
       z: fileData.readFloatLE((offset += 4)),
-    };
-    const rotation = {
+    });
+    const rotation = leftZUpToRightYUpQ({
       x: fileData.readFloatLE((offset += 4)),
       y: fileData.readFloatLE((offset += 4)),
       z: fileData.readFloatLE((offset += 4)),
       w: fileData.readFloatLE((offset += 4)),
-    };
-    const localTranslation = {
+    });
+    const localTranslation = leftZUpToRightYUpV3({
       x: fileData.readFloatLE((offset += 4)),
       y: fileData.readFloatLE((offset += 4)),
       z: fileData.readFloatLE((offset += 4)),
-    };
-    const localRotation = {
+    });
+    const localRotation = leftZUpToRightYUpQ({
       x: fileData.readFloatLE((offset += 4)),
       y: fileData.readFloatLE((offset += 4)),
       z: fileData.readFloatLE((offset += 4)),
       w: fileData.readFloatLE((offset += 4)),
-    };
+    });
     const parentId = fileData.readInt32LE((offset += 4));
     const childCount = fileData.readInt32LE((offset += 4));
     const childIds: number[] = [];

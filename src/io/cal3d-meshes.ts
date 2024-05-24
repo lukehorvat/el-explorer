@@ -1,3 +1,5 @@
+import { leftZUpToRightYUpV2, leftZUpToRightYUpV3 } from './utils';
+
 export interface Cal3DMesh {
   vertices: Float32Array;
   normals: Float32Array;
@@ -54,18 +56,29 @@ export function readCal3DMesh(fileData: Buffer): Cal3DMesh[] {
     const springs: Cal3DMesh['springs'] = [];
 
     for (let j = 0; j < vertexCount; j++) {
-      vertices.push(fileData.readFloatLE((offset += 4)));
-      vertices.push(fileData.readFloatLE((offset += 4)));
-      vertices.push(fileData.readFloatLE((offset += 4)));
-      normals.push(fileData.readFloatLE((offset += 4)));
-      normals.push(fileData.readFloatLE((offset += 4)));
-      normals.push(fileData.readFloatLE((offset += 4)));
+      const position = leftZUpToRightYUpV3({
+        x: fileData.readFloatLE((offset += 4)),
+        y: fileData.readFloatLE((offset += 4)),
+        z: fileData.readFloatLE((offset += 4)),
+      });
+      vertices.push(position.x, position.y, position.z);
+
+      const normal = leftZUpToRightYUpV3({
+        x: fileData.readFloatLE((offset += 4)),
+        y: fileData.readFloatLE((offset += 4)),
+        z: fileData.readFloatLE((offset += 4)),
+      });
+      normals.push(normal.x, normal.y, normal.z);
+
       vertexCollapseIds.push(fileData.readInt32LE((offset += 4)));
       vertexFaceCollapses.push(fileData.readInt32LE((offset += 4)));
 
       for (let k = 0; k < mapCount; k++) {
-        uvs.push(fileData.readFloatLE((offset += 4)));
-        uvs.push(fileData.readFloatLE((offset += 4)));
+        const uv = leftZUpToRightYUpV2({
+          x: fileData.readFloatLE((offset += 4)),
+          y: fileData.readFloatLE((offset += 4)),
+        });
+        uvs.push(uv.x, uv.y);
       }
 
       const boneInfluenceCount = fileData.readInt32LE((offset += 4));
