@@ -92,20 +92,20 @@ class AssetCache {
 
   private async loadActorMeshes(): Promise<void> {
     for (const actorDef of this.actorDefs.values()) {
-      const meshData = (await this.bufferLoader.loadAsync(
+      const buffer = (await this.bufferLoader.loadAsync(
         `data/${actorDef.meshPath}`
       )) as ArrayBuffer;
-      const calMesh = readCal3DMesh(Buffer.from(meshData))[0]; // EL's actors only have one sub-mesh. 🤷‍♂️
+      const calMesh = readCal3DMesh(buffer)[0]; // EL's actors only have one sub-mesh. 🤷‍♂️
       this.actorMeshes.set(actorDef.type, calMesh);
     }
   }
 
   private async loadActorSkeletons(): Promise<void> {
     for (const actorDef of this.actorDefs.values()) {
-      const skeletonData = (await this.bufferLoader.loadAsync(
+      const buffer = (await this.bufferLoader.loadAsync(
         `data/${actorDef.skeletonPath}`
       )) as ArrayBuffer;
-      const calSkeleton = readCal3DSkeleton(Buffer.from(skeletonData));
+      const calSkeleton = readCal3DSkeleton(buffer);
       this.actorSkeletons.set(actorDef.type, calSkeleton);
     }
   }
@@ -115,10 +115,10 @@ class AssetCache {
       const calAnimations = new Map<string, Cal3DAnimation>();
 
       for (const animationFrame of actorDef.animationFrames) {
-        const animationData = (await this.bufferLoader.loadAsync(
+        const buffer = (await this.bufferLoader.loadAsync(
           `data/${animationFrame.path}`
         )) as ArrayBuffer;
-        const calAnimation = readCal3DAnimation(Buffer.from(animationData));
+        const calAnimation = readCal3DAnimation(buffer);
         calAnimations.set(animationFrame.type, calAnimation);
       }
 

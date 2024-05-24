@@ -18,36 +18,54 @@ export interface Cal3DAnimation {
  * Implemented according to the spec defined here:
  * https://github.com/mp3butcher/Cal3D/blob/cf9cb3ec1df6bf6afa0d7ccf72f98ed4484694f4/cal3d/fileformats.txt.in#L96
  */
-export function readCal3DAnimation(fileData: Buffer): Cal3DAnimation {
+export function readCal3DAnimation(buffer: ArrayBuffer): Cal3DAnimation {
+  const view = new DataView(buffer);
   let offset = 0;
 
-  const magicToken = fileData.toString('ascii', offset, (offset += 4));
+  const magicToken = String.fromCharCode(
+    view.getUint8(offset),
+    view.getUint8(offset + 1),
+    view.getUint8(offset + 2),
+    view.getUint8(offset + 3)
+  );
+  offset += 8;
   if (magicToken !== 'CAF\0') {
     throw new Error('Not a valid Cal3D animation file.');
   }
 
-  const duration = fileData.readFloatLE((offset += 4));
-  const trackCount = fileData.readInt32LE((offset += 4));
+  const duration = view.getFloat32(offset, true);
+  offset += 4;
+
+  const trackCount = view.getInt32(offset, true);
+  offset += 4;
+
   const tracks: Cal3DAnimation['tracks'] = [];
-
   for (let i = 0; i < trackCount; i++) {
-    const boneId = fileData.readInt32LE((offset += 4));
-    const keyframeCount = fileData.readInt32LE((offset += 4));
-    const keyframes: Cal3DAnimation['tracks'][0]['keyframes'] = [];
+    const boneId = view.getInt32(offset, true);
+    offset += 4;
 
+    const keyframeCount = view.getInt32(offset, true);
+    offset += 4;
+
+    const keyframes: Cal3DAnimation['tracks'][0]['keyframes'] = [];
     for (let j = 0; j < keyframeCount; j++) {
-      const time = fileData.readFloatLE((offset += 4));
+      const time = view.getFloat32(offset, true);
+      offset += 4;
+
       const translation = leftZUpToRightYUp({
-        x: fileData.readFloatLE((offset += 4)),
-        y: fileData.readFloatLE((offset += 4)),
-        z: fileData.readFloatLE((offset += 4)),
+        x: view.getFloat32(offset, true),
+        y: view.getFloat32(offset + 4, true),
+        z: view.getFloat32(offset + 8, true),
       });
+      offset += 12;
+
       const rotation = leftZUpToRightYUp({
-        x: fileData.readFloatLE((offset += 4)),
-        y: fileData.readFloatLE((offset += 4)),
-        z: fileData.readFloatLE((offset += 4)),
-        w: fileData.readFloatLE((offset += 4)),
+        x: view.getFloat32(offset, true),
+        y: view.getFloat32(offset + 4, true),
+        z: view.getFloat32(offset + 8, true),
+        w: view.getFloat32(offset + 12, true),
       });
+      offset += 16;
 
       keyframes.push({
         time,
