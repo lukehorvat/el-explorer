@@ -1,12 +1,12 @@
-import { leftZUpToRightYUp } from './utils';
+import { Vector2, Vector3, leftZUpToRightYUp } from './utils';
 
 export interface Cal3DMesh {
-  vertices: Float32Array;
-  normals: Float32Array;
-  uvs: Float32Array;
-  indices: Uint32Array;
-  skinIndices: Uint16Array;
-  skinWeights: Float32Array;
+  positions: Vector3[];
+  normals: Vector3[];
+  uvs: Vector2[];
+  indices: number[];
+  skinIndices: number[];
+  skinWeights: number[];
   vertexCollapseIds: number[];
   vertexFaceCollapses: number[];
   vertexWeights: (number | null)[];
@@ -44,41 +44,44 @@ export function readCal3DMesh(fileData: Buffer): Cal3DMesh[] {
     const lodSteps = fileData.readInt32LE((offset += 4));
     const springCount = fileData.readInt32LE((offset += 4));
     const mapCount = fileData.readInt32LE((offset += 4));
-    const vertices: number[] = [];
-    const normals: number[] = [];
-    const uvs: number[] = [];
-    const indices: number[] = [];
-    const skinIndices: number[] = [];
-    const skinWeights: number[] = [];
+    const positions: Cal3DMesh['positions'] = [];
+    const normals: Cal3DMesh['normals'] = [];
+    const uvs: Cal3DMesh['uvs'] = [];
+    const indices: Cal3DMesh['indices'] = [];
+    const skinIndices: Cal3DMesh['skinIndices'] = [];
+    const skinWeights: Cal3DMesh['skinWeights'] = [];
     const vertexCollapseIds: Cal3DMesh['vertexCollapseIds'] = [];
     const vertexFaceCollapses: Cal3DMesh['vertexFaceCollapses'] = [];
     const vertexWeights: Cal3DMesh['vertexWeights'] = [];
     const springs: Cal3DMesh['springs'] = [];
 
     for (let j = 0; j < vertexCount; j++) {
-      const position = leftZUpToRightYUp({
-        x: fileData.readFloatLE((offset += 4)),
-        y: fileData.readFloatLE((offset += 4)),
-        z: fileData.readFloatLE((offset += 4)),
-      });
-      vertices.push(position.x, position.y, position.z);
+      positions.push(
+        leftZUpToRightYUp({
+          x: fileData.readFloatLE((offset += 4)),
+          y: fileData.readFloatLE((offset += 4)),
+          z: fileData.readFloatLE((offset += 4)),
+        })
+      );
 
-      const normal = leftZUpToRightYUp({
-        x: fileData.readFloatLE((offset += 4)),
-        y: fileData.readFloatLE((offset += 4)),
-        z: fileData.readFloatLE((offset += 4)),
-      });
-      normals.push(normal.x, normal.y, normal.z);
+      normals.push(
+        leftZUpToRightYUp({
+          x: fileData.readFloatLE((offset += 4)),
+          y: fileData.readFloatLE((offset += 4)),
+          z: fileData.readFloatLE((offset += 4)),
+        })
+      );
 
       vertexCollapseIds.push(fileData.readInt32LE((offset += 4)));
       vertexFaceCollapses.push(fileData.readInt32LE((offset += 4)));
 
       for (let k = 0; k < mapCount; k++) {
-        const uv = leftZUpToRightYUp({
-          x: fileData.readFloatLE((offset += 4)),
-          y: fileData.readFloatLE((offset += 4)),
-        });
-        uvs.push(uv.x, uv.y);
+        uvs.push(
+          leftZUpToRightYUp({
+            x: fileData.readFloatLE((offset += 4)),
+            y: fileData.readFloatLE((offset += 4)),
+          })
+        );
       }
 
       const boneInfluenceCount = fileData.readInt32LE((offset += 4));
@@ -114,18 +117,20 @@ export function readCal3DMesh(fileData: Buffer): Cal3DMesh[] {
     }
 
     for (let j = 0; j < faceCount; j++) {
-      indices.push(fileData.readUInt32LE((offset += 4)));
-      indices.push(fileData.readUInt32LE((offset += 4)));
-      indices.push(fileData.readUInt32LE((offset += 4)));
+      indices.push(
+        fileData.readUInt32LE((offset += 4)),
+        fileData.readUInt32LE((offset += 4)),
+        fileData.readUInt32LE((offset += 4))
+      );
     }
 
     subMeshes.push({
-      vertices: new Float32Array(vertices),
-      normals: new Float32Array(normals),
-      uvs: new Float32Array(uvs),
-      indices: new Uint32Array(indices),
-      skinIndices: new Uint16Array(skinIndices),
-      skinWeights: new Float32Array(skinWeights),
+      positions,
+      normals,
+      uvs,
+      indices,
+      skinIndices,
+      skinWeights,
       vertexCollapseIds,
       vertexFaceCollapses,
       vertexWeights,

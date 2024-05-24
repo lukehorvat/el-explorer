@@ -23,24 +23,33 @@ export class Actor extends THREE.Group {
     this.mesh.geometry = new THREE.BufferGeometry();
     this.mesh.geometry.setAttribute(
       'position',
-      new THREE.BufferAttribute(calMesh.vertices, 3)
+      new THREE.Float32BufferAttribute(
+        calMesh.positions.map((p) => [p.x, p.y, p.z]).flat(),
+        3
+      )
     );
     this.mesh.geometry.setAttribute(
       'normal',
-      new THREE.BufferAttribute(calMesh.normals, 3)
+      new THREE.Float32BufferAttribute(
+        calMesh.normals.map((n) => [n.x, n.y, n.z]).flat(),
+        3
+      )
     );
     this.mesh.geometry.setAttribute(
       'uv',
-      new THREE.BufferAttribute(calMesh.uvs, 2)
+      new THREE.Float32BufferAttribute(
+        calMesh.uvs.map((uv) => [uv.x, uv.y]).flat(),
+        2
+      )
     );
-    this.mesh.geometry.setIndex(new THREE.BufferAttribute(calMesh.indices, 1));
+    this.mesh.geometry.setIndex(calMesh.indices);
     this.mesh.geometry.setAttribute(
       'skinIndex',
-      new THREE.BufferAttribute(calMesh.skinIndices, 4)
+      new THREE.Uint16BufferAttribute(calMesh.skinIndices, 4)
     );
     this.mesh.geometry.setAttribute(
       'skinWeight',
-      new THREE.BufferAttribute(calMesh.skinWeights, 4)
+      new THREE.Float32BufferAttribute(calMesh.skinWeights, 4)
     );
     this.mesh.castShadow = true;
     this.composeSkeleton();
@@ -115,13 +124,13 @@ export class Actor extends THREE.Group {
     const trackTranslations = calAnimation.tracks.map((track) => {
       return track.keyframes
         .map((keyframe) => keyframe.translation)
-        .map(({ x, y, z }) => [x, y, z])
+        .map((t) => [t.x, t.y, t.z])
         .flat();
     });
     const trackRotations = calAnimation.tracks.map((track) => {
       return track.keyframes
         .map((keyframe) => keyframe.rotation)
-        .map(({ x, y, z, w }) => [x, y, z, w])
+        .map((r) => [r.x, r.y, r.z, r.w])
         .flat();
     });
     return calAnimation.tracks
