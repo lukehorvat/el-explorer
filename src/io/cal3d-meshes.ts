@@ -1,4 +1,4 @@
-import { leftZUpToRightYUpV2, leftZUpToRightYUpV3 } from './utils';
+import { leftZUpToRightYUp } from './utils';
 
 export interface Cal3DMesh {
   vertices: Float32Array;
@@ -56,14 +56,14 @@ export function readCal3DMesh(fileData: Buffer): Cal3DMesh[] {
     const springs: Cal3DMesh['springs'] = [];
 
     for (let j = 0; j < vertexCount; j++) {
-      const position = leftZUpToRightYUpV3({
+      const position = leftZUpToRightYUp({
         x: fileData.readFloatLE((offset += 4)),
         y: fileData.readFloatLE((offset += 4)),
         z: fileData.readFloatLE((offset += 4)),
       });
       vertices.push(position.x, position.y, position.z);
 
-      const normal = leftZUpToRightYUpV3({
+      const normal = leftZUpToRightYUp({
         x: fileData.readFloatLE((offset += 4)),
         y: fileData.readFloatLE((offset += 4)),
         z: fileData.readFloatLE((offset += 4)),
@@ -74,7 +74,7 @@ export function readCal3DMesh(fileData: Buffer): Cal3DMesh[] {
       vertexFaceCollapses.push(fileData.readInt32LE((offset += 4)));
 
       for (let k = 0; k < mapCount; k++) {
-        const uv = leftZUpToRightYUpV2({
+        const uv = leftZUpToRightYUp({
           x: fileData.readFloatLE((offset += 4)),
           y: fileData.readFloatLE((offset += 4)),
         });

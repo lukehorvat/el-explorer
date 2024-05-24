@@ -1,9 +1,4 @@
-import {
-  Quaternion,
-  Vector3,
-  leftZUpToRightYUpQ,
-  leftZUpToRightYUpV3,
-} from './utils';
+import { Quaternion, Vector3, leftZUpToRightYUp } from './utils';
 
 export interface Cal3DAnimation {
   duration: number;
@@ -42,12 +37,12 @@ export function readCal3DAnimation(fileData: Buffer): Cal3DAnimation {
 
     for (let j = 0; j < keyframeCount; j++) {
       const time = fileData.readFloatLE((offset += 4));
-      const translation = leftZUpToRightYUpV3({
+      const translation = leftZUpToRightYUp({
         x: fileData.readFloatLE((offset += 4)),
         y: fileData.readFloatLE((offset += 4)),
         z: fileData.readFloatLE((offset += 4)),
       });
-      const rotation = leftZUpToRightYUpQ({
+      const rotation = leftZUpToRightYUp({
         x: fileData.readFloatLE((offset += 4)),
         y: fileData.readFloatLE((offset += 4)),
         z: fileData.readFloatLE((offset += 4)),

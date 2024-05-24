@@ -1,9 +1,4 @@
-import {
-  Quaternion,
-  Vector3,
-  leftZUpToRightYUpQ,
-  leftZUpToRightYUpV3,
-} from './utils';
+import { Quaternion, Vector3, leftZUpToRightYUp } from './utils';
 
 export interface Cal3DBone {
   id: number;
@@ -40,23 +35,23 @@ export function readCal3DSkeleton(fileData: Buffer): Map<number, Cal3DBone> {
       (offset += 4),
       (offset += nameLength)
     );
-    const translation = leftZUpToRightYUpV3({
+    const translation = leftZUpToRightYUp({
       x: fileData.readFloatLE(offset),
       y: fileData.readFloatLE((offset += 4)),
       z: fileData.readFloatLE((offset += 4)),
     });
-    const rotation = leftZUpToRightYUpQ({
+    const rotation = leftZUpToRightYUp({
       x: fileData.readFloatLE((offset += 4)),
       y: fileData.readFloatLE((offset += 4)),
       z: fileData.readFloatLE((offset += 4)),
       w: fileData.readFloatLE((offset += 4)),
     });
-    const localTranslation = leftZUpToRightYUpV3({
+    const localTranslation = leftZUpToRightYUp({
       x: fileData.readFloatLE((offset += 4)),
       y: fileData.readFloatLE((offset += 4)),
       z: fileData.readFloatLE((offset += 4)),
     });
-    const localRotation = leftZUpToRightYUpQ({
+    const localRotation = leftZUpToRightYUp({
       x: fileData.readFloatLE((offset += 4)),
       y: fileData.readFloatLE((offset += 4)),
       z: fileData.readFloatLE((offset += 4)),
