@@ -26,9 +26,8 @@ export class SceneManager {
     this.clock = new THREE.Clock();
     this.scene = new THREE.Scene();
     this.camera = new THREE.PerspectiveCamera();
-    this.camera.position.x = 0;
-    this.camera.position.y = 2;
-    this.camera.position.z = 4;
+    this.camera.near = 0.001;
+    this.camera.far = 1000;
 
     const hemisphereLight = new THREE.HemisphereLight('#fff', '#fff', Math.PI);
     hemisphereLight.position.y = 20;
@@ -134,6 +133,11 @@ export class SceneManager {
       this.actor.mesh.position.x -= center.x;
       this.actor.mesh.position.z -= center.z;
       this.orbitControls.target = new THREE.Vector3(0, center.y, 0);
+
+      // Reset to a sensible camera position.
+      this.camera.position.x = 0;
+      this.camera.position.y = center.y;
+      this.camera.position.z = 4;
     }
 
     this.actor.mesh.visible = !!skinType;
