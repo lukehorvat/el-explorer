@@ -27,7 +27,7 @@ export class SceneManager {
     this.scene = new THREE.Scene();
     this.camera = new THREE.PerspectiveCamera();
     this.camera.position.x = 0;
-    this.camera.position.y = 3;
+    this.camera.position.y = 2;
     this.camera.position.z = 4;
 
     const hemisphereLight = new THREE.HemisphereLight('#fff', '#fff', Math.PI);
@@ -127,6 +127,13 @@ export class SceneManager {
 
       this.actor = new Actor(actorType);
       this.scene.add(this.actor);
+
+      // Center the actor's mesh and orbit its center.
+      const boundingBox = new THREE.Box3().setFromObject(this.actor.mesh);
+      const center = boundingBox.getCenter(new THREE.Vector3());
+      this.actor.mesh.position.x -= center.x;
+      this.actor.mesh.position.z -= center.z;
+      this.orbitControls.target = new THREE.Vector3(0, center.y, 0);
     }
 
     this.actor.mesh.visible = !!skinType;
