@@ -56,6 +56,10 @@ export class Actor extends THREE.Group {
     this.add(this.mesh);
 
     this.skeletonHelper = new THREE.SkeletonHelper(this.mesh);
+    this.skeletonHelper.material = new THREE.LineBasicMaterial({
+      color: '#ffaa7f',
+      depthTest: false,
+    });
     this.add(this.skeletonHelper);
 
     this.animationMixer = new THREE.AnimationMixer(this.mesh);
