@@ -8,12 +8,12 @@
 }
 
 .Stats {
-  top: 60px !important;
+  top: 70px !important;
   right: 10px !important;
   left: unset !important;
   bottom: unset !important;
 }
 
-.Stats.hidden {
+.Stats.Hidden {
   display: none;
 }

@@ -192,7 +192,7 @@ export class SceneManager {
     this.actor.skeletonHelper.visible = showSkeleton;
     this.actor.playAnimation(animationType, loopAnimation);
     this.ground.visible = showGround;
-    this.stats.dom.classList.toggle('hidden', !showStats);
+    this.stats.dom.classList.toggle('Hidden', !showStats);
     this.orbitControls.autoRotate = autoRotate;
   }
 

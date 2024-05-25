@@ -2,6 +2,8 @@
   display: flex;
   flex-direction: column;
   padding: 10px;
+  background: #22272d;
+  overflow-y: hidden;
 }
 
 .LeftBar .ControlGroup {

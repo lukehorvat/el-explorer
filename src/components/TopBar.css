@@ -3,25 +3,16 @@
   align-items: center;
   justify-content: space-between;
   padding: 10px;
-  min-height: 50px;
-  box-sizing: border-box;
+  min-height: 40px;
 }
 
-.Brand {
+.TopBar .Brand {
   font-weight: bold;
-  text-align: left;
+  font-size: x-large;
 }
 
-.Fork {
+.TopBar .Fork {
   font-size: small;
   text-align: right;
-}
-
-.Fork a {
   color: inherit;
-}
-
-.Brand,
-.Fork {
-  width: 150px;
 }
