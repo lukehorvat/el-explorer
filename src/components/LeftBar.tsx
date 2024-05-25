@@ -118,17 +118,18 @@ export function LeftBar(): React.JSX.Element {
             ))}
           </select>
         </div>
-        <div className="Control">
-          <label>Loop:</label>
-          <input
-            type="checkbox"
-            checked={loopAnimation}
-            onChange={(event) => {
-              setLoopAnimation(event.target.checked);
-            }}
-            disabled={!animationType}
-          />
-        </div>
+        {animationType && (
+          <div className="Control">
+            <label>Loop:</label>
+            <input
+              type="checkbox"
+              checked={loopAnimation}
+              onChange={(event) => {
+                setLoopAnimation(event.target.checked);
+              }}
+            />
+          </div>
+        )}
       </div>
       <div className="ControlGroup">
         <div className="ControlGroupTitle">Miscellaneous</div>
