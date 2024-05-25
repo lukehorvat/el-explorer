@@ -1,7 +1,6 @@
 import * as THREE from 'three';
 import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
 import Stats from 'three/addons/libs/stats.module.js';
-import { assetCache } from './asset-cache';
 import { atoms, store } from './state';
 import { Actor } from './actor';
 
@@ -45,11 +44,11 @@ export class SceneManager {
     this.scene.add(directionalLight);
 
     this.ground = new THREE.Mesh();
-    this.ground.material = new THREE.MeshPhysicalMaterial({
-      map: assetCache.customAssets.textures.get('ground')!,
-      color: '#ccc',
+    this.ground.material = new THREE.MeshToonMaterial({
+      color: '#c6c6c6',
+      depthTest: false,
     });
-    this.ground.geometry = new THREE.CircleGeometry(2, 100);
+    this.ground.geometry = new THREE.CircleGeometry(this.camera.far);
     this.ground.rotation.x = THREE.MathUtils.degToRad(-90);
     this.ground.receiveShadow = true;
     this.scene.add(this.ground);
@@ -59,6 +58,8 @@ export class SceneManager {
     this.orbitControls.enableDamping = true;
     this.orbitControls.enableZoom = true;
     this.orbitControls.enablePan = false;
+    this.orbitControls.minDistance = 1;
+    this.orbitControls.maxDistance = 20;
 
     this.stats = new Stats();
     this.stats.dom.className = 'Stats';

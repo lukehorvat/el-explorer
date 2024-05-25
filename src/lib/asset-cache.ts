@@ -127,7 +127,7 @@ class AssetCache {
   }
 
   private async loadCustomAssets(): Promise<void> {
-    const groundImage = await this.textureLoader.loadAsync(groundImageUrl);
+    const groundImage = await this.textureLoader.loadAsync(groundImageUrl); // TODO: Delete?
     this.customAssets.textures.set('ground', groundImage);
   }
 }
