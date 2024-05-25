@@ -4,6 +4,20 @@
   padding: 10px;
 }
 
+.LeftBar .ControlGroup {
+  display: flex;
+  flex-direction: column;
+}
+
+.LeftBar .ControlGroup + .ControlGroup {
+  margin-top: 25px;
+}
+
+.LeftBar .ControlGroupTitle {
+  font-weight: bold;
+  margin-bottom: 10px;
+}
+
 .LeftBar .Control {
   display: flex;
   justify-content: space-between;
@@ -20,4 +34,12 @@
 
 .LeftBar .Control select {
   flex: 1;
+}
+
+.LeftBar .Control.MoveToActor {
+  justify-content: flex-end;
+}
+
+.LeftBar .Control .PreviousButton + .NextButton {
+  margin-left: 5px;
 }
