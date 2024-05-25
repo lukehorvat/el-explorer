@@ -148,6 +148,7 @@ const ignoredActorDefs = new Set([
   'orchan female',
   'draegoni male',
   'draegoni female',
+  'target',
 ]);
 
 export const assetCache = new AssetCache();
