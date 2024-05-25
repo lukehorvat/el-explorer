@@ -21,6 +21,7 @@ export class SceneManager {
       alpha: true,
       antialias: true,
     });
+    this.renderer.setPixelRatio(window.devicePixelRatio);
     this.renderer.outputColorSpace = THREE.LinearSRGBColorSpace;
     this.renderer.shadowMap.enabled = true;
     this.clock = new THREE.Clock();
