@@ -1,0 +1,23 @@
+.LeftBar {
+  display: flex;
+  flex-direction: column;
+  padding: 10px;
+}
+
+.LeftBar .Control {
+  display: flex;
+  justify-content: space-between;
+}
+
+.LeftBar .Control + .Control {
+  margin-top: 10px;
+}
+
+.LeftBar .Control label + input,
+.LeftBar .Control label + select {
+  margin-left: 5px;
+}
+
+.LeftBar .Control select {
+  flex: 1;
+}

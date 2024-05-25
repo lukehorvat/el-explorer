@@ -6,3 +6,9 @@
   color: #8c92a4;
   font-family: -apple-system, BlinkMacSystemFont, sans-serif;
 }
+
+.Middle {
+  flex: 1;
+  display: flex;
+  min-height: 0;
+}
