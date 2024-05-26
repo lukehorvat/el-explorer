@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useSetAtom } from 'jotai';
-import { atoms } from '../lib/state';
+import { stateAtoms } from '../lib/state';
 import { assetCache } from '../lib/asset-cache';
 import './Loading.css';
 
@@ -19,7 +19,7 @@ export function Loading(): React.JSX.Element {
 function useLoadingMessage(): [message: string, isError: boolean] {
   const [loadingMessage, setLoadingMessage] = useState('Loading...');
   const [isError, setIsError] = useState(false);
-  const setIsLoaded = useSetAtom(atoms.isLoaded);
+  const setIsLoaded = useSetAtom(stateAtoms.isLoaded);
 
   useEffect(() => {
     void load();

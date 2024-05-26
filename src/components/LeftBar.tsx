@@ -1,6 +1,6 @@
 import React from 'react';
 import { useAtom, useAtomValue } from 'jotai';
-import { atoms } from '../lib/state';
+import { stateAtoms } from '../lib/state';
 import { assetCache } from '../lib/asset-cache';
 import './LeftBar.css';
 
@@ -16,7 +16,7 @@ export function LeftBar(): React.JSX.Element {
 }
 
 function CreatureControlGroup(): React.JSX.Element {
-  const [actorType, setActorType] = useAtom(atoms.actorType);
+  const [actorType, setActorType] = useAtom(stateAtoms.actorType);
   const sortedActorDefs = [...assetCache.actorDefs.values()].sort(
     (def1, def2) => def1.name.localeCompare(def2.name)
   );
@@ -76,8 +76,8 @@ function CreatureControlGroup(): React.JSX.Element {
 }
 
 function AppearanceControlGroup(): React.JSX.Element {
-  const [skinType, setSkinType] = useAtom(atoms.skinType);
-  const [showSkeleton, setShowSkeleton] = useAtom(atoms.showSkeleton);
+  const [skinType, setSkinType] = useAtom(stateAtoms.skinType);
+  const [showSkeleton, setShowSkeleton] = useAtom(stateAtoms.showSkeleton);
 
   return (
     <div className="ControlGroup">
@@ -114,11 +114,11 @@ function AppearanceControlGroup(): React.JSX.Element {
 }
 
 function AnimationControlGroup(): React.JSX.Element {
-  const actorType = useAtomValue(atoms.actorType);
-  const [animationType, setAnimationType] = useAtom(atoms.animationType);
-  const [loopAnimation, setLoopAnimation] = useAtom(atoms.loopAnimation);
+  const actorType = useAtomValue(stateAtoms.actorType);
+  const [animationType, setAnimationType] = useAtom(stateAtoms.animationType);
+  const [loopAnimation, setLoopAnimation] = useAtom(stateAtoms.loopAnimation);
   const [isAnimationPlaying, setIsAnimationPlaying] = useAtom(
-    atoms.isAnimationPlaying
+    stateAtoms.isAnimationPlaying
   );
   const actorDef = assetCache.actorDefs.get(actorType)!;
   const moveToAnimation = (direction: 'next' | 'previous'): void => {
@@ -207,9 +207,9 @@ function AnimationControlGroup(): React.JSX.Element {
 }
 
 function MiscControlGroup(): React.JSX.Element {
-  const [showGround, setShowGround] = useAtom(atoms.showGround);
-  const [showStats, setShowStats] = useAtom(atoms.showStats);
-  const [autoRotate, setAutoRotate] = useAtom(atoms.autoRotate);
+  const [showGround, setShowGround] = useAtom(stateAtoms.showGround);
+  const [showStats, setShowStats] = useAtom(stateAtoms.showStats);
+  const [autoRotate, setAutoRotate] = useAtom(stateAtoms.autoRotate);
 
   return (
     <div className="ControlGroup">

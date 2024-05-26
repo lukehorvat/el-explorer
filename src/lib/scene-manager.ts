@@ -1,7 +1,7 @@
 import * as THREE from 'three';
 import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
 import Stats from 'three/addons/libs/stats.module.js';
-import { atoms, store } from './state';
+import { stateAtoms, store } from './state';
 import { Actor } from './actor';
 
 export class SceneManager {
@@ -109,15 +109,16 @@ export class SceneManager {
    * Sync the rendered scene with the current state.
    */
   private syncState(): void {
-    const actorType = store.get(atoms.actorType);
-    const skinType = store.get(atoms.skinType);
-    const showSkeleton = store.get(atoms.showSkeleton);
-    const showGround = store.get(atoms.showGround);
-    const showStats = store.get(atoms.showStats);
-    const autoRotate = store.get(atoms.autoRotate);
-    const animationType = store.get(atoms.animationType);
-    const loopAnimation = store.get(atoms.loopAnimation);
-    const isAnimationPlaying = store.get(atoms.isAnimationPlaying);
+    const isLoaded = store.get(stateAtoms.isLoaded);
+    const actorType = store.get(stateAtoms.actorType);
+    const skinType = store.get(stateAtoms.skinType);
+    const showSkeleton = store.get(stateAtoms.showSkeleton);
+    const showGround = store.get(stateAtoms.showGround);
+    const showStats = store.get(stateAtoms.showStats);
+    const autoRotate = store.get(stateAtoms.autoRotate);
+    const animationType = store.get(stateAtoms.animationType);
+    const loopAnimation = store.get(stateAtoms.loopAnimation);
+    const isAnimationPlaying = store.get(stateAtoms.isAnimationPlaying);
 
     if (!this.actor || this.actor.actorType !== actorType) {
       if (this.actor) {
@@ -203,7 +204,7 @@ export class SceneManager {
   private handleStateChanges(): void {
     this.syncState();
 
-    for (const atom of Object.values(atoms)) {
+    for (const atom of Object.values(stateAtoms)) {
       store.sub(atom, this.syncState.bind(this));
     }
   }

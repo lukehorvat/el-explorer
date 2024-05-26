@@ -19,7 +19,7 @@ const animationType = atom<string | null>(null); // TODO: Reset when actorType c
 const loopAnimation = atom<boolean>(true);
 const isAnimationPlaying = atom<boolean>(false);
 
-export const atoms = {
+export const stateAtoms = {
   isLoaded,
   actorType,
   skinType,

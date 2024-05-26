@@ -1,6 +1,6 @@
 import React from 'react';
 import { useAtomValue } from 'jotai';
-import { atoms } from '../lib/state';
+import { stateAtoms } from '../lib/state';
 import { TopBar } from './TopBar';
 import { BottomBar } from './BottomBar';
 import { LeftBar } from './LeftBar';
@@ -9,7 +9,7 @@ import { Scene } from './Scene';
 import './App.css';
 
 export function App(): React.JSX.Element {
-  const isLoaded = useAtomValue(atoms.isLoaded);
+  const isLoaded = useAtomValue(stateAtoms.isLoaded);
 
   return (
     <div className="App">
