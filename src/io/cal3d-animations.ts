@@ -1,6 +1,6 @@
 import { Quaternion, Vector3, leftZUpToRightYUp } from './utils';
 
-export interface Cal3DAnimation {
+export interface CalAnimation {
   duration: number;
   tracks: {
     boneId: number;
@@ -18,7 +18,7 @@ export interface Cal3DAnimation {
  * Implemented according to the spec defined here:
  * https://github.com/mp3butcher/Cal3D/blob/cf9cb3ec1df6bf6afa0d7ccf72f98ed4484694f4/cal3d/fileformats.txt.in#L96
  */
-export function readCal3DAnimation(buffer: ArrayBuffer): Cal3DAnimation {
+export function readCalAnimation(buffer: ArrayBuffer): CalAnimation {
   const view = new DataView(buffer);
   let offset = 0;
 
@@ -39,7 +39,7 @@ export function readCal3DAnimation(buffer: ArrayBuffer): Cal3DAnimation {
   const trackCount = view.getInt32(offset, true);
   offset += 4;
 
-  const tracks: Cal3DAnimation['tracks'] = [];
+  const tracks: CalAnimation['tracks'] = [];
   for (let i = 0; i < trackCount; i++) {
     const boneId = view.getInt32(offset, true);
     offset += 4;
@@ -47,7 +47,7 @@ export function readCal3DAnimation(buffer: ArrayBuffer): Cal3DAnimation {
     const keyframeCount = view.getInt32(offset, true);
     offset += 4;
 
-    const keyframes: Cal3DAnimation['tracks'][0]['keyframes'] = [];
+    const keyframes: CalAnimation['tracks'][0]['keyframes'] = [];
     for (let j = 0; j < keyframeCount; j++) {
       const time = view.getFloat32(offset, true);
       offset += 4;

@@ -1,6 +1,6 @@
 import { Quaternion, Vector3, leftZUpToRightYUp } from './utils';
 
-export interface Cal3DBone {
+export interface CalBone {
   id: number;
   name: string;
   translation: Vector3;
@@ -17,7 +17,7 @@ export interface Cal3DBone {
  * Implemented according to the spec defined here:
  * https://github.com/mp3butcher/Cal3D/blob/cf9cb3ec1df6bf6afa0d7ccf72f98ed4484694f4/cal3d/fileformats.txt.in#L52
  */
-export function readCal3DSkeleton(buffer: ArrayBuffer): Map<number, Cal3DBone> {
+export function readCalSkeleton(buffer: ArrayBuffer): Map<number, CalBone> {
   const view = new DataView(buffer);
   let offset = 0;
 
@@ -35,7 +35,7 @@ export function readCal3DSkeleton(buffer: ArrayBuffer): Map<number, Cal3DBone> {
   const bonesCount = view.getInt32(offset, true);
   offset += 4;
 
-  const skeleton = new Map<number, Cal3DBone>();
+  const skeleton = new Map<number, CalBone>();
   for (let i = 0; i < bonesCount; i++) {
     const nameLength = view.getInt32(offset, true);
     offset += 4;

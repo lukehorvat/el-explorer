@@ -1,6 +1,6 @@
 import * as THREE from 'three';
 import { assetCache } from './asset-cache';
-import { Cal3DAnimation } from '../io/cal3d-animations';
+import { CalAnimation } from '../io/cal3d-animations';
 
 export class Actor extends THREE.Group {
   readonly actorType: number;
@@ -13,8 +13,9 @@ export class Actor extends THREE.Group {
     super();
 
     this.actorType = actorType;
-    const skin = assetCache.actorSkins.get(actorType)!;
-    const calMesh = assetCache.actorMeshes.get(actorType)!;
+    const actorDef = assetCache.actorDefs.get(this.actorType)!;
+    const skin = assetCache.ddsTextures.get(actorDef.skinPath)!;
+    const calMesh = assetCache.calMeshes.get(actorDef.meshPath)!;
 
     this.mesh = new THREE.SkinnedMesh();
     this.material = this.mesh.material = new THREE.MeshBasicMaterial({
@@ -96,9 +97,8 @@ export class Actor extends THREE.Group {
    */
   private prepareAnimationClips(): void {
     const actorDef = assetCache.actorDefs.get(this.actorType)!;
-    const calAnimations = assetCache.actorAnimations.get(this.actorType)!;
     const clips = actorDef.animationFrames.map((animationFrame) => {
-      const calAnimation = calAnimations.get(animationFrame.type)!;
+      const calAnimation = assetCache.calAnimations.get(animationFrame.path)!;
       const tracks = this.createAnimationKeyframeTracks(calAnimation);
       const clip = new THREE.AnimationClip(animationFrame.type, -1, tracks);
       const action = this.animationMixer.clipAction(clip);
@@ -120,7 +120,7 @@ export class Actor extends THREE.Group {
    * See: https://threejs.org/docs/manual/en/introduction/Animation-system.html
    */
   private createAnimationKeyframeTracks(
-    calAnimation: Cal3DAnimation
+    calAnimation: CalAnimation
   ): THREE.KeyframeTrack[] {
     const trackTimes = calAnimation.tracks.map((track) => {
       return track.keyframes.map((keyframe) => keyframe.time);
@@ -159,7 +159,8 @@ export class Actor extends THREE.Group {
    * it to the mesh.
    */
   private composeSkeleton(): void {
-    const calSkeleton = assetCache.actorSkeletons.get(this.actorType)!;
+    const actorDef = assetCache.actorDefs.get(this.actorType)!;
+    const calSkeleton = assetCache.calSkeletons.get(actorDef.skeletonPath)!;
     const boneMatrices = [...calSkeleton.values()].map((calBone) => {
       const translationMatrix = new THREE.Matrix4().makeTranslation(
         new THREE.Vector3().copy(calBone.translation)
