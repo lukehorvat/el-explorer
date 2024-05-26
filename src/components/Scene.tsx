@@ -3,11 +3,11 @@ import { SceneManager } from '../lib/scene-manager';
 import './Scene.css';
 
 export function Scene(): React.JSX.Element {
-  const canvasRef = useRef<HTMLCanvasElement>(null);
+  const canvasRef = useRef<HTMLCanvasElement>(null!);
+  const sceneManagerRef = useRef<SceneManager>(null!);
 
   useEffect(() => {
-    const sceneManager = new SceneManager(canvasRef.current!);
-    sceneManager.render();
+    sceneManagerRef.current = new SceneManager(canvasRef.current);
   }, []);
 
   return <canvas className="Scene" ref={canvasRef} />;

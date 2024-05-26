@@ -1,7 +1,7 @@
 import * as THREE from 'three';
 import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
 import Stats from 'three/addons/libs/stats.module.js';
-import { stateAtoms, store } from './state';
+import { getState, onStateChange } from './state';
 import { Actor } from './actor';
 
 export class SceneManager {
@@ -64,13 +64,10 @@ export class SceneManager {
     this.stats.dom.className = 'Stats';
     document.body.appendChild(this.stats.dom);
 
-    this.handleStateChanges();
-  }
+    // Ensure that the scene is synced with the initial state and any state changes.
+    onStateChange(this.update.bind(this), true);
 
-  /**
-   * Start the animation frame loop.
-   */
-  render(): void {
+    // Start the animation frame loop.
     requestAnimationFrame(this.animate.bind(this));
   }
 
@@ -106,27 +103,18 @@ export class SceneManager {
   }
 
   /**
-   * Sync the rendered scene with the current state.
+   * Update the rendered scene with the current state.
    */
-  private syncState(): void {
-    const isLoaded = store.get(stateAtoms.isLoaded);
-    const actorType = store.get(stateAtoms.actorType);
-    const skinType = store.get(stateAtoms.skinType);
-    const showSkeleton = store.get(stateAtoms.showSkeleton);
-    const showGround = store.get(stateAtoms.showGround);
-    const showStats = store.get(stateAtoms.showStats);
-    const autoRotate = store.get(stateAtoms.autoRotate);
-    const animationType = store.get(stateAtoms.animationType);
-    const loopAnimation = store.get(stateAtoms.loopAnimation);
-    const isAnimationPlaying = store.get(stateAtoms.isAnimationPlaying);
+  private update(): void {
+    const { state, previousState } = getState();
 
-    if (!this.actor || this.actor.actorType !== actorType) {
+    if (!this.actor || this.actor.actorType !== state.actorType) {
       if (this.actor) {
         this.scene.remove(this.actor);
         this.actor.dispose();
       }
 
-      this.actor = new Actor(actorType);
+      this.actor = new Actor(state.actorType);
       this.scene.add(this.actor);
 
       // Center the actor's mesh and orbit its center.
@@ -142,8 +130,8 @@ export class SceneManager {
       this.camera.position.z = 4;
     }
 
-    this.actor.mesh.visible = !!skinType;
-    switch (skinType) {
+    this.actor.mesh.visible = !!state.skinType;
+    switch (state.skinType) {
       case 'texture':
         this.actor.mesh.material = this.actor.material;
         break;
@@ -191,21 +179,10 @@ export class SceneManager {
         break;
     }
 
-    this.actor.skeletonHelper.visible = showSkeleton;
-    this.actor.playAnimation(animationType, loopAnimation);
-    this.ground.visible = showGround;
-    this.stats.dom.classList.toggle('Hidden', !showStats);
-    this.orbitControls.autoRotate = autoRotate;
-  }
-
-  /**
-   * Ensure that the scene is synced with the initial state and any state changes.
-   */
-  private handleStateChanges(): void {
-    this.syncState();
-
-    for (const atom of Object.values(stateAtoms)) {
-      store.sub(atom, this.syncState.bind(this));
-    }
+    this.actor.skeletonHelper.visible = state.showSkeleton;
+    this.actor.playAnimation(state.animationType, state.loopAnimation);
+    this.ground.visible = state.showGround;
+    this.stats.dom.classList.toggle('Hidden', !state.showStats);
+    this.orbitControls.autoRotate = state.autoRotate;
   }
 }
