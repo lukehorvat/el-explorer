@@ -1,4 +1,5 @@
 import * as THREE from 'three';
+import WebGL from 'three/addons/capabilities/WebGL.js';
 import { DDSLoader } from 'three/addons/loaders/DDSLoader.js';
 import { XmlEntitiesExpander } from '../io/xml-entities';
 import { ActorDef, readActorDefs } from '../io/actor-defs';
@@ -38,24 +39,55 @@ class AssetCache {
     this.ddsLoader = new DDSLoader();
   }
 
-  async *loadAssets(): AsyncGenerator<string> {
-    yield 'Loading actor definitions...';
-    await this.loadActorDefinitions();
+  async *loadAssets(): AsyncGenerator<[message: string, error?: unknown]> {
+    if (!WebGL.isWebGLAvailable()) {
+      yield [
+        'Your browser does not support WebGL.',
+        new Error('WebGL not supported.'),
+      ];
+    }
 
-    yield 'Loading actor skins...';
-    await this.loadActorSkins();
+    yield ['Loading actor definitions...'];
+    try {
+      await this.loadActorDefinitions();
+    } catch (error) {
+      yield ['Failed to load actor definitions.', error];
+    }
 
-    yield 'Loading actor meshes...';
-    await this.loadActorMeshes();
+    yield ['Loading actor skins...'];
+    try {
+      await this.loadActorSkins();
+    } catch (error) {
+      yield ['Failed to load actor skins.', error];
+    }
 
-    yield 'Loading actor skeletons...';
-    await this.loadActorSkeletons();
+    yield ['Loading actor meshes...'];
+    try {
+      await this.loadActorMeshes();
+    } catch (error) {
+      yield ['Failed to load actor meshes.', error];
+    }
 
-    yield 'Loading actor animations...';
-    await this.loadActorAnimations();
+    yield ['Loading actor skeletons...'];
+    try {
+      await this.loadActorSkeletons();
+    } catch (error) {
+      yield ['Failed to load actor skeletons.', error];
+    }
 
-    yield 'Loading custom assets...';
-    await this.loadCustomAssets();
+    yield ['Loading actor animations...'];
+    try {
+      await this.loadActorAnimations();
+    } catch (error) {
+      yield ['Failed to load actor animations.', error];
+    }
+
+    yield ['Loading custom assets...'];
+    try {
+      await this.loadCustomAssets();
+    } catch (error) {
+      yield ['Failed to load custom assets.', error];
+    }
   }
 
   private async loadActorDefinitions(): Promise<void> {

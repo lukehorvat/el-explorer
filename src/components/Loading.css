@@ -10,6 +10,13 @@
 .Loading .Message {
   font-style: italic;
   text-transform: uppercase;
+}
+
+.Loading .Message.Error {
+  color: #bf7471;
+}
+
+.Loading .Message:not(.Error) {
   animation: bounce 1s ease-in-out infinite alternate;
 }
 
