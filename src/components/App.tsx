@@ -14,7 +14,7 @@ export function App(): React.JSX.Element {
   return (
     <div className="App">
       <TopBar />
-      <div className="Middle">
+      <div className={`Middle ${isLoaded ? 'Loaded' : ''}`}>
         {isLoaded && <LeftBar />}
         {isLoaded ? <Scene /> : <Loading />}
       </div>
