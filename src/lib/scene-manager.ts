@@ -117,6 +117,7 @@ export class SceneManager {
     const autoRotate = store.get(atoms.autoRotate);
     const animationType = store.get(atoms.animationType);
     const loopAnimation = store.get(atoms.loopAnimation);
+    const isAnimationPlaying = store.get(atoms.isAnimationPlaying);
 
     if (!this.actor || this.actor.actorType !== actorType) {
       if (this.actor) {

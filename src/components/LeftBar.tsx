@@ -117,6 +117,9 @@ function AnimationControlGroup(): React.JSX.Element {
   const actorType = useAtomValue(atoms.actorType);
   const [animationType, setAnimationType] = useAtom(atoms.animationType);
   const [loopAnimation, setLoopAnimation] = useAtom(atoms.loopAnimation);
+  const [isAnimationPlaying, setIsAnimationPlaying] = useAtom(
+    atoms.isAnimationPlaying
+  );
   const actorDef = assetCache.actorDefs.get(actorType)!;
   const moveToAnimation = (direction: 'next' | 'previous'): void => {
     const currentIndex =
@@ -174,16 +177,30 @@ function AnimationControlGroup(): React.JSX.Element {
         </button>
       </div>
       {animationType && (
-        <div className="Control">
-          <label>Loop:</label>
-          <input
-            type="checkbox"
-            checked={loopAnimation}
-            onChange={(event) => {
-              setLoopAnimation(event.target.checked);
-            }}
-          />
-        </div>
+        <>
+          <div className="Control">
+            <label>Loop:</label>
+            <input
+              type="checkbox"
+              checked={loopAnimation}
+              onChange={(event) => {
+                setLoopAnimation(event.target.checked);
+              }}
+            />
+          </div>
+          {!loopAnimation && (
+            <div className="Control ReplayAnimation">
+              <button
+                onClick={() => {
+                  setIsAnimationPlaying(true);
+                }}
+                disabled={isAnimationPlaying}
+              >
+                Replay
+              </button>
+            </div>
+          )}
+        </>
       )}
     </div>
   );

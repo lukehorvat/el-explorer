@@ -17,6 +17,7 @@ const showStats = atom<boolean>(false);
 const autoRotate = atom<boolean>(true);
 const animationType = atom<string | null>(null); // TODO: Reset when actorType changes?
 const loopAnimation = atom<boolean>(true);
+const isAnimationPlaying = atom<boolean>(false);
 
 export const atoms = {
   isLoaded,
@@ -28,6 +29,7 @@ export const atoms = {
   autoRotate,
   animationType,
   loopAnimation,
+  isAnimationPlaying,
 };
 
 export const store = createStore();

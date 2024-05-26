@@ -41,7 +41,8 @@
 }
 
 .LeftBar .Control.MoveToActor,
-.LeftBar .Control.MoveToAnimation {
+.LeftBar .Control.MoveToAnimation,
+.LeftBar .Control.ReplayAnimation {
   justify-content: flex-end;
 }
 
