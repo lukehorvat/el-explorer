@@ -3,7 +3,9 @@
   flex-direction: column;
   padding: 10px;
   background: #22272d;
-  overflow-y: hidden;
+  box-shadow: 2px 0px 4px 0px rgba(0, 0, 0, 0.4);
+  z-index: 1; /* Needed for the box-shadow to overlay the canvas. */
+  overflow-y: hidden; /* Needed so that elements don't overflow BottomBar on short screens. */
 }
 
 .LeftBar .ControlGroup {
