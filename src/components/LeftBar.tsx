@@ -118,6 +118,23 @@ function AnimationControlGroup(): React.JSX.Element {
   const [animationType, setAnimationType] = useAtom(atoms.animationType);
   const [loopAnimation, setLoopAnimation] = useAtom(atoms.loopAnimation);
   const actorDef = assetCache.actorDefs.get(actorType)!;
+  const moveToAnimation = (direction: 'next' | 'previous'): void => {
+    const currentIndex =
+      actorDef.animationFrames.findIndex(
+        (animationFrame) => animationFrame.type === animationType
+      ) + 1;
+
+    let newIndex = currentIndex + (direction === 'next' ? 1 : -1);
+    if (newIndex < 0) {
+      newIndex = actorDef.animationFrames.length;
+    } else if (newIndex > actorDef.animationFrames.length) {
+      newIndex = 0;
+    }
+
+    setAnimationType(
+      newIndex > 0 ? actorDef.animationFrames[newIndex - 1].type : null
+    );
+  };
 
   return (
     <div className="ControlGroup">
@@ -131,12 +148,30 @@ function AnimationControlGroup(): React.JSX.Element {
           }}
         >
           <option value="">None</option>
-          {actorDef.animationFrames.map((frame) => (
-            <option value={frame.type} key={frame.type}>
-              {frame.type.replace(/^CAL_/, '')}
+          {actorDef.animationFrames.map((animationFrame) => (
+            <option value={animationFrame.type} key={animationFrame.type}>
+              {animationFrame.type.replace(/^CAL_/, '')}
             </option>
           ))}
         </select>
+      </div>
+      <div className="Control MoveToAnimation">
+        <button
+          className="PreviousButton"
+          onClick={() => {
+            moveToAnimation('previous');
+          }}
+        >
+          Prev
+        </button>
+        <button
+          className="NextButton"
+          onClick={() => {
+            moveToAnimation('next');
+          }}
+        >
+          Next
+        </button>
       </div>
       {animationType && (
         <div className="Control">
