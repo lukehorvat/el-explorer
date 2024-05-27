@@ -1,7 +1,7 @@
 import * as THREE from 'three';
 import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
 import Stats from 'three/addons/libs/stats.module.js';
-import { StateAtomValues, onStateChange } from './state';
+import { stateAtoms, store } from './state';
 import { Actor } from './actor';
 
 export class SceneManager {
@@ -12,7 +12,7 @@ export class SceneManager {
   private readonly ground: THREE.Mesh;
   private readonly orbitControls: OrbitControls;
   private readonly stats: Stats;
-  private actor?: Actor;
+  private actor!: Actor;
 
   constructor(canvas: HTMLCanvasElement) {
     this.renderer = new THREE.WebGLRenderer({
@@ -64,11 +64,8 @@ export class SceneManager {
     this.stats.dom.className = 'Stats';
     document.body.appendChild(this.stats.dom);
 
-    // Ensure that the scene is synced with the initial state and any state changes.
-    onStateChange(this.update.bind(this), true);
-
-    // Start the animation frame loop.
-    requestAnimationFrame(this.animate.bind(this));
+    this.handleStateChanges();
+    requestAnimationFrame(this.animate.bind(this)); // Start the animation frame loop.
   }
 
   /**
@@ -80,7 +77,7 @@ export class SceneManager {
     const delta = this.clock.getDelta();
     this.syncRendererSize();
     this.orbitControls.update();
-    this.actor?.animationMixer.update(delta);
+    this.actor.animationMixer.update(delta);
 
     this.stats.begin();
     this.renderer.render(this.scene, this.camera);
@@ -103,36 +100,76 @@ export class SceneManager {
   }
 
   /**
-   * Update the rendered scene with the current state.
+   * Ensure that the scene is synced with the initial state and any state changes.
    */
-  private update(
-    state: StateAtomValues,
-    previousState?: StateAtomValues
-  ): void {
-    if (!this.actor || this.actor.actorType !== state.actorType) {
-      if (this.actor) {
-        this.scene.remove(this.actor);
-        this.actor.dispose();
-      }
+  private handleStateChanges(): void {
+    this.syncActorType();
+    this.syncSkinType();
+    this.syncSkeleton();
+    this.syncAnimation();
+    this.syncGround();
+    this.syncStats();
+    this.syncAutoRotate();
 
-      this.actor = new Actor(state.actorType);
-      this.scene.add(this.actor);
+    store.sub(stateAtoms.actorType, () => {
+      this.syncActorType();
+      this.syncSkinType();
+      this.syncSkeleton();
+      this.syncAnimation();
+    });
+    store.sub(stateAtoms.skinType, () => {
+      this.syncSkinType();
+    });
+    store.sub(stateAtoms.showSkeleton, () => {
+      this.syncSkeleton();
+    });
+    store.sub(stateAtoms.animationType, () => {
+      this.syncAnimation();
+    });
+    store.sub(stateAtoms.loopAnimation, () => {
+      this.syncAnimation();
+    });
+    store.sub(stateAtoms.showGround, () => {
+      this.syncGround();
+    });
+    store.sub(stateAtoms.showStats, () => {
+      this.syncStats();
+    });
+    store.sub(stateAtoms.autoRotate, () => {
+      this.syncAutoRotate();
+    });
+  }
 
-      // Center the actor's mesh and orbit its center.
-      const boundingBox = new THREE.Box3().setFromObject(this.actor.mesh);
-      const center = boundingBox.getCenter(new THREE.Vector3());
-      this.actor.mesh.position.x -= center.x;
-      this.actor.mesh.position.z -= center.z;
-      this.orbitControls.target = new THREE.Vector3(0, center.y, 0);
+  private syncActorType(): void {
+    const actorType = store.get(stateAtoms.actorType);
 
-      // Reset to a sensible camera position.
-      this.camera.position.x = 0;
-      this.camera.position.y = center.y;
-      this.camera.position.z = 4;
+    // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
+    if (this.actor) {
+      this.scene.remove(this.actor);
+      this.actor.dispose();
     }
 
-    this.actor.mesh.visible = !!state.skinType;
-    switch (state.skinType) {
+    this.actor = new Actor(actorType);
+    this.scene.add(this.actor);
+
+    // Center the actor's mesh and orbit its center.
+    const boundingBox = new THREE.Box3().setFromObject(this.actor.mesh);
+    const center = boundingBox.getCenter(new THREE.Vector3());
+    this.actor.mesh.position.x -= center.x;
+    this.actor.mesh.position.z -= center.z;
+    this.orbitControls.target = new THREE.Vector3(0, center.y, 0);
+
+    // Reset to a sensible camera position.
+    this.camera.position.x = 0;
+    this.camera.position.y = center.y;
+    this.camera.position.z = 4;
+  }
+
+  private syncSkinType(): void {
+    const skinType = store.get(stateAtoms.skinType);
+    this.actor.mesh.visible = !!skinType;
+
+    switch (skinType) {
       case 'texture':
         this.actor.mesh.material = this.actor.material;
         break;
@@ -179,11 +216,31 @@ export class SceneManager {
         });
         break;
     }
+  }
 
-    this.actor.skeletonHelper.visible = state.showSkeleton;
-    this.actor.playAnimation(state.animationType, state.loopAnimation);
-    this.ground.visible = state.showGround;
-    this.stats.dom.classList.toggle('Hidden', !state.showStats);
-    this.orbitControls.autoRotate = state.autoRotate;
+  private syncSkeleton(): void {
+    const showSkeleton = store.get(stateAtoms.showSkeleton);
+    this.actor.skeletonHelper.visible = showSkeleton;
+  }
+
+  private syncAnimation(): void {
+    const animationType = store.get(stateAtoms.animationType);
+    const loopAnimation = store.get(stateAtoms.loopAnimation);
+    this.actor.playAnimation(animationType, loopAnimation);
+  }
+
+  private syncGround(): void {
+    const showGround = store.get(stateAtoms.showGround);
+    this.ground.visible = showGround;
+  }
+
+  private syncStats(): void {
+    const showStats = store.get(stateAtoms.showStats);
+    this.stats.dom.classList.toggle('Hidden', !showStats);
+  }
+
+  private syncAutoRotate(): void {
+    const autoRotate = store.get(stateAtoms.autoRotate);
+    this.orbitControls.autoRotate = autoRotate;
   }
 }
