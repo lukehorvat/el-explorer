@@ -1,7 +1,7 @@
 import * as THREE from 'three';
 import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
 import Stats from 'three/addons/libs/stats.module.js';
-import { getState, onStateChange } from './state';
+import { StateAtomValues, onStateChange } from './state';
 import { Actor } from './actor';
 
 export class SceneManager {
@@ -105,9 +105,10 @@ export class SceneManager {
   /**
    * Update the rendered scene with the current state.
    */
-  private update(): void {
-    const { state, previousState } = getState();
-
+  private update(
+    state: StateAtomValues,
+    previousState?: StateAtomValues
+  ): void {
     if (!this.actor || this.actor.actorType !== state.actorType) {
       if (this.actor) {
         this.scene.remove(this.actor);

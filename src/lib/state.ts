@@ -32,7 +32,7 @@ export const stateAtoms = {
   isAnimationPlaying,
 };
 
-type StateAtomValues = {
+export type StateAtomValues = {
   [K in keyof typeof stateAtoms]: ExtractAtomValue<(typeof stateAtoms)[K]>;
 };
 
@@ -40,39 +40,38 @@ export const store = createStore();
 
 /**
  * Subscribe to state changes.
+ *
+ * The subscriber callback will be passed the current state and previous state
+ * when state changes. But keep in mind that the previous state will only start
+ * being recorded from the time that the subscriber is initially registered.
  */
 export function onStateChange(
-  subscriber: () => void,
-  flush?: boolean // If true, immediately call the subscriber once.
+  subscriber: (state: StateAtomValues, previousState?: StateAtomValues) => void,
+  flush?: boolean
 ): () => void {
-  if (flush) subscriber();
+  let state: StateAtomValues;
+  let previousState: StateAtomValues | undefined;
 
+  const handleStateChange = (): void => {
+    state = Object.entries(stateAtoms).reduce((map, [key, atom]) => {
+      return { ...map, [key]: store.get(atom as Atom<any>) };
+    }, {}) as StateAtomValues;
+    subscriber(state, previousState);
+    previousState = state;
+  };
+
+  if (flush) {
+    // Immediately call the subscriber now with the current state.
+    handleStateChange();
+  }
+
+  // Call the subscriber whenever state changes.
   const unsubscribers: (() => void)[] = [];
   for (const atom of Object.values(stateAtoms)) {
-    unsubscribers.push(store.sub(atom, subscriber));
+    unsubscribers.push(store.sub(atom, handleStateChange));
   }
 
   return () => {
     for (const unsubscriber of unsubscribers) unsubscriber();
   };
 }
-
-/**
- * Get the current state.
- */
-export function getState(): {
-  state: typeof state;
-  previousState: typeof previousState;
-} {
-  return { state, previousState };
-}
-
-let state: StateAtomValues;
-let previousState: StateAtomValues | undefined;
-
-onStateChange(() => {
-  previousState = state;
-  state = Object.entries(stateAtoms).reduce((map, [key, atom]) => {
-    return { ...map, [key]: store.get(atom as Atom<any>) };
-  }, {}) as StateAtomValues;
-}, true);
