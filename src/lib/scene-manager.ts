@@ -20,7 +20,6 @@ export class SceneManager {
       alpha: true,
       antialias: true,
     });
-    this.renderer.setPixelRatio(window.devicePixelRatio);
     this.renderer.outputColorSpace = THREE.LinearSRGBColorSpace;
     this.renderer.shadowMap.enabled = true;
     this.clock = new THREE.Clock();
@@ -75,7 +74,7 @@ export class SceneManager {
     requestAnimationFrame(this.animate.bind(this));
 
     const delta = this.clock.getDelta();
-    this.syncRendererSize();
+    this.resizeRendererToDisplaySize();
     this.orbitControls.update();
     this.actor.animationMixer.update(delta);
 
@@ -86,15 +85,19 @@ export class SceneManager {
 
   /**
    * Sync the renderer size with the current canvas size.
+   *
+   * @see https://threejs.org/manual/en/responsive.html
    */
-  private syncRendererSize(): void {
+  private resizeRendererToDisplaySize(): void {
     const canvas = this.renderer.domElement;
-    const width = canvas.clientWidth;
-    const height = canvas.clientHeight;
+    const pixelRatio = window.devicePixelRatio;
+    const width = Math.floor(canvas.clientWidth * pixelRatio);
+    const height = Math.floor(canvas.clientHeight * pixelRatio);
+    const needResize = canvas.width !== width || canvas.height !== height;
 
-    if (canvas.width !== width || canvas.height !== height) {
+    if (needResize) {
       this.renderer.setSize(width, height, false);
-      this.camera.aspect = width / height;
+      this.camera.aspect = canvas.clientWidth / canvas.clientHeight;
       this.camera.updateProjectionMatrix();
     }
   }
