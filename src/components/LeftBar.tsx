@@ -2,6 +2,7 @@ import React from 'react';
 import { useAtom, useAtomValue } from 'jotai';
 import { stateAtoms } from '../lib/state';
 import { assetCache } from '../lib/asset-cache';
+import { useAnimationFrames } from '../hooks/useAnimationFrames';
 import './LeftBar.css';
 
 export function LeftBar(): React.JSX.Element {
@@ -117,9 +118,9 @@ function AnimationControlGroup(): React.JSX.Element {
   const actorType = useAtomValue(stateAtoms.actorType);
   const [animationType, setAnimationType] = useAtom(stateAtoms.animationType);
   const [loopAnimation, setLoopAnimation] = useAtom(stateAtoms.loopAnimation);
-  const [isAnimationPlaying, setIsAnimationPlaying] = useAtom(
-    stateAtoms.isAnimationPlaying
-  );
+  // const animationHandlers = useAtomValue(stateAtoms.animationHandlers);
+  useAnimationFrames(true);
+
   const actorDef = assetCache.actorDefs.get(actorType)!;
   const moveToAnimation = (direction: 'next' | 'previous'): void => {
     const currentIndex =
@@ -179,6 +180,25 @@ function AnimationControlGroup(): React.JSX.Element {
       {animationType && (
         <>
           <div className="Control">
+            <label>Playback:</label>
+            <input
+              type="range"
+              // value={Math.round(animationHandlers!.getAnimationTime())}
+              onChange={(event) => {
+                // animationHandlers!.setAnimationTime(Number(event.target.value));
+              }}
+            />
+            <button
+              className="PlayPauseAnimationButton"
+              onClick={() => {
+                // animationHandlers!.playAnimation();
+              }}
+              // disabled={animationHandlers!.isAnimationPlaying()}
+            >
+              Pause
+            </button>
+          </div>
+          <div className="Control">
             <label>Loop:</label>
             <input
               type="checkbox"
@@ -188,18 +208,6 @@ function AnimationControlGroup(): React.JSX.Element {
               }}
             />
           </div>
-          {!loopAnimation && (
-            <div className="Control ReplayAnimation">
-              <button
-                onClick={() => {
-                  setIsAnimationPlaying(true);
-                }}
-                disabled={isAnimationPlaying}
-              >
-                Replay
-              </button>
-            </div>
-          )}
         </>
       )}
     </div>

@@ -39,11 +39,11 @@
 }
 
 .LeftBar .Control.MoveToActor,
-.LeftBar .Control.MoveToAnimation,
-.LeftBar .Control.ReplayAnimation {
+.LeftBar .Control.MoveToAnimation {
   justify-content: flex-end;
 }
 
-.LeftBar .Control .PreviousButton + .NextButton {
+.LeftBar .Control .PreviousButton + .NextButton,
+.LeftBar .Control .PlayPauseAnimationButton {
   margin-left: 5px;
 }
