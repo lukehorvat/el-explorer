@@ -1,6 +1,7 @@
 .LeftBar {
   display: flex;
   flex-direction: column;
+  row-gap: 20px;
   padding: 10px;
   background: #22272d;
   overflow-y: auto; /* Show scrollbar on short screens. */
@@ -9,33 +10,17 @@
 .LeftBar .ControlGroup {
   display: flex;
   flex-direction: column;
-}
-
-.LeftBar .ControlGroup + .ControlGroup {
-  margin-top: 25px;
+  row-gap: 10px;
 }
 
 .LeftBar .ControlGroupTitle {
   font-weight: bold;
-  margin-bottom: 10px;
 }
 
 .LeftBar .Control {
   display: flex;
   justify-content: space-between;
-}
-
-.LeftBar .Control + .Control {
-  margin-top: 10px;
-}
-
-.LeftBar .Control label + input,
-.LeftBar .Control label + select {
-  margin-left: 5px;
-}
-
-.LeftBar .Control select {
-  flex: 1;
+  column-gap: 5px;
 }
 
 .LeftBar .Control.MoveToActor,
@@ -43,7 +28,6 @@
   justify-content: flex-end;
 }
 
-.LeftBar .Control .PreviousButton + .NextButton,
-.LeftBar .Control .PlayPauseAnimationButton {
-  margin-left: 5px;
+.LeftBar .Control select {
+  flex: 1;
 }

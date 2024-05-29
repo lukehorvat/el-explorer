@@ -2,6 +2,7 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
+  column-gap: 10px;
   padding: 10px;
   min-height: 40px;
   background: #181c20;

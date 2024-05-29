@@ -56,7 +56,6 @@ function CreatureControlGroup(): React.JSX.Element {
       </div>
       <div className="Control MoveToActor">
         <button
-          className="PreviousButton"
           onClick={() => {
             moveToActor('previous');
           }}
@@ -64,7 +63,6 @@ function CreatureControlGroup(): React.JSX.Element {
           Prev
         </button>
         <button
-          className="NextButton"
           onClick={() => {
             moveToActor('next');
           }}
@@ -161,7 +159,6 @@ function AnimationControlGroup(): React.JSX.Element {
       </div>
       <div className="Control MoveToAnimation">
         <button
-          className="PreviousButton"
           onClick={() => {
             moveToAnimation('previous');
           }}
@@ -169,7 +166,6 @@ function AnimationControlGroup(): React.JSX.Element {
           Prev
         </button>
         <button
-          className="NextButton"
           onClick={() => {
             moveToAnimation('next');
           }}
@@ -189,7 +185,6 @@ function AnimationControlGroup(): React.JSX.Element {
               }}
             />
             <button
-              className="PlayPauseAnimationButton"
               onClick={() => {
                 // animationHandlers!.playAnimation();
               }}
