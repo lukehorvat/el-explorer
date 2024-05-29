@@ -43,9 +43,7 @@ function CreatureControlGroup(): React.JSX.Element {
         <label>Type:</label>
         <select
           value={actorType}
-          onChange={(event) => {
-            setActorType(Number(event.target.value));
-          }}
+          onChange={(event) => setActorType(Number(event.target.value))}
         >
           {sortedActorDefs.map((actorDef) => (
             <option value={actorDef.type} key={actorDef.type}>
@@ -55,20 +53,8 @@ function CreatureControlGroup(): React.JSX.Element {
         </select>
       </div>
       <div className="Control MoveToActor">
-        <button
-          onClick={() => {
-            moveToActor('previous');
-          }}
-        >
-          Prev
-        </button>
-        <button
-          onClick={() => {
-            moveToActor('next');
-          }}
-        >
-          Next
-        </button>
+        <button onClick={() => moveToActor('previous')}>Prev</button>
+        <button onClick={() => moveToActor('next')}>Next</button>
       </div>
     </div>
   );
@@ -103,9 +89,7 @@ function AppearanceControlGroup(): React.JSX.Element {
         <input
           type="checkbox"
           checked={showSkeleton}
-          onChange={(event) => {
-            setShowSkeleton(event.target.checked);
-          }}
+          onChange={(event) => setShowSkeleton(event.target.checked)}
         />
       </div>
     </div>
@@ -145,9 +129,7 @@ function AnimationControlGroup(): React.JSX.Element {
         <label>Type:</label>
         <select
           value={animationType ?? ''}
-          onChange={(event) => {
-            setAnimationType(event.target.value || null);
-          }}
+          onChange={(event) => setAnimationType(event.target.value || null)}
         >
           <option value="">None</option>
           {actorDef.animationFrames.map((animationFrame) => (
@@ -158,20 +140,8 @@ function AnimationControlGroup(): React.JSX.Element {
         </select>
       </div>
       <div className="Control MoveToAnimation">
-        <button
-          onClick={() => {
-            moveToAnimation('previous');
-          }}
-        >
-          Prev
-        </button>
-        <button
-          onClick={() => {
-            moveToAnimation('next');
-          }}
-        >
-          Next
-        </button>
+        <button onClick={() => moveToAnimation('previous')}>Prev</button>
+        <button onClick={() => moveToAnimation('next')}>Next</button>
       </div>
       {animationType && (
         <>
@@ -185,10 +155,8 @@ function AnimationControlGroup(): React.JSX.Element {
               }}
             />
             <button
-              onClick={() => {
-                // animationHandlers!.playAnimation();
-              }}
-              // disabled={animationHandlers!.isAnimationPlaying()}
+            // onClick={() => animationHandlers!.playAnimation()}
+            // disabled={animationHandlers!.isAnimationPlaying()}
             >
               Pause
             </button>
@@ -198,9 +166,7 @@ function AnimationControlGroup(): React.JSX.Element {
             <input
               type="checkbox"
               checked={loopAnimation}
-              onChange={(event) => {
-                setLoopAnimation(event.target.checked);
-              }}
+              onChange={(event) => setLoopAnimation(event.target.checked)}
             />
           </div>
         </>
@@ -222,9 +188,7 @@ function MiscControlGroup(): React.JSX.Element {
         <input
           type="checkbox"
           checked={showGround}
-          onChange={(event) => {
-            setShowGround(event.target.checked);
-          }}
+          onChange={(event) => setShowGround(event.target.checked)}
         />
       </div>
       <div className="Control">
@@ -232,9 +196,7 @@ function MiscControlGroup(): React.JSX.Element {
         <input
           type="checkbox"
           checked={autoRotate}
-          onChange={(event) => {
-            setAutoRotate(event.target.checked);
-          }}
+          onChange={(event) => setAutoRotate(event.target.checked)}
         />
       </div>
       <div className="Control">
@@ -242,9 +204,7 @@ function MiscControlGroup(): React.JSX.Element {
         <input
           type="checkbox"
           checked={showStats}
-          onChange={(event) => {
-            setShowStats(event.target.checked);
-          }}
+          onChange={(event) => setShowStats(event.target.checked)}
         />
       </div>
     </div>

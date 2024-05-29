@@ -20,8 +20,6 @@ export function useAnimationFrames(shouldAnimate = true): void {
       window.cancelAnimationFrame(frame.current);
     }
 
-    return () => {
-      window.cancelAnimationFrame(frame.current);
-    };
+    return () => window.cancelAnimationFrame(frame.current);
   }, [onFrame, shouldAnimate]);
 }

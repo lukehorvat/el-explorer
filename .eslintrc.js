@@ -29,5 +29,9 @@ module.exports = {
     '@typescript-eslint/no-unsafe-argument': 'warn',
     '@typescript-eslint/no-unsafe-assignment': 'off',
     '@typescript-eslint/no-unused-vars': 'warn',
+    '@typescript-eslint/no-confusing-void-expression': [
+      'warn',
+      { ignoreArrowShorthand: true },
+    ],
   },
 };

@@ -120,27 +120,13 @@ export class SceneManager {
       this.syncSkeleton();
       this.syncAnimation();
     });
-    store.sub(stateAtoms.skinType, () => {
-      this.syncSkinType();
-    });
-    store.sub(stateAtoms.showSkeleton, () => {
-      this.syncSkeleton();
-    });
-    store.sub(stateAtoms.animationType, () => {
-      this.syncAnimation();
-    });
-    store.sub(stateAtoms.loopAnimation, () => {
-      this.syncAnimation();
-    });
-    store.sub(stateAtoms.showGround, () => {
-      this.syncGround();
-    });
-    store.sub(stateAtoms.showStats, () => {
-      this.syncStats();
-    });
-    store.sub(stateAtoms.autoRotate, () => {
-      this.syncAutoRotate();
-    });
+    store.sub(stateAtoms.skinType, () => this.syncSkinType());
+    store.sub(stateAtoms.showSkeleton, () => this.syncSkeleton());
+    store.sub(stateAtoms.animationType, () => this.syncAnimation());
+    store.sub(stateAtoms.loopAnimation, () => this.syncAnimation());
+    store.sub(stateAtoms.showGround, () => this.syncGround());
+    store.sub(stateAtoms.showStats, () => this.syncStats());
+    store.sub(stateAtoms.autoRotate, () => this.syncAutoRotate());
   }
 
   private syncActorType(): void {
