@@ -2,9 +2,6 @@
   display: flex;
   flex-direction: column;
   height: 100%;
-  background: #000;
-  color: #8c92a4;
-  font-family: -apple-system, BlinkMacSystemFont, sans-serif;
 }
 
 .App .Middle {

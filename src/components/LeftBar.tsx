@@ -54,8 +54,12 @@ function CreatureControlGroup(): React.JSX.Element {
         </select>
       </div>
       <div className="Control MoveToActor">
-        <Button onClick={() => moveToActor('previous')}>Prev</Button>
-        <Button onClick={() => moveToActor('next')}>Next</Button>
+        <Button size="sm" onClick={() => moveToActor('previous')}>
+          Prev
+        </Button>
+        <Button size="sm" onClick={() => moveToActor('next')}>
+          Next
+        </Button>
       </div>
     </div>
   );
