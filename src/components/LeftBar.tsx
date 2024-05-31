@@ -1,4 +1,5 @@
 import React from 'react';
+import { Button } from 'react-bootstrap';
 import { useAtom, useAtomValue } from 'jotai';
 import { stateAtoms } from '../lib/state';
 import { assetCache } from '../lib/asset-cache';
@@ -53,8 +54,8 @@ function CreatureControlGroup(): React.JSX.Element {
         </select>
       </div>
       <div className="Control MoveToActor">
-        <button onClick={() => moveToActor('previous')}>Prev</button>
-        <button onClick={() => moveToActor('next')}>Next</button>
+        <Button onClick={() => moveToActor('previous')}>Prev</Button>
+        <Button onClick={() => moveToActor('next')}>Next</Button>
       </div>
     </div>
   );
