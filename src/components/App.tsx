@@ -1,4 +1,5 @@
 import React from 'react';
+import { Stack } from 'react-bootstrap';
 import { useAtomValue } from 'jotai';
 import { stateAtoms } from '../lib/state';
 import { TopBar } from './TopBar';
@@ -12,13 +13,16 @@ export function App(): React.JSX.Element {
   const isLoaded = useAtomValue(stateAtoms.isLoaded);
 
   return (
-    <div className="App">
+    <Stack className="App" direction="vertical">
       <TopBar />
-      <div className={`Middle ${isLoaded ? 'Loaded' : ''}`}>
+      <Stack
+        className={`Middle ${isLoaded ? 'Loaded' : ''}`}
+        direction="horizontal"
+      >
         {isLoaded && <LeftBar />}
         {isLoaded ? <Scene /> : <Loading />}
-      </div>
+      </Stack>
       <BottomBar />
-    </div>
+    </Stack>
   );
 }

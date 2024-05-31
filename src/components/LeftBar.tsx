@@ -8,7 +8,7 @@ import './LeftBar.css';
 
 export function LeftBar(): React.JSX.Element {
   return (
-    <div className="LeftBar">
+    <div className="LeftBar p-3">
       <CreatureControlGroup />
       <AppearanceControlGroup />
       <AnimationControlGroup />

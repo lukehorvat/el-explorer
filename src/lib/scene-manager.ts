@@ -60,7 +60,7 @@ export class SceneManager {
     this.orbitControls.maxDistance = 20;
 
     this.stats = new Stats();
-    this.stats.dom.className = 'Stats';
+    this.stats.dom.classList.add('Stats', 'm-3');
     document.body.appendChild(this.stats.dom);
 
     this.handleStateChanges();

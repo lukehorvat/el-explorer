@@ -1,25 +1,23 @@
 .App {
-  display: flex;
-  flex-direction: column;
   height: 100%;
 }
 
 .App .Middle {
   flex: 1;
-  display: flex;
+  align-items: stretch;
   min-height: 0;
 }
 
 .App .Middle.Loaded {
-  animation: fadeIn 3s ease-in-out;
+  animation: 2s ease-in-out showScene;
 }
 
-@keyframes fadeIn {
+@keyframes showScene {
   0% {
-    opacity: 0;
+    transform: scale(0) translateY(-100%);
   }
 
   100% {
-    opacity: 1;
+    transform: scale(1) translateY(0);
   }
 }

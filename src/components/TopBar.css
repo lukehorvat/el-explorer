@@ -1,0 +1,4 @@
+.TopBar {
+  background: var(--bs-tertiary-bg);
+  z-index: 1;
+}
