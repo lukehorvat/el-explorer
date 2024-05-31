@@ -1,5 +1,5 @@
-import React from 'react';
-import { Button, Stack } from 'react-bootstrap';
+import React, { ReactNode } from 'react';
+import { Button, ButtonGroup, Stack } from 'react-bootstrap';
 import { useAtom, useAtomValue } from 'jotai';
 import { stateAtoms } from '../lib/state';
 import { assetCache } from '../lib/asset-cache';
@@ -9,15 +9,15 @@ import './LeftBar.css';
 export function LeftBar(): React.JSX.Element {
   return (
     <Stack className="LeftBar p-3" direction="vertical" gap={4}>
-      <CreatureControlGroup />
-      <AppearanceControlGroup />
-      <AnimationControlGroup />
-      <MiscControlGroup />
+      <CreatureSection />
+      <AppearanceSection />
+      <AnimationSection />
+      <MiscSection />
     </Stack>
   );
 }
 
-function CreatureControlGroup(): React.JSX.Element {
+function CreatureSection(): React.JSX.Element {
   const [actorType, setActorType] = useAtom(stateAtoms.actorType);
   const sortedActorDefs = [...assetCache.actorDefs.values()].sort(
     (def1, def2) => def1.name.localeCompare(def2.name)
@@ -38,8 +38,7 @@ function CreatureControlGroup(): React.JSX.Element {
   };
 
   return (
-    <div className="ControlGroup">
-      <div className="ControlGroupTitle">Creature</div>
+    <LeftBarSection title="Creature">
       <div className="Control">
         <label>Type:</label>
         <select
@@ -54,24 +53,33 @@ function CreatureControlGroup(): React.JSX.Element {
         </select>
       </div>
       <div className="Control MoveToActor">
-        <Button size="sm" onClick={() => moveToActor('previous')}>
-          Prev
-        </Button>
-        <Button size="sm" onClick={() => moveToActor('next')}>
-          Next
-        </Button>
+        <ButtonGroup>
+          <Button
+            variant="secondary"
+            size="sm"
+            onClick={() => moveToActor('previous')}
+          >
+            Prev
+          </Button>
+          <Button
+            variant="secondary"
+            size="sm"
+            onClick={() => moveToActor('next')}
+          >
+            Next
+          </Button>
+        </ButtonGroup>
       </div>
-    </div>
+    </LeftBarSection>
   );
 }
 
-function AppearanceControlGroup(): React.JSX.Element {
+function AppearanceSection(): React.JSX.Element {
   const [skinType, setSkinType] = useAtom(stateAtoms.skinType);
   const [showSkeleton, setShowSkeleton] = useAtom(stateAtoms.showSkeleton);
 
   return (
-    <div className="ControlGroup">
-      <div className="ControlGroupTitle">Appearance</div>
+    <LeftBarSection title="Appearance">
       <div className="Control">
         <label>Skin:</label>
         <select
@@ -97,11 +105,11 @@ function AppearanceControlGroup(): React.JSX.Element {
           onChange={(event) => setShowSkeleton(event.target.checked)}
         />
       </div>
-    </div>
+    </LeftBarSection>
   );
 }
 
-function AnimationControlGroup(): React.JSX.Element {
+function AnimationSection(): React.JSX.Element {
   const actorType = useAtomValue(stateAtoms.actorType);
   const [animationType, setAnimationType] = useAtom(stateAtoms.animationType);
   const [loopAnimation, setLoopAnimation] = useAtom(stateAtoms.loopAnimation);
@@ -128,8 +136,7 @@ function AnimationControlGroup(): React.JSX.Element {
   };
 
   return (
-    <div className="ControlGroup">
-      <div className="ControlGroupTitle">Animation</div>
+    <LeftBarSection title="Animation">
       <div className="Control">
         <label>Type:</label>
         <select
@@ -176,18 +183,17 @@ function AnimationControlGroup(): React.JSX.Element {
           </div>
         </>
       )}
-    </div>
+    </LeftBarSection>
   );
 }
 
-function MiscControlGroup(): React.JSX.Element {
+function MiscSection(): React.JSX.Element {
   const [showGround, setShowGround] = useAtom(stateAtoms.showGround);
   const [showStats, setShowStats] = useAtom(stateAtoms.showStats);
   const [autoRotate, setAutoRotate] = useAtom(stateAtoms.autoRotate);
 
   return (
-    <div className="ControlGroup">
-      <div className="ControlGroupTitle">Miscellaneous</div>
+    <LeftBarSection title="Miscellaneous">
       <div className="Control">
         <label>Ground:</label>
         <input
@@ -212,6 +218,18 @@ function MiscControlGroup(): React.JSX.Element {
           onChange={(event) => setShowStats(event.target.checked)}
         />
       </div>
-    </div>
+    </LeftBarSection>
+  );
+}
+
+function LeftBarSection(props: {
+  title: string;
+  children?: ReactNode;
+}): React.JSX.Element {
+  return (
+    <Stack className="flex-grow-0" direction="vertical" gap={2}>
+      <div className="fw-bold">{props.title}</div>
+      {props.children}
+    </Stack>
   );
 }
