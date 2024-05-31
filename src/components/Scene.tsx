@@ -10,5 +10,5 @@ export function Scene(): React.JSX.Element {
     sceneManagerRef.current = new SceneManager(canvasRef.current);
   }, []);
 
-  return <canvas className="Scene" ref={canvasRef} />;
+  return <canvas className="Scene flex-grow-1" ref={canvasRef} />;
 }

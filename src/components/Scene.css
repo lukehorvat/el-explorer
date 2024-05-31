@@ -1,6 +1,4 @@
 .Scene {
-  display: block;
-  flex: 1;
   min-width: 0;
   cursor: move;
   background: var(--bs-dark-bg-subtle);

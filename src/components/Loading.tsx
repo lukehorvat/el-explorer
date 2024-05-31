@@ -1,18 +1,23 @@
 import React, { useEffect, useState } from 'react';
+import { Spinner, Stack } from 'react-bootstrap';
 import { useSetAtom } from 'jotai';
 import { stateAtoms } from '../lib/state';
 import { assetCache } from '../lib/asset-cache';
-import './Loading.css';
 
 export function Loading(): React.JSX.Element {
   const [loadingMessage, isError] = useLoadingMessage();
 
   return (
-    <div className="Loading">
-      <div className={`Message ${isError ? 'Error' : ''}`}>
+    <Stack
+      className="Loading justify-content-center align-items-center"
+      direction="vertical"
+      gap={4}
+    >
+      {!isError && <Spinner animation="border" />}
+      <span className={isError ? 'text-danger-emphasis' : 'fst-italic'}>
         {loadingMessage}
-      </div>
-    </div>
+      </span>
+    </Stack>
   );
 }
 

@@ -1,4 +1,4 @@
 .BottomBar {
-  height: 28px; /* Half the height of the top bar. */
+  min-height: 28px; /* Half the height of the top bar. */
   background: var(--bs-tertiary-bg);
 }

@@ -3,8 +3,6 @@
 }
 
 .App .Middle {
-  flex: 1;
-  align-items: stretch;
   min-height: 0;
 }
 

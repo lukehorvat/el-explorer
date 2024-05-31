@@ -16,7 +16,9 @@ export function App(): React.JSX.Element {
     <Stack className="App" direction="vertical">
       <TopBar />
       <Stack
-        className={`Middle ${isLoaded ? 'Loaded' : ''}`}
+        className={`Middle flex-grow-1 align-items-stretch ${
+          isLoaded ? 'Loaded' : ''
+        }`}
         direction="horizontal"
       >
         {isLoaded && <LeftBar />}
