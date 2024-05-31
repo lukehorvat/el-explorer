@@ -1,17 +1,18 @@
 import React from 'react';
-import './TopBar.css';
+import { Container, Nav, Navbar } from 'react-bootstrap';
 
 export function TopBar(): React.JSX.Element {
   return (
-    <div className="TopBar">
-      <div className="Brand">Creatures of Eternal Lands</div>
-      <a
-        className="Fork"
-        href="https://github.com/lukehorvat/el-creatures"
-        target="_blank"
-      >
-        GitHub
-      </a>
-    </div>
+    <Navbar className="bg-body-tertiary">
+      <Container>
+        <Navbar.Brand>Creatures of Eternal Lands</Navbar.Brand>
+        <Nav.Link
+          href="https://github.com/lukehorvat/el-creatures"
+          target="_blank"
+        >
+          GitHub
+        </Nav.Link>
+      </Container>
+    </Navbar>
   );
 }
