@@ -1,5 +1,5 @@
 import React from 'react';
-import { Button } from 'react-bootstrap';
+import { Button, Stack } from 'react-bootstrap';
 import { useAtom, useAtomValue } from 'jotai';
 import { stateAtoms } from '../lib/state';
 import { assetCache } from '../lib/asset-cache';
@@ -8,12 +8,12 @@ import './LeftBar.css';
 
 export function LeftBar(): React.JSX.Element {
   return (
-    <div className="LeftBar p-3">
+    <Stack className="LeftBar p-3" direction="vertical" gap={4}>
       <CreatureControlGroup />
       <AppearanceControlGroup />
       <AnimationControlGroup />
       <MiscControlGroup />
-    </div>
+    </Stack>
   );
 }
 

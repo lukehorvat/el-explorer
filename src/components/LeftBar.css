@@ -1,8 +1,9 @@
 .LeftBar {
-  display: flex;
-  flex-direction: column;
-  row-gap: 20px;
-  width: 250px;
+  /* Prevent weird shifts in width caused by scrollbar as screen is shortened. */
+  --left-bar-width: 250px;
+  width: var(--left-bar-width);
+  min-width: var(--left-bar-width);
+  max-width: var(--left-bar-width);
   overflow-y: auto; /* Show scrollbar on short screens. */
 }
 
