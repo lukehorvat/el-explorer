@@ -44,14 +44,7 @@ function CreatureSection(): React.JSX.Element {
             </option>
           ))}
         </Form.Select>
-        <ButtonGroup className="NavigationButtons" size="sm">
-          <Button onClick={() => moveToActor('prev')} title="Previous">
-            <i className="bi-arrow-up" />
-          </Button>
-          <Button onClick={() => moveToActor('next')} title="Next">
-            <i className="bi-arrow-down" />
-          </Button>
-        </ButtonGroup>
+        <NavigationButtons onNavigate={moveToActor} />
       </Stack>
     </LeftBarSection>
   );
@@ -92,14 +85,7 @@ function AppearanceSection(): React.JSX.Element {
             </option>
           ))}
         </Form.Select>
-        <ButtonGroup className="NavigationButtons" size="sm">
-          <Button onClick={() => moveToSkin('prev')} title="Previous">
-            <i className="bi-arrow-up" />
-          </Button>
-          <Button onClick={() => moveToSkin('next')} title="Next">
-            <i className="bi-arrow-down" />
-          </Button>
-        </ButtonGroup>
+        <NavigationButtons onNavigate={moveToSkin} />
       </Stack>
       <Stack direction="horizontal" gap={2}>
         <Form.Label column="sm">Skeleton:</Form.Label>
@@ -153,14 +139,7 @@ function AnimationSection(): React.JSX.Element {
             </option>
           ))}
         </Form.Select>
-        <ButtonGroup className="NavigationButtons" size="sm">
-          <Button onClick={() => moveToAnimation('prev')} title="Previous">
-            <i className="bi-arrow-up" />
-          </Button>
-          <Button onClick={() => moveToAnimation('next')} title="Next">
-            <i className="bi-arrow-down" />
-          </Button>
-        </ButtonGroup>
+        <NavigationButtons onNavigate={moveToAnimation} />
       </Stack>
       {animationType && (
         <>
@@ -189,14 +168,7 @@ function AnimationSection(): React.JSX.Element {
                 </option>
               ))}
             </Form.Select>
-            <ButtonGroup className="NavigationButtons" size="sm">
-              <Button onClick={() => moveToSpeed('prev')} title="Previous">
-                <i className="bi-arrow-up" />
-              </Button>
-              <Button onClick={() => moveToSpeed('next')} title="Next">
-                <i className="bi-arrow-down" />
-              </Button>
-            </ButtonGroup>
+            <NavigationButtons onNavigate={moveToSpeed} />
           </Stack>
           <Stack direction="horizontal" gap={2}>
             <Form.Label column="sm">Playback:</Form.Label>
@@ -268,6 +240,21 @@ function LeftBarSection(props: {
         {props.children}
       </Stack>
     </Stack>
+  );
+}
+
+function NavigationButtons(props: {
+  onNavigate: (direction: 'prev' | 'next') => void;
+}): React.JSX.Element {
+  return (
+    <ButtonGroup className="NavigationButtons" size="sm">
+      <Button onClick={() => props.onNavigate('prev')} title="Previous">
+        <i className="bi-arrow-up" />
+      </Button>
+      <Button onClick={() => props.onNavigate('next')} title="Next">
+        <i className="bi-arrow-down" />
+      </Button>
+    </ButtonGroup>
   );
 }
 
