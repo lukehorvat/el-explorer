@@ -60,18 +60,17 @@ function CreatureSection(): React.JSX.Element {
 function AppearanceSection(): React.JSX.Element {
   const [skinType, setSkinType] = useAtom(stateAtoms.skinType);
   const [showSkeleton, setShowSkeleton] = useAtom(stateAtoms.showSkeleton);
-  const skins = [
-    { type: null, name: 'None' },
-    { type: 'texture', name: 'Texture' },
-    { type: 'wireframe', name: 'Wireframe' },
-    { type: 'vectors', name: 'Vectors' },
-    { type: 'metal', name: 'Metal' },
-    { type: 'crystal', name: 'Crystal' },
-    { type: 'silhouette', name: 'Silhouette' },
+  const skinTypes: (typeof skinType)[] = [
+    null,
+    'texture',
+    'wireframe',
+    'vectors',
+    'metal',
+    'crystal',
+    'silhouette',
   ];
   const moveToSkin = (direction: 'prev' | 'next'): void => {
-    const skinTypes = skins.map((skin) => skin.type);
-    setSkinType(moveTo(skinType, skinTypes, direction) as typeof skinType);
+    setSkinType(moveTo(skinType, skinTypes, direction));
   };
 
   return (
@@ -87,9 +86,9 @@ function AppearanceSection(): React.JSX.Element {
             setSkinType((event.target.value || null) as typeof skinType);
           }}
         >
-          {skins.map((skin) => (
-            <option value={skin.type ?? ''} key={skin.type}>
-              {skin.name}
+          {skinTypes.map((type) => (
+            <option value={type ?? ''} key={type}>
+              {type ?? 'none'}
             </option>
           ))}
         </Form.Select>
@@ -122,9 +121,11 @@ function AnimationSection(): React.JSX.Element {
   useAnimationFrames(true);
 
   const actorDef = assetCache.actorDefs.get(actorType)!;
-  const animations = [{ type: null }, ...actorDef.animations];
+  const animationTypes = [
+    null,
+    ...actorDef.animations.map((animation) => animation.type),
+  ];
   const moveToAnimation = (direction: 'prev' | 'next'): void => {
-    const animationTypes = animations.map((animation) => animation.type);
     setAnimationType(moveTo(animationType, animationTypes, direction));
   };
 
@@ -139,9 +140,9 @@ function AnimationSection(): React.JSX.Element {
           value={animationType ?? ''}
           onChange={(event) => setAnimationType(event.target.value || null)}
         >
-          {animations.map((animation) => (
-            <option value={animation.type ?? ''} key={animation.type}>
-              {animation.type?.replace(/^CAL_/, '') ?? 'None'}
+          {animationTypes.map((type) => (
+            <option value={type ?? ''} key={type}>
+              {type?.replace(/^CAL_/, '') ?? 'none'}
             </option>
           ))}
         </Form.Select>
