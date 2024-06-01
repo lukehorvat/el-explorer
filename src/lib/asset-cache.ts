@@ -84,8 +84,8 @@ class AssetCache {
     yield ['Loading actor animations...'];
     try {
       for (const actorDef of this.actorDefs.values()) {
-        for (const animationFrame of actorDef.animationFrames) {
-          await this.loadCalAnimation(animationFrame.path);
+        for (const animation of actorDef.animations) {
+          await this.loadCalAnimation(animation.path);
         }
       }
     } catch (error) {

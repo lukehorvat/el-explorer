@@ -97,16 +97,16 @@ export class Actor extends THREE.Group {
    */
   private prepareAnimationClips(): void {
     const actorDef = assetCache.actorDefs.get(this.actorType)!;
-    const clips = actorDef.animationFrames.map((animationFrame) => {
-      const calAnimation = assetCache.calAnimations.get(animationFrame.path)!;
+    const clips = actorDef.animations.map((animation) => {
+      const calAnimation = assetCache.calAnimations.get(animation.path)!;
       const tracks = this.createAnimationKeyframeTracks(calAnimation);
-      const clip = new THREE.AnimationClip(animationFrame.type, -1, tracks);
+      const clip = new THREE.AnimationClip(animation.type, -1, tracks);
       const action = this.animationMixer.clipAction(clip);
       action.clampWhenFinished = true;
       action.timeScale =
         // Override the natural duration when a custom duration is defined.
-        animationFrame.duration > 0
-          ? clip.duration / (animationFrame.duration / 1000)
+        animation.duration > 0
+          ? clip.duration / (animation.duration / 1000)
           : 1;
       return clip;
     });

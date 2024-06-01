@@ -15,7 +15,7 @@ export interface ActorDef {
   skinPath: string;
   meshPath: string;
   skeletonPath: string;
-  animationFrames: {
+  animations: {
     type: string;
     path: string;
     kind: number;
@@ -60,7 +60,7 @@ function parseActor(el: Element): ActorDef {
   let skinPath!: ActorDef['skinPath'];
   let meshPath!: ActorDef['meshPath'];
   let skeletonPath!: ActorDef['skeletonPath'];
-  const animationFrames: ActorDef['animationFrames'] = [];
+  const animations: ActorDef['animations'] = [];
 
   for (const child of el.childNodes) {
     if (isElement(child)) {
@@ -105,7 +105,7 @@ function parseActor(el: Element): ActorDef {
           break;
         }
         case 'frames': {
-          parseAnimationFrames(child);
+          parseFrames(child);
           break;
         }
         case 'shirt': {
@@ -160,10 +160,10 @@ function parseActor(el: Element): ActorDef {
     skinPath,
     meshPath,
     skeletonPath,
-    animationFrames,
+    animations,
   };
 
-  function parseAnimationFrames(el: Element): void {
+  function parseFrames(el: Element): void {
     for (const child of el.childNodes) {
       if (isElement(child)) {
         switch (child.nodeName) {
@@ -244,7 +244,7 @@ function parseActor(el: Element): ActorDef {
             const path = match[1].replace(/^\.\//, '');
             const kind = Number(match[2]);
             const duration = Number(child.getAttribute('duration') ?? -1);
-            animationFrames.push({ type, path, kind, duration });
+            animations.push({ type, path, kind, duration });
             break;
           }
           default: {

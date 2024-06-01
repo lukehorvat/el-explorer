@@ -127,19 +127,19 @@ function AnimationSection(): React.JSX.Element {
   const actorDef = assetCache.actorDefs.get(actorType)!;
   const moveToAnimation = (direction: 'next' | 'previous'): void => {
     const currentIndex =
-      actorDef.animationFrames.findIndex(
-        (animationFrame) => animationFrame.type === animationType
+      actorDef.animations.findIndex(
+        (animation) => animation.type === animationType
       ) + 1;
 
     let newIndex = currentIndex + (direction === 'next' ? 1 : -1);
     if (newIndex < 0) {
-      newIndex = actorDef.animationFrames.length;
-    } else if (newIndex > actorDef.animationFrames.length) {
+      newIndex = actorDef.animations.length;
+    } else if (newIndex > actorDef.animations.length) {
       newIndex = 0;
     }
 
     setAnimationType(
-      newIndex > 0 ? actorDef.animationFrames[newIndex - 1].type : null
+      newIndex > 0 ? actorDef.animations[newIndex - 1].type : null
     );
   };
 
@@ -155,9 +155,9 @@ function AnimationSection(): React.JSX.Element {
           onChange={(event) => setAnimationType(event.target.value || null)}
         >
           <option value="">None</option>
-          {actorDef.animationFrames.map((animationFrame) => (
-            <option value={animationFrame.type} key={animationFrame.type}>
-              {animationFrame.type.replace(/^CAL_/, '')}
+          {actorDef.animations.map((animation) => (
+            <option value={animation.type} key={animation.type}>
+              {animation.type.replace(/^CAL_/, '')}
             </option>
           ))}
         </Form.Select>
