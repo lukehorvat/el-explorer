@@ -18,7 +18,8 @@ const autoRotate = atom<boolean>(true);
 const animationType = atom<string | null>(null);
 const loopAnimation = atom<boolean>(true);
 const animationHandlers = atom<{
-  getAnimationTime: (animationType: string) => number;
+  playAnimation: () => void;
+  getAnimationTime: () => number;
 } | null>(null);
 
 export const stateAtoms = {

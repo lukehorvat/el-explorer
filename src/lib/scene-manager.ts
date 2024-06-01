@@ -214,15 +214,19 @@ export class SceneManager {
 
   private syncAnimation(): void {
     const animationHandlers = {
-      getAnimationTime: (animationType: string) => {
+      playAnimation: () => {
+        const animationType = store.get(stateAtoms.animationType)!;
+        const loopAnimation = store.get(stateAtoms.loopAnimation);
+        this.actor.playAnimation(animationType, loopAnimation);
+      },
+      getAnimationTime: () => {
+        const animationType = store.get(stateAtoms.animationType)!;
         return this.actor.getAnimationTime(animationType);
       },
     };
-    store.set(stateAtoms.animationHandlers, animationHandlers);
 
-    const animationType = store.get(stateAtoms.animationType);
-    const loopAnimation = store.get(stateAtoms.loopAnimation);
-    this.actor.playAnimation(animationType, loopAnimation);
+    store.set(stateAtoms.animationHandlers, animationHandlers);
+    animationHandlers.playAnimation();
   }
 
   private syncGround(): void {

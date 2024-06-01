@@ -160,11 +160,12 @@ function AnimationSection(): React.JSX.Element {
           <Stack direction="horizontal" gap={2}>
             <Form.Label column="sm">Playback:</Form.Label>
             <Form.Range
-              value={animationHandlers!.getAnimationTime(animationType)}
+              value={animationHandlers!.getAnimationTime()}
               max={1}
-              onChange={(event) => {
-                // animationHandlers!.setAnimationTime(Number(event.target.value));
+              onClick={() => {
+                animationHandlers!.playAnimation();
               }}
+              readOnly
             />
           </Stack>
           <Stack direction="horizontal" gap={2}>
