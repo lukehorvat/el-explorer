@@ -68,7 +68,7 @@ module.exports = {
       excludeChunks: ['service-worker'],
     }),
     new CopyWebpackPlugin({
-      patterns: [{ from: 'src/data', to: 'data' }],
+      patterns: [{ from: 'data', to: 'data' }],
     }),
   ],
 };

@@ -6,7 +6,7 @@ import { ActorDef, readActorDefs } from '../io/actor-defs';
 import { CalMesh, readCalMesh } from '../io/cal3d-meshes';
 import { CalBone, readCalSkeleton } from '../io/cal3d-skeletons';
 import { CalAnimation, readCalAnimation } from '../io/cal3d-animations';
-import groundImageUrl from '../images/ground.jpg';
+import groundImageUrl from '../../images/ground.jpg';
 
 class AssetCache {
   readonly actorDefs: Map<number, ActorDef>;
