@@ -98,6 +98,14 @@ export class Actor extends THREE.Group {
   }
 
   /**
+   * Check if the specified animation is currently playing.
+   */
+  isAnimationPlaying(animationType: string): boolean {
+    const action = this.getAnimationAction(animationType);
+    return action.isRunning();
+  }
+
+  /**
    * Get the action associated with the specified animation.
    */
   private getAnimationAction(animationType: string): THREE.AnimationAction {

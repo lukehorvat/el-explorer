@@ -118,7 +118,7 @@ function AnimationSection(): React.JSX.Element {
   const [animationType, setAnimationType] = useAtom(stateAtoms.animationType);
   const [loopAnimation, setLoopAnimation] = useAtom(stateAtoms.loopAnimation);
   const animationHandlers = useAtomValue(stateAtoms.animationHandlers);
-  useAnimationFrames(true);
+  useAnimationFrames();
 
   const actorDef = assetCache.actorDefs.get(actorType)!;
   const animationTypes = [
@@ -165,6 +165,7 @@ function AnimationSection(): React.JSX.Element {
               onClick={() => {
                 animationHandlers!.playAnimation();
               }}
+              disabled={animationHandlers!.isAnimationPlaying()}
               readOnly
             />
           </Stack>

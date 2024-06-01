@@ -20,6 +20,7 @@ const loopAnimation = atom<boolean>(true);
 const animationHandlers = atom<{
   playAnimation: () => void;
   getAnimationTime: () => number;
+  isAnimationPlaying: () => boolean;
 } | null>(null);
 
 export const stateAtoms = {

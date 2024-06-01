@@ -220,8 +220,12 @@ export class SceneManager {
         this.actor.playAnimation(animationType, loopAnimation);
       },
       getAnimationTime: () => {
-        const animationType = store.get(stateAtoms.animationType)!;
-        return this.actor.getAnimationTime(animationType);
+        const animationType = store.get(stateAtoms.animationType);
+        return animationType ? this.actor.getAnimationTime(animationType) : 0;
+      },
+      isAnimationPlaying: () => {
+        const animationType = store.get(stateAtoms.animationType);
+        return !!animationType && this.actor.isAnimationPlaying(animationType);
       },
     };
 
