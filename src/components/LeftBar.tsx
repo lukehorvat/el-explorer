@@ -1,5 +1,5 @@
 import React, { ReactNode } from 'react';
-import { Button, Form, Stack } from 'react-bootstrap';
+import { Button, ButtonGroup, Form, Stack } from 'react-bootstrap';
 import { useAtom, useAtomValue } from 'jotai';
 import { stateAtoms } from '../lib/state';
 import { assetCache } from '../lib/asset-cache';
@@ -44,28 +44,14 @@ function CreatureSection(): React.JSX.Element {
             </option>
           ))}
         </Form.Select>
-      </Stack>
-      <Stack
-        direction="horizontal"
-        gap={2}
-        className="justify-content-end my-1"
-      >
-        <Button
-          variant="secondary"
-          size="sm"
-          onClick={() => moveToActor('prev')}
-          title="Previous"
-        >
-          <i className="bi-arrow-left" />
-        </Button>
-        <Button
-          variant="secondary"
-          size="sm"
-          onClick={() => moveToActor('next')}
-          title="Next"
-        >
-          <i className="bi-arrow-right" />
-        </Button>
+        <ButtonGroup className="NavigationButtons" size="sm">
+          <Button onClick={() => moveToActor('prev')} title="Previous">
+            <i className="bi-arrow-up" />
+          </Button>
+          <Button onClick={() => moveToActor('next')} title="Next">
+            <i className="bi-arrow-down" />
+          </Button>
+        </ButtonGroup>
       </Stack>
     </LeftBarSection>
   );
@@ -107,28 +93,14 @@ function AppearanceSection(): React.JSX.Element {
             </option>
           ))}
         </Form.Select>
-      </Stack>
-      <Stack
-        direction="horizontal"
-        gap={2}
-        className="justify-content-end my-1"
-      >
-        <Button
-          variant="secondary"
-          size="sm"
-          onClick={() => moveToSkin('prev')}
-          title="Previous"
-        >
-          <i className="bi-arrow-left" />
-        </Button>
-        <Button
-          variant="secondary"
-          size="sm"
-          onClick={() => moveToSkin('next')}
-          title="Next"
-        >
-          <i className="bi-arrow-right" />
-        </Button>
+        <ButtonGroup className="NavigationButtons" size="sm">
+          <Button onClick={() => moveToSkin('prev')} title="Previous">
+            <i className="bi-arrow-up" />
+          </Button>
+          <Button onClick={() => moveToSkin('next')} title="Next">
+            <i className="bi-arrow-down" />
+          </Button>
+        </ButtonGroup>
       </Stack>
       <Stack direction="horizontal" gap={2}>
         <Form.Label column="sm">Skeleton:</Form.Label>
@@ -173,28 +145,14 @@ function AnimationSection(): React.JSX.Element {
             </option>
           ))}
         </Form.Select>
-      </Stack>
-      <Stack
-        direction="horizontal"
-        gap={2}
-        className="justify-content-end my-1"
-      >
-        <Button
-          variant="secondary"
-          size="sm"
-          onClick={() => moveToAnimation('prev')}
-          title="Previous"
-        >
-          <i className="bi-arrow-left" />
-        </Button>
-        <Button
-          variant="secondary"
-          size="sm"
-          onClick={() => moveToAnimation('next')}
-          title="Next"
-        >
-          <i className="bi-arrow-right" />
-        </Button>
+        <ButtonGroup className="NavigationButtons" size="sm">
+          <Button onClick={() => moveToAnimation('prev')} title="Previous">
+            <i className="bi-arrow-up" />
+          </Button>
+          <Button onClick={() => moveToAnimation('next')} title="Next">
+            <i className="bi-arrow-down" />
+          </Button>
+        </ButtonGroup>
       </Stack>
       {animationType && (
         <>
