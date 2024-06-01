@@ -123,7 +123,8 @@ export class SceneManager {
     store.sub(stateAtoms.skinType, () => this.syncSkinType());
     store.sub(stateAtoms.showSkeleton, () => this.syncSkeleton());
     store.sub(stateAtoms.animationType, () => this.syncAnimation());
-    store.sub(stateAtoms.loopAnimation, () => this.syncAnimation());
+    store.sub(stateAtoms.animationLoop, () => this.syncAnimation());
+    store.sub(stateAtoms.animationSpeed, () => this.syncAnimation());
     store.sub(stateAtoms.showGround, () => this.syncGround());
     store.sub(stateAtoms.showStats, () => this.syncStats());
     store.sub(stateAtoms.autoRotate, () => this.syncAutoRotate());
@@ -216,8 +217,9 @@ export class SceneManager {
     const animationHandlers = {
       playAnimation: () => {
         const animationType = store.get(stateAtoms.animationType)!;
-        const loopAnimation = store.get(stateAtoms.loopAnimation);
-        this.actor.playAnimation(animationType, loopAnimation);
+        const animationLoop = store.get(stateAtoms.animationLoop);
+        const animationSpeed = store.get(stateAtoms.animationSpeed);
+        this.actor.playAnimation(animationType, animationLoop, animationSpeed);
       },
       getAnimationTime: () => {
         const animationType = store.get(stateAtoms.animationType);

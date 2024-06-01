@@ -116,7 +116,10 @@ function AppearanceSection(): React.JSX.Element {
 function AnimationSection(): React.JSX.Element {
   const actorType = useAtomValue(stateAtoms.actorType);
   const [animationType, setAnimationType] = useAtom(stateAtoms.animationType);
-  const [loopAnimation, setLoopAnimation] = useAtom(stateAtoms.loopAnimation);
+  const [animationLoop, setAnimationLoop] = useAtom(stateAtoms.animationLoop);
+  const [animationSpeed, setAnimationSpeed] = useAtom(
+    stateAtoms.animationSpeed
+  );
   const animationHandlers = useAtomValue(stateAtoms.animationHandlers);
   useAnimationFrames();
 
@@ -127,6 +130,10 @@ function AnimationSection(): React.JSX.Element {
   ];
   const moveToAnimation = (direction: 'prev' | 'next'): void => {
     setAnimationType(moveTo(animationType, animationTypes, direction));
+  };
+  const animationSpeeds = [1.5, 1, 0.5, 0.1];
+  const moveToSpeed = (direction: 'prev' | 'next'): void => {
+    setAnimationSpeed(moveTo(animationSpeed, animationSpeeds, direction));
   };
 
   return (
@@ -158,6 +165,40 @@ function AnimationSection(): React.JSX.Element {
       {animationType && (
         <>
           <Stack direction="horizontal" gap={2}>
+            <Form.Label column="sm">Loop:</Form.Label>
+            <Form.Check
+              type="checkbox"
+              checked={animationLoop}
+              onChange={(event) => setAnimationLoop(event.target.checked)}
+            />
+          </Stack>
+          <Stack direction="horizontal" gap={2}>
+            <Form.Label column="sm" className="flex-grow-0">
+              Speed:
+            </Form.Label>
+            <Form.Select
+              size="sm"
+              value={animationSpeed}
+              onChange={(event) =>
+                setAnimationSpeed(Number(event.target.value))
+              }
+            >
+              {animationSpeeds.map((speed) => (
+                <option value={`${speed}`} key={speed}>
+                  {Math.round(speed * 100)}%
+                </option>
+              ))}
+            </Form.Select>
+            <ButtonGroup className="NavigationButtons" size="sm">
+              <Button onClick={() => moveToSpeed('prev')} title="Previous">
+                <i className="bi-arrow-up" />
+              </Button>
+              <Button onClick={() => moveToSpeed('next')} title="Next">
+                <i className="bi-arrow-down" />
+              </Button>
+            </ButtonGroup>
+          </Stack>
+          <Stack direction="horizontal" gap={2}>
             <Form.Label column="sm">Playback:</Form.Label>
             <Form.Range
               value={animationHandlers!.getAnimationTime()}
@@ -166,15 +207,8 @@ function AnimationSection(): React.JSX.Element {
                 animationHandlers!.playAnimation();
               }}
               disabled={animationHandlers!.isAnimationPlaying()}
+              title="Replay"
               readOnly
-            />
-          </Stack>
-          <Stack direction="horizontal" gap={2}>
-            <Form.Label column="sm">Loop:</Form.Label>
-            <Form.Check
-              type="checkbox"
-              checked={loopAnimation}
-              onChange={(event) => setLoopAnimation(event.target.checked)}
             />
           </Stack>
         </>

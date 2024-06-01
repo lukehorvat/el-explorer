@@ -16,7 +16,8 @@ const showGround = atom<boolean>(true);
 const showStats = atom<boolean>(false);
 const autoRotate = atom<boolean>(true);
 const animationType = atom<string | null>(null);
-const loopAnimation = atom<boolean>(true);
+const animationLoop = atom<boolean>(true);
+const animationSpeed = atom<number>(1);
 const animationHandlers = atom<{
   playAnimation: () => void;
   getAnimationTime: () => number;
@@ -32,7 +33,8 @@ export const stateAtoms = {
   showStats,
   autoRotate,
   animationType,
-  loopAnimation,
+  animationLoop,
+  animationSpeed,
   animationHandlers,
 };
 

@@ -70,7 +70,11 @@ export class Actor extends THREE.Group {
   /**
    * Play the specified animation.
    */
-  playAnimation(animationType: string | null, looped?: boolean): void {
+  playAnimation(
+    animationType: string | null,
+    loop: boolean,
+    speed: number
+  ): void {
     // Revert back to default pose if no animation type specified.
     if (!animationType) {
       this.animationMixer.stopAllAction();
@@ -79,7 +83,8 @@ export class Actor extends THREE.Group {
     }
 
     const action = this.getAnimationAction(animationType);
-    action.loop = looped ? THREE.LoopRepeat : THREE.LoopOnce;
+    action.loop = loop ? THREE.LoopRepeat : THREE.LoopOnce;
+    this.animationMixer.timeScale = speed;
 
     // Play the animation (if not already playing).
     if (!action.isRunning()) {
