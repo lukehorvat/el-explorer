@@ -22,19 +22,9 @@ function CreatureSection(): React.JSX.Element {
   const sortedActorDefs = [...assetCache.actorDefs.values()].sort(
     (def1, def2) => def1.name.localeCompare(def2.name)
   );
-  const moveToActor = (direction: 'next' | 'previous'): void => {
-    const currentIndex = sortedActorDefs.findIndex(
-      (actorDef) => actorDef.type === actorType
-    );
-
-    let newIndex = currentIndex + (direction === 'next' ? 1 : -1);
-    if (newIndex < 0) {
-      newIndex = sortedActorDefs.length - 1;
-    } else if (newIndex >= sortedActorDefs.length) {
-      newIndex = 0;
-    }
-
-    setActorType(sortedActorDefs[newIndex].type);
+  const moveToActor = (direction: 'prev' | 'next'): void => {
+    const actorTypes = sortedActorDefs.map((def) => def.type);
+    setActorType(moveTo(actorType, actorTypes, direction));
   };
 
   return (
@@ -63,7 +53,7 @@ function CreatureSection(): React.JSX.Element {
         <Button
           variant="secondary"
           size="sm"
-          onClick={() => moveToActor('previous')}
+          onClick={() => moveToActor('prev')}
         >
           Prev
         </Button>
@@ -82,6 +72,19 @@ function CreatureSection(): React.JSX.Element {
 function AppearanceSection(): React.JSX.Element {
   const [skinType, setSkinType] = useAtom(stateAtoms.skinType);
   const [showSkeleton, setShowSkeleton] = useAtom(stateAtoms.showSkeleton);
+  const skins = [
+    { type: null, name: 'None' },
+    { type: 'texture', name: 'Texture' },
+    { type: 'wireframe', name: 'Wireframe' },
+    { type: 'vectors', name: 'Vectors' },
+    { type: 'metal', name: 'Metal' },
+    { type: 'crystal', name: 'Crystal' },
+    { type: 'silhouette', name: 'Silhouette' },
+  ];
+  const moveToSkin = (direction: 'prev' | 'next'): void => {
+    const skinTypes = skins.map((skin) => skin.type);
+    setSkinType(moveTo(skinType, skinTypes, direction) as typeof skinType);
+  };
 
   return (
     <LeftBarSection title="Appearance">
@@ -96,14 +99,32 @@ function AppearanceSection(): React.JSX.Element {
             setSkinType((event.target.value || null) as typeof skinType);
           }}
         >
-          <option value="">None</option>
-          <option value="texture">Texture</option>
-          <option value="wireframe">Wireframe</option>
-          <option value="vectors">Vectors</option>
-          <option value="metal">Metal</option>
-          <option value="crystal">Crystal</option>
-          <option value="silhouette">Silhouette</option>
+          {skins.map((skin) => (
+            <option value={skin.type ?? ''} key={skin.type}>
+              {skin.name}
+            </option>
+          ))}
         </Form.Select>
+      </Stack>
+      <Stack
+        direction="horizontal"
+        gap={2}
+        className="justify-content-end my-1"
+      >
+        <Button
+          variant="secondary"
+          size="sm"
+          onClick={() => moveToSkin('prev')}
+        >
+          Prev
+        </Button>
+        <Button
+          variant="secondary"
+          size="sm"
+          onClick={() => moveToSkin('next')}
+        >
+          Next
+        </Button>
       </Stack>
       <Stack direction="horizontal" gap={2}>
         <Form.Label column="sm">Skeleton:</Form.Label>
@@ -125,22 +146,10 @@ function AnimationSection(): React.JSX.Element {
   useAnimationFrames(true);
 
   const actorDef = assetCache.actorDefs.get(actorType)!;
-  const moveToAnimation = (direction: 'next' | 'previous'): void => {
-    const currentIndex =
-      actorDef.animations.findIndex(
-        (animation) => animation.type === animationType
-      ) + 1;
-
-    let newIndex = currentIndex + (direction === 'next' ? 1 : -1);
-    if (newIndex < 0) {
-      newIndex = actorDef.animations.length;
-    } else if (newIndex > actorDef.animations.length) {
-      newIndex = 0;
-    }
-
-    setAnimationType(
-      newIndex > 0 ? actorDef.animations[newIndex - 1].type : null
-    );
+  const animations = [{ type: null }, ...actorDef.animations];
+  const moveToAnimation = (direction: 'prev' | 'next'): void => {
+    const animationTypes = animations.map((animation) => animation.type);
+    setAnimationType(moveTo(animationType, animationTypes, direction));
   };
 
   return (
@@ -154,10 +163,9 @@ function AnimationSection(): React.JSX.Element {
           value={animationType ?? ''}
           onChange={(event) => setAnimationType(event.target.value || null)}
         >
-          <option value="">None</option>
-          {actorDef.animations.map((animation) => (
-            <option value={animation.type} key={animation.type}>
-              {animation.type.replace(/^CAL_/, '')}
+          {animations.map((animation) => (
+            <option value={animation.type ?? ''} key={animation.type}>
+              {animation.type?.replace(/^CAL_/, '') ?? 'None'}
             </option>
           ))}
         </Form.Select>
@@ -170,7 +178,7 @@ function AnimationSection(): React.JSX.Element {
         <Button
           variant="secondary"
           size="sm"
-          onClick={() => moveToAnimation('previous')}
+          onClick={() => moveToAnimation('prev')}
         >
           Prev
         </Button>
@@ -252,4 +260,15 @@ function LeftBarSection(props: {
       {props.children}
     </Stack>
   );
+}
+
+function moveTo<T>(currentItem: T, items: T[], direction: 'prev' | 'next'): T {
+  const currentIndex = items.indexOf(currentItem);
+  let newIndex = currentIndex + (direction === 'next' ? 1 : -1);
+  if (newIndex < 0) {
+    newIndex = items.length - 1;
+  } else if (newIndex >= items.length) {
+    newIndex = 0;
+  }
+  return items[newIndex];
 }
