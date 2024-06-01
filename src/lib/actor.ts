@@ -78,11 +78,7 @@ export class Actor extends THREE.Group {
       return;
     }
 
-    const clip = THREE.AnimationClip.findByName(
-      this.mesh.animations,
-      animationType
-    );
-    const action = this.animationMixer.existingAction(clip)!;
+    const action = this.getAnimationAction(animationType);
     action.loop = looped ? THREE.LoopRepeat : THREE.LoopOnce;
 
     // Play the animation (if not already playing).
@@ -90,6 +86,26 @@ export class Actor extends THREE.Group {
       this.animationMixer.stopAllAction();
       action.play();
     }
+  }
+
+  /**
+   * Get the elapsed time of the specified animation (as a percentage between 0
+   * and 1).
+   */
+  getAnimationTime(animationType: string): number {
+    const action = this.getAnimationAction(animationType);
+    return action.time / action.getClip().duration;
+  }
+
+  /**
+   * Get the action associated with the specified animation.
+   */
+  private getAnimationAction(animationType: string): THREE.AnimationAction {
+    const clip = THREE.AnimationClip.findByName(
+      this.mesh.animations,
+      animationType
+    );
+    return this.animationMixer.existingAction(clip)!;
   }
 
   /**

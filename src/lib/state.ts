@@ -17,6 +17,9 @@ const showStats = atom<boolean>(false);
 const autoRotate = atom<boolean>(true);
 const animationType = atom<string | null>(null);
 const loopAnimation = atom<boolean>(true);
+const animationHandlers = atom<{
+  getAnimationTime: (animationType: string) => number;
+} | null>(null);
 
 export const stateAtoms = {
   isLoaded,
@@ -28,6 +31,7 @@ export const stateAtoms = {
   autoRotate,
   animationType,
   loopAnimation,
+  animationHandlers,
 };
 
 export const store = createStore();

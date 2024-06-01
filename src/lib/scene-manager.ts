@@ -213,6 +213,13 @@ export class SceneManager {
   }
 
   private syncAnimation(): void {
+    const animationHandlers = {
+      getAnimationTime: (animationType: string) => {
+        return this.actor.getAnimationTime(animationType);
+      },
+    };
+    store.set(stateAtoms.animationHandlers, animationHandlers);
+
     const animationType = store.get(stateAtoms.animationType);
     const loopAnimation = store.get(stateAtoms.loopAnimation);
     this.actor.playAnimation(animationType, loopAnimation);

@@ -117,7 +117,7 @@ function AnimationSection(): React.JSX.Element {
   const actorType = useAtomValue(stateAtoms.actorType);
   const [animationType, setAnimationType] = useAtom(stateAtoms.animationType);
   const [loopAnimation, setLoopAnimation] = useAtom(stateAtoms.loopAnimation);
-  // const animationHandlers = useAtomValue(stateAtoms.animationHandlers);
+  const animationHandlers = useAtomValue(stateAtoms.animationHandlers);
   useAnimationFrames(true);
 
   const actorDef = assetCache.actorDefs.get(actorType)!;
@@ -160,7 +160,8 @@ function AnimationSection(): React.JSX.Element {
           <Stack direction="horizontal" gap={2}>
             <Form.Label column="sm">Playback:</Form.Label>
             <Form.Range
-              // value={Math.round(animationHandlers!.getAnimationTime())}
+              value={animationHandlers!.getAnimationTime(animationType)}
+              max={1}
               onChange={(event) => {
                 // animationHandlers!.setAnimationTime(Number(event.target.value));
               }}
