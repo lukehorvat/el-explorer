@@ -1,5 +1,5 @@
 import React, { ReactNode } from 'react';
-import { Button, ButtonGroup, Stack } from 'react-bootstrap';
+import { Button, Form, Stack } from 'react-bootstrap';
 import { useAtom, useAtomValue } from 'jotai';
 import { stateAtoms } from '../lib/state';
 import { assetCache } from '../lib/asset-cache';
@@ -8,7 +8,7 @@ import './LeftBar.css';
 
 export function LeftBar(): React.JSX.Element {
   return (
-    <Stack className="LeftBar p-3" direction="vertical" gap={4}>
+    <Stack className="LeftBar p-3" direction="vertical" gap={3}>
       <CreatureSection />
       <AppearanceSection />
       <AnimationSection />
@@ -39,9 +39,12 @@ function CreatureSection(): React.JSX.Element {
 
   return (
     <LeftBarSection title="Creature">
-      <div className="Control">
-        <label>Type:</label>
-        <select
+      <Stack direction="horizontal" gap={2}>
+        <Form.Label column="sm" className="flex-grow-0">
+          Type:
+        </Form.Label>
+        <Form.Select
+          size="sm"
           value={actorType}
           onChange={(event) => setActorType(Number(event.target.value))}
         >
@@ -50,26 +53,28 @@ function CreatureSection(): React.JSX.Element {
               {actorDef.name}
             </option>
           ))}
-        </select>
-      </div>
-      <div className="Control MoveToActor">
-        <ButtonGroup>
-          <Button
-            variant="secondary"
-            size="sm"
-            onClick={() => moveToActor('previous')}
-          >
-            Prev
-          </Button>
-          <Button
-            variant="secondary"
-            size="sm"
-            onClick={() => moveToActor('next')}
-          >
-            Next
-          </Button>
-        </ButtonGroup>
-      </div>
+        </Form.Select>
+      </Stack>
+      <Stack
+        direction="horizontal"
+        gap={2}
+        className="justify-content-end my-1"
+      >
+        <Button
+          variant="secondary"
+          size="sm"
+          onClick={() => moveToActor('previous')}
+        >
+          Prev
+        </Button>
+        <Button
+          variant="secondary"
+          size="sm"
+          onClick={() => moveToActor('next')}
+        >
+          Next
+        </Button>
+      </Stack>
     </LeftBarSection>
   );
 }
@@ -80,9 +85,12 @@ function AppearanceSection(): React.JSX.Element {
 
   return (
     <LeftBarSection title="Appearance">
-      <div className="Control">
-        <label>Skin:</label>
-        <select
+      <Stack direction="horizontal" gap={2}>
+        <Form.Label column="sm" className="flex-grow-0">
+          Skin:
+        </Form.Label>
+        <Form.Select
+          size="sm"
           value={skinType ?? ''}
           onChange={(event) => {
             setSkinType((event.target.value || null) as typeof skinType);
@@ -95,16 +103,16 @@ function AppearanceSection(): React.JSX.Element {
           <option value="metal">Metal</option>
           <option value="crystal">Crystal</option>
           <option value="silhouette">Silhouette</option>
-        </select>
-      </div>
-      <div className="Control">
-        <label>Skeleton:</label>
-        <input
+        </Form.Select>
+      </Stack>
+      <Stack direction="horizontal" gap={2}>
+        <Form.Label column="sm">Skeleton:</Form.Label>
+        <Form.Check
           type="checkbox"
           checked={showSkeleton}
           onChange={(event) => setShowSkeleton(event.target.checked)}
         />
-      </div>
+      </Stack>
     </LeftBarSection>
   );
 }
@@ -137,9 +145,12 @@ function AnimationSection(): React.JSX.Element {
 
   return (
     <LeftBarSection title="Animation">
-      <div className="Control">
-        <label>Type:</label>
-        <select
+      <Stack direction="horizontal" gap={2}>
+        <Form.Label column="sm" className="flex-grow-0">
+          Type:
+        </Form.Label>
+        <Form.Select
+          size="sm"
           value={animationType ?? ''}
           onChange={(event) => setAnimationType(event.target.value || null)}
         >
@@ -149,38 +160,47 @@ function AnimationSection(): React.JSX.Element {
               {animationFrame.type.replace(/^CAL_/, '')}
             </option>
           ))}
-        </select>
-      </div>
-      <div className="Control MoveToAnimation">
-        <button onClick={() => moveToAnimation('previous')}>Prev</button>
-        <button onClick={() => moveToAnimation('next')}>Next</button>
-      </div>
+        </Form.Select>
+      </Stack>
+      <Stack
+        direction="horizontal"
+        gap={2}
+        className="justify-content-end my-1"
+      >
+        <Button
+          variant="secondary"
+          size="sm"
+          onClick={() => moveToAnimation('previous')}
+        >
+          Prev
+        </Button>
+        <Button
+          variant="secondary"
+          size="sm"
+          onClick={() => moveToAnimation('next')}
+        >
+          Next
+        </Button>
+      </Stack>
       {animationType && (
         <>
-          <div className="Control">
-            <label>Playback:</label>
-            <input
-              type="range"
+          <Stack direction="horizontal" gap={2}>
+            <Form.Label column="sm">Playback:</Form.Label>
+            <Form.Range
               // value={Math.round(animationHandlers!.getAnimationTime())}
               onChange={(event) => {
                 // animationHandlers!.setAnimationTime(Number(event.target.value));
               }}
             />
-            <button
-            // onClick={() => animationHandlers!.playAnimation()}
-            // disabled={animationHandlers!.isAnimationPlaying()}
-            >
-              Pause
-            </button>
-          </div>
-          <div className="Control">
-            <label>Loop:</label>
-            <input
+          </Stack>
+          <Stack direction="horizontal" gap={2}>
+            <Form.Label column="sm">Loop:</Form.Label>
+            <Form.Check
               type="checkbox"
               checked={loopAnimation}
               onChange={(event) => setLoopAnimation(event.target.checked)}
             />
-          </div>
+          </Stack>
         </>
       )}
     </LeftBarSection>
@@ -194,30 +214,30 @@ function MiscSection(): React.JSX.Element {
 
   return (
     <LeftBarSection title="Miscellaneous">
-      <div className="Control">
-        <label>Ground:</label>
-        <input
+      <Stack direction="horizontal" gap={2}>
+        <Form.Label column="sm">Ground:</Form.Label>
+        <Form.Check
           type="checkbox"
           checked={showGround}
           onChange={(event) => setShowGround(event.target.checked)}
         />
-      </div>
-      <div className="Control">
-        <label>Auto rotate:</label>
-        <input
+      </Stack>
+      <Stack direction="horizontal" gap={2}>
+        <Form.Label column="sm">Auto rotate:</Form.Label>
+        <Form.Check
           type="checkbox"
           checked={autoRotate}
           onChange={(event) => setAutoRotate(event.target.checked)}
         />
-      </div>
-      <div className="Control">
-        <label>Stats:</label>
-        <input
+      </Stack>
+      <Stack direction="horizontal" gap={2}>
+        <Form.Label column="sm">Stats:</Form.Label>
+        <Form.Check
           type="checkbox"
           checked={showStats}
           onChange={(event) => setShowStats(event.target.checked)}
         />
-      </div>
+      </Stack>
     </LeftBarSection>
   );
 }
@@ -227,8 +247,8 @@ function LeftBarSection(props: {
   children?: ReactNode;
 }): React.JSX.Element {
   return (
-    <Stack className="flex-grow-0" direction="vertical" gap={2}>
-      <div className="fw-bold">{props.title}</div>
+    <Stack className="flex-grow-0" direction="vertical" gap={1}>
+      <div className="fw-bold mb-1">{props.title}</div>
       {props.children}
     </Stack>
   );

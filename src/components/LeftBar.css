@@ -1,25 +1,8 @@
 .LeftBar {
   /* Prevent weird shifts in width caused by scrollbar as screen is shortened. */
-  --left-bar-width: 250px;
+  --left-bar-width: 230px;
   width: var(--left-bar-width);
   min-width: var(--left-bar-width);
   max-width: var(--left-bar-width);
   overflow-y: auto; /* Show scrollbar on short screens. */
-}
-
-.LeftBar .Control {
-  display: flex;
-  justify-content: space-between;
-  column-gap: 5px;
-}
-
-.LeftBar .Control.MoveToActor,
-.LeftBar .Control.MoveToAnimation {
-  justify-content: flex-end;
-}
-
-.LeftBar .Control select,
-.LeftBar .Control input[type='range'] {
-  flex: 1;
-  min-width: 0; /* Allow input to shrink based on LeftBar width.  */
 }
