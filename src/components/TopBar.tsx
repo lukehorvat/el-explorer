@@ -10,8 +10,9 @@ export function TopBar(): React.JSX.Element {
         <Nav.Link
           href="https://github.com/lukehorvat/el-creatures"
           target="_blank"
+          title="View on GitHub"
         >
-          GitHub
+          <i className="bi-github fs-4" />
         </Nav.Link>
       </Container>
     </Navbar>

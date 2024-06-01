@@ -54,15 +54,17 @@ function CreatureSection(): React.JSX.Element {
           variant="secondary"
           size="sm"
           onClick={() => moveToActor('prev')}
+          title="Previous"
         >
-          Prev
+          <i className="bi-arrow-left" />
         </Button>
         <Button
           variant="secondary"
           size="sm"
           onClick={() => moveToActor('next')}
+          title="Next"
         >
-          Next
+          <i className="bi-arrow-right" />
         </Button>
       </Stack>
     </LeftBarSection>
@@ -115,15 +117,17 @@ function AppearanceSection(): React.JSX.Element {
           variant="secondary"
           size="sm"
           onClick={() => moveToSkin('prev')}
+          title="Previous"
         >
-          Prev
+          <i className="bi-arrow-left" />
         </Button>
         <Button
           variant="secondary"
           size="sm"
           onClick={() => moveToSkin('next')}
+          title="Next"
         >
-          Next
+          <i className="bi-arrow-right" />
         </Button>
       </Stack>
       <Stack direction="horizontal" gap={2}>
@@ -179,15 +183,17 @@ function AnimationSection(): React.JSX.Element {
           variant="secondary"
           size="sm"
           onClick={() => moveToAnimation('prev')}
+          title="Previous"
         >
-          Prev
+          <i className="bi-arrow-left" />
         </Button>
         <Button
           variant="secondary"
           size="sm"
           onClick={() => moveToAnimation('next')}
+          title="Next"
         >
-          Next
+          <i className="bi-arrow-right" />
         </Button>
       </Stack>
       {animationType && (
