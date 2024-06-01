@@ -8,7 +8,7 @@ import './LeftBar.css';
 
 export function LeftBar(): React.JSX.Element {
   return (
-    <Stack className="LeftBar p-3" direction="vertical" gap={3}>
+    <Stack className="LeftBar p-3" direction="vertical" gap={4}>
       <CreatureSection />
       <AppearanceSection />
       <AnimationSection />
@@ -28,7 +28,7 @@ function CreatureSection(): React.JSX.Element {
   };
 
   return (
-    <LeftBarSection title="Creature">
+    <LeftBarSection title="Creature" icon="bi-person-fill">
       <Stack direction="horizontal" gap={2}>
         <Form.Label column="sm" className="flex-grow-0">
           Type:
@@ -75,7 +75,7 @@ function AppearanceSection(): React.JSX.Element {
   };
 
   return (
-    <LeftBarSection title="Appearance">
+    <LeftBarSection title="Appearance" icon="bi-palette-fill">
       <Stack direction="horizontal" gap={2}>
         <Form.Label column="sm" className="flex-grow-0">
           Skin:
@@ -129,7 +129,7 @@ function AnimationSection(): React.JSX.Element {
   };
 
   return (
-    <LeftBarSection title="Animation">
+    <LeftBarSection title="Animation" icon="bi-person-walking">
       <Stack direction="horizontal" gap={2}>
         <Form.Label column="sm" className="flex-grow-0">
           Type:
@@ -185,7 +185,7 @@ function MiscSection(): React.JSX.Element {
   const [autoRotate, setAutoRotate] = useAtom(stateAtoms.autoRotate);
 
   return (
-    <LeftBarSection title="Miscellaneous">
+    <LeftBarSection title="Miscellaneous" icon="bi-gear-fill">
       <Stack direction="horizontal" gap={2}>
         <Form.Label column="sm">Ground:</Form.Label>
         <Form.Check
@@ -216,12 +216,19 @@ function MiscSection(): React.JSX.Element {
 
 function LeftBarSection(props: {
   title: string;
+  icon: string;
   children?: ReactNode;
 }): React.JSX.Element {
   return (
     <Stack className="flex-grow-0" direction="vertical" gap={1}>
-      <div className="fw-bold mb-1">{props.title}</div>
-      {props.children}
+      <Stack direction="horizontal" gap={2}>
+        <i className={props.icon} />
+        <span className="flex-grow-1 fw-bold">{props.title}</span>
+      </Stack>
+      <hr className="my-0" />
+      <Stack className="mt-1" direction="vertical" gap={1}>
+        {props.children}
+      </Stack>
     </Stack>
   );
 }
