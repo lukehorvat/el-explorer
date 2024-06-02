@@ -24,15 +24,17 @@ export class SceneManager {
     this.renderer.shadowMap.enabled = true;
     this.clock = new THREE.Clock();
     this.scene = new THREE.Scene();
+
     this.camera = new THREE.PerspectiveCamera();
     this.camera.near = 0.001;
     this.camera.far = 1000;
+    this.scene.add(this.camera);
 
-    const hemisphereLight = new THREE.HemisphereLight('#fff', '#fff', Math.PI);
+    const hemisphereLight = new THREE.HemisphereLight('#fff', '#fff', 2.5);
     hemisphereLight.position.y = 20;
     this.scene.add(hemisphereLight);
 
-    const directionalLight = new THREE.DirectionalLight('#fff', Math.PI / 2);
+    const directionalLight = new THREE.DirectionalLight('#fff', 1);
     directionalLight.position.set(10, 10, -5);
     directionalLight.castShadow = true;
     directionalLight.shadow.camera.top = 2;
@@ -40,6 +42,9 @@ export class SceneManager {
     directionalLight.shadow.camera.bottom = -2;
     directionalLight.shadow.camera.left = -2;
     this.scene.add(directionalLight);
+
+    const pointLight = new THREE.PointLight('#fff', 1.5, 0, 0);
+    this.camera.add(pointLight);
 
     this.ground = new THREE.Mesh();
     this.ground.material = new THREE.MeshToonMaterial({
@@ -175,14 +180,10 @@ export class SceneManager {
       case 'metal':
         this.actor.mesh.material = new THREE.MeshPhysicalMaterial({
           color: '#fff',
-          emissive: '#cd7f32',
-          emissiveIntensity: 0.5,
-          roughness: 0.4,
-          metalness: 0.4,
-          thickness: 2,
-          transmission: 1,
-          iridescence: 4,
-          ior: 20,
+          emissive: '#808080',
+          emissiveIntensity: 0.8,
+          roughness: 0.5,
+          metalness: 1,
         });
         break;
       case 'crystal':
