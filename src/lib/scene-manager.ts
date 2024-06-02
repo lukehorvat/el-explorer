@@ -147,17 +147,19 @@ export class SceneManager {
     this.actor = new Actor(actorType);
     this.scene.add(this.actor);
 
-    // Center the actor's mesh and orbit its center.
+    // Center the actor's mesh.
     const boundingBox = new THREE.Box3().setFromObject(this.actor.mesh);
     const center = boundingBox.getCenter(new THREE.Vector3());
     this.actor.mesh.position.x -= center.x;
     this.actor.mesh.position.z -= center.z;
-    this.orbitControls.target = new THREE.Vector3(0, center.y, 0);
 
-    // Reset to a sensible camera position.
+    // Reset the camera to a sensible position.
     this.camera.position.x = 0;
-    this.camera.position.y = center.y;
-    this.camera.position.z = 4;
+    this.camera.position.y = center.y + 1; // Slightly above actor's center so we're looking down on it.
+    this.camera.position.z = 4; // A reasonable distance away for most actor meshes...
+
+    // Make the camera orbit the center of the actor's mesh.
+    this.orbitControls.target = new THREE.Vector3(0, center.y, 0);
   }
 
   private syncSkinType(): void {
