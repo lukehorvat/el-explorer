@@ -40,10 +40,6 @@ export class SceneManager {
     directionalLight.castShadow = true;
     directionalLight.shadow.mapSize.width = 4096;
     directionalLight.shadow.mapSize.height = 4096;
-    directionalLight.shadow.camera.top = 2;
-    directionalLight.shadow.camera.right = 2;
-    directionalLight.shadow.camera.bottom = -2;
-    directionalLight.shadow.camera.left = -2;
     this.scene.add(directionalLight);
 
     // Shine a light from the camera.
