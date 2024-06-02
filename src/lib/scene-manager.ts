@@ -3,6 +3,7 @@ import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
 import Stats from 'three/addons/libs/stats.module.js';
 import { stateAtoms, store } from './state';
 import { Actor } from './actor';
+import { GroundMaterial } from './ground-material';
 
 export class SceneManager {
   private readonly renderer: THREE.WebGLRenderer;
@@ -30,26 +31,29 @@ export class SceneManager {
     this.camera.far = 1000;
     this.scene.add(this.camera);
 
-    const hemisphereLight = new THREE.HemisphereLight('#fff', '#fff', 2.5);
-    hemisphereLight.position.y = 20;
-    this.scene.add(hemisphereLight);
+    const ambientLight = new THREE.AmbientLight('#fff', 0.5);
+    this.scene.add(ambientLight);
 
+    // Shine a light from the sky that casts shadows on the ground.
     const directionalLight = new THREE.DirectionalLight('#fff', 1);
     directionalLight.position.set(10, 10, -5);
     directionalLight.castShadow = true;
+    directionalLight.shadow.mapSize.width = 4096;
+    directionalLight.shadow.mapSize.height = 4096;
     directionalLight.shadow.camera.top = 2;
     directionalLight.shadow.camera.right = 2;
     directionalLight.shadow.camera.bottom = -2;
     directionalLight.shadow.camera.left = -2;
     this.scene.add(directionalLight);
 
+    // Shine a light from the camera.
     const pointLight = new THREE.PointLight('#fff', 1.5, 0, 0);
     this.camera.add(pointLight);
 
     this.ground = new THREE.Mesh();
-    this.ground.material = new THREE.MeshToonMaterial({
-      color: '#c6c6c6',
-      depthTest: false,
+    this.ground.material = new GroundMaterial({
+      color: '#e6e6e6',
+      shadowIntensity: 0.4,
     });
     this.ground.geometry = new THREE.CircleGeometry(this.camera.far);
     this.ground.rotation.x = THREE.MathUtils.degToRad(-90);
