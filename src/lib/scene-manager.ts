@@ -183,7 +183,7 @@ export class SceneManager {
         break;
       case 'metal':
         this.actor.mesh.material = new THREE.MeshPhysicalMaterial({
-          color: '#fff',
+          color: '#fffcef',
           emissive: '#808080',
           emissiveIntensity: 0.8,
           roughness: 0.5,
@@ -200,9 +200,9 @@ export class SceneManager {
           roughness: 0.3,
           thickness: 2,
           transmission: 1,
-          ior: 2,
+          ior: 5,
+          anisotropy: 1,
           flatShading: true,
-          anisotropy: 20,
         });
         break;
       case 'silhouette':
