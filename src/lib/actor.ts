@@ -60,6 +60,8 @@ export class Actor extends THREE.Group {
     this.skeletonHelper.material = new THREE.LineBasicMaterial({
       color: '#ffaa7f',
       depthTest: false,
+      toneMapped: false,
+      transparent: true,
     });
     this.add(this.skeletonHelper);
 
