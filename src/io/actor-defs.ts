@@ -15,6 +15,11 @@ export interface ActorDef {
   skinPath: string;
   meshPath: string;
   skeletonPath: string;
+  scale?: number;
+  actorScale?: number;
+  meshScale?: number;
+  boneScale?: number;
+  ghost: boolean;
   animations: {
     type: string;
     path: string;
@@ -60,14 +65,16 @@ function parseActor(el: Element): ActorDef {
   let skinPath!: ActorDef['skinPath'];
   let meshPath!: ActorDef['meshPath'];
   let skeletonPath!: ActorDef['skeletonPath'];
+  let scale: ActorDef['scale'];
+  let actorScale: ActorDef['actorScale'];
+  let meshScale: ActorDef['meshScale'];
+  let boneScale: ActorDef['boneScale'];
+  let ghost!: ActorDef['ghost'];
   const animations: ActorDef['animations'] = [];
 
   for (const child of el.childNodes) {
     if (isElement(child)) {
       switch (child.nodeName.toLowerCase()) {
-        case 'ghost': {
-          break;
-        }
         case 'skin': {
           skinPath = child.textContent!.replace(/^\.\//, '');
           break;
@@ -80,16 +87,24 @@ function parseActor(el: Element): ActorDef {
           skeletonPath = child.textContent!.replace(/^\.\//, '');
           break;
         }
-        case 'actor_scale': {
+        case 'scale': {
+          scale = Number(child.textContent);
           break;
         }
-        case 'scale': {
+        case 'actor_scale': {
+          actorScale = Number(child.textContent);
           break;
         }
         case 'mesh_scale': {
+          meshScale = Number(child.textContent);
           break;
         }
         case 'bone_scale': {
+          boneScale = Number(child.textContent);
+          break;
+        }
+        case 'ghost': {
+          ghost = ['true', 'yes', '1'].includes(child.textContent!);
           break;
         }
         case 'walk_speed': {
@@ -160,6 +175,11 @@ function parseActor(el: Element): ActorDef {
     skinPath,
     meshPath,
     skeletonPath,
+    scale,
+    actorScale,
+    meshScale,
+    boneScale,
+    ghost,
     animations,
   };
 
