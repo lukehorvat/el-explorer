@@ -28,7 +28,7 @@ const skinType = atom<
   | null
 >('texture');
 const showSkeleton = atom<boolean>(false);
-const showGround = atom<boolean>(true);
+const showEnvironment = atom<boolean>(true);
 const showStats = atom<boolean>(false);
 const autoRotate = atom<boolean>(true);
 const animationType = atom<string | null>(null);
@@ -45,7 +45,7 @@ export const stateAtoms = {
   actorType: actorTypeWithEffects,
   skinType,
   showSkeleton,
-  showGround,
+  showEnvironment,
   showStats,
   autoRotate,
   animationType,

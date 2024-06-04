@@ -190,18 +190,20 @@ function AnimationSection(): React.JSX.Element {
 }
 
 function MiscSection(): React.JSX.Element {
-  const [showGround, setShowGround] = useAtom(stateAtoms.showGround);
+  const [showEnvironment, setShowEnvironment] = useAtom(
+    stateAtoms.showEnvironment
+  );
   const [showStats, setShowStats] = useAtom(stateAtoms.showStats);
   const [autoRotate, setAutoRotate] = useAtom(stateAtoms.autoRotate);
 
   return (
     <LeftBarSection title="Miscellaneous" icon="bi-gear-fill">
       <Stack direction="horizontal" gap={2}>
-        <Form.Label column="sm">Ground:</Form.Label>
+        <Form.Label column="sm">Environment:</Form.Label>
         <Form.Check
           type="checkbox"
-          checked={showGround}
-          onChange={(event) => setShowGround(event.target.checked)}
+          checked={showEnvironment}
+          onChange={(event) => setShowEnvironment(event.target.checked)}
         />
       </Stack>
       <Stack direction="horizontal" gap={2}>

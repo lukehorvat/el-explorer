@@ -181,4 +181,4 @@ const ignoredActorDefs = new Set([
   'target',
 ]);
 
-export const assetCache = new AssetCache();
+export const assetCache = new AssetCache(); // singleton

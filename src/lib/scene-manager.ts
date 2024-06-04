@@ -3,6 +3,7 @@ import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
 import Stats from 'three/addons/libs/stats.module.js';
 import { stateAtoms, store } from './state';
 import { Actor } from './actor';
+import { SkyMaterial } from './sky-material';
 import { GroundMaterial } from './ground-material';
 
 export class SceneManager {
@@ -10,6 +11,7 @@ export class SceneManager {
   private readonly clock: THREE.Clock;
   private readonly scene: THREE.Scene;
   private readonly camera: THREE.PerspectiveCamera;
+  private readonly sky: THREE.Mesh;
   private readonly ground: THREE.Mesh;
   private readonly orbitControls: OrbitControls;
   private readonly stats: Stats;
@@ -23,12 +25,15 @@ export class SceneManager {
     });
     this.renderer.outputColorSpace = THREE.LinearSRGBColorSpace;
     this.renderer.shadowMap.enabled = true;
+    this.renderer.setAnimationLoop(this.animate.bind(this));
+
     this.clock = new THREE.Clock();
     this.scene = new THREE.Scene();
 
     this.camera = new THREE.PerspectiveCamera();
+    this.camera.fov = 45;
     this.camera.near = 0.001;
-    this.camera.far = 1000;
+    this.camera.far = 5000;
     this.scene.add(this.camera);
 
     const ambientLight = new THREE.AmbientLight('#fff', 0.5);
@@ -46,12 +51,24 @@ export class SceneManager {
     const pointLight = new THREE.PointLight('#fff', 1.5, 0, 0);
     this.camera.add(pointLight);
 
+    // Set up the sky dome.
+    this.sky = new THREE.Mesh();
+    this.sky.geometry = new THREE.SphereGeometry(4000);
+    this.sky.material = new SkyMaterial({
+      topColor: new THREE.Color().setHSL(0.6, 1, 0.6),
+      bottomColor: '#fff',
+      offset: 33,
+      exponent: 0.6,
+    });
+    this.scene.add(this.sky);
+
+    // Set up the ground plane.
     this.ground = new THREE.Mesh();
+    this.ground.geometry = new THREE.PlaneGeometry(10000, 10000);
     this.ground.material = new GroundMaterial({
-      color: '#e6e6e6',
+      color: new THREE.Color().setHSL(0.095, 0.05, 0.77),
       shadowIntensity: 0.4,
     });
-    this.ground.geometry = new THREE.CircleGeometry(this.camera.far);
     this.ground.rotation.x = THREE.MathUtils.degToRad(-90);
     this.ground.receiveShadow = true;
     this.scene.add(this.ground);
@@ -69,23 +86,20 @@ export class SceneManager {
     document.body.appendChild(this.stats.dom);
 
     this.handleStateChanges();
-    requestAnimationFrame(this.animate.bind(this)); // Start the animation frame loop.
   }
 
   /**
    * Render the current frame.
    */
   private animate(): void {
-    requestAnimationFrame(this.animate.bind(this));
-
     const delta = this.clock.getDelta();
+
     this.resizeRendererToDisplaySize();
     this.orbitControls.update();
     this.actor.animationMixer.update(delta);
 
-    this.stats.begin();
     this.renderer.render(this.scene, this.camera);
-    this.stats.end();
+    this.stats.update();
   }
 
   /**
@@ -115,7 +129,7 @@ export class SceneManager {
     this.syncSkinType();
     this.syncSkeleton();
     this.syncAnimation();
-    this.syncGround();
+    this.syncEnvironment();
     this.syncStats();
     this.syncAutoRotate();
 
@@ -130,7 +144,7 @@ export class SceneManager {
     store.sub(stateAtoms.animationType, () => this.syncAnimation());
     store.sub(stateAtoms.animationLoop, () => this.syncAnimation());
     store.sub(stateAtoms.animationSpeed, () => this.syncAnimation());
-    store.sub(stateAtoms.showGround, () => this.syncGround());
+    store.sub(stateAtoms.showEnvironment, () => this.syncEnvironment());
     store.sub(stateAtoms.showStats, () => this.syncStats());
     store.sub(stateAtoms.autoRotate, () => this.syncAutoRotate());
   }
@@ -238,9 +252,9 @@ export class SceneManager {
     animationHandlers.playAnimation();
   }
 
-  private syncGround(): void {
-    const showGround = store.get(stateAtoms.showGround);
-    this.ground.visible = showGround;
+  private syncEnvironment(): void {
+    const showEnvironment = store.get(stateAtoms.showEnvironment);
+    this.sky.visible = this.ground.visible = showEnvironment;
   }
 
   private syncStats(): void {
