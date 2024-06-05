@@ -21,6 +21,15 @@ export class Actor extends THREE.Group {
     this.material = this.mesh.material = new THREE.MeshBasicMaterial({
       map: skin,
     });
+
+    // Apply transparency to ghost actors.
+    if (actorDef.ghost) {
+      // Do the Three.js equivalent of OpenGL's `glBlendFunc(GL_SRC_ALPHA,GL_ONE_MINUS_SRC_ALPHA)` seen in EL client.
+      this.material.blending = THREE.CustomBlending;
+      this.material.blendSrc = THREE.SrcAlphaFactor;
+      this.material.blendDst = THREE.OneMinusSrcAlphaFactor;
+    }
+
     this.mesh.geometry = new THREE.BufferGeometry();
     this.mesh.geometry.setAttribute(
       'position',
