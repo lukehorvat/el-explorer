@@ -22,8 +22,13 @@ export class Actor extends THREE.Group {
       map: skin,
     });
 
-    // Apply transparency to ghost actors.
-    if (actorDef.ghost) {
+    const hasAlpha = skin.format === THREE.RGBA_S3TC_DXT5_Format;
+    if (hasAlpha && !actorDef.ghost) {
+      this.material.alphaTest = 0.06;
+    }
+
+    // Apply transparency to actor's skin if necessary.
+    if (hasAlpha || actorDef.ghost) {
       // Do the Three.js equivalent of OpenGL's `glBlendFunc(GL_SRC_ALPHA,GL_ONE_MINUS_SRC_ALPHA)` seen in EL client.
       this.material.blending = THREE.CustomBlending;
       this.material.blendSrc = THREE.SrcAlphaFactor;
