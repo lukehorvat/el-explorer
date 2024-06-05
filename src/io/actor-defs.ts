@@ -15,10 +15,10 @@ export interface ActorDef {
   skinPath: string;
   meshPath: string;
   skeletonPath: string;
-  scale?: number;
-  actorScale?: number;
-  meshScale?: number;
-  boneScale?: number;
+  scale: number;
+  actorScale: number;
+  meshScale: number;
+  skeletonScale: number;
   ghost: boolean;
   animations: {
     type: string;
@@ -65,10 +65,10 @@ function parseActor(el: Element): ActorDef {
   let skinPath!: ActorDef['skinPath'];
   let meshPath!: ActorDef['meshPath'];
   let skeletonPath!: ActorDef['skeletonPath'];
-  let scale: ActorDef['scale'];
-  let actorScale: ActorDef['actorScale'];
-  let meshScale: ActorDef['meshScale'];
-  let boneScale: ActorDef['boneScale'];
+  let scale: ActorDef['scale'] = 1;
+  let actorScale: ActorDef['actorScale'] = 1;
+  let meshScale: ActorDef['meshScale'] = 1;
+  let skeletonScale: ActorDef['skeletonScale'] = 1;
   let ghost!: ActorDef['ghost'];
   const animations: ActorDef['animations'] = [];
 
@@ -100,7 +100,7 @@ function parseActor(el: Element): ActorDef {
           break;
         }
         case 'bone_scale': {
-          boneScale = Number(child.textContent);
+          skeletonScale = Number(child.textContent);
           break;
         }
         case 'ghost': {
@@ -178,7 +178,7 @@ function parseActor(el: Element): ActorDef {
     scale,
     actorScale,
     meshScale,
-    boneScale,
+    skeletonScale,
     ghost,
     animations,
   };

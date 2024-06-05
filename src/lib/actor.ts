@@ -68,6 +68,20 @@ export class Actor extends THREE.Group {
     );
     this.mesh.castShadow = true;
     this.composeSkeleton();
+
+    // Apply size scaling if necessary.
+    if (actorDef.actorScale !== 1) {
+      this.mesh.scale.multiplyScalar(actorDef.actorScale);
+    }
+    if (actorDef.scale !== 1) {
+      this.mesh.scale.multiplyScalar(actorDef.scale);
+    }
+
+    // Center the actor's mesh position.
+    const boundingBox = new THREE.Box3().setFromObject(this.mesh);
+    const center = boundingBox.getCenter(new THREE.Vector3());
+    this.mesh.position.x -= center.x;
+    this.mesh.position.z -= center.z;
     this.add(this.mesh);
 
     this.skeletonHelper = new THREE.SkeletonHelper(this.mesh);
