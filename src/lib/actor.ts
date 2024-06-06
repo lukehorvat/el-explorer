@@ -201,8 +201,7 @@ export class Actor extends THREE.Group {
         new THREE.VectorKeyframeTrack(
           `.bones[${track.boneId}].position`,
           trackTimes[i],
-          trackTranslations[i],
-          THREE.InterpolateSmooth
+          trackTranslations[i]
         ),
         new THREE.QuaternionKeyframeTrack(
           `.bones[${track.boneId}].quaternion`,
