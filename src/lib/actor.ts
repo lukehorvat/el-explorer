@@ -71,10 +71,10 @@ export class Actor extends THREE.Group {
 
     // Apply size scaling if necessary.
     if (actorDef.actorScale !== 1) {
-      this.mesh.scale.multiplyScalar(actorDef.actorScale);
+      // this.mesh.scale.multiplyScalar(actorDef.actorScale);
     }
     if (actorDef.scale !== 1) {
-      this.mesh.scale.multiplyScalar(actorDef.scale);
+      // this.mesh.scale.multiplyScalar(actorDef.scale);
     }
 
     // Center the actor's mesh position.
@@ -220,32 +220,19 @@ export class Actor extends THREE.Group {
   private composeSkeleton(): void {
     const actorDef = assetCache.actorDefs.get(this.actorType)!;
     const calSkeleton = assetCache.calSkeletons.get(actorDef.skeletonPath)!;
-    const boneMatrices = [...calSkeleton.values()].map((calBone) => {
-      const translationMatrix = new THREE.Matrix4().makeTranslation(
-        new THREE.Vector3().copy(calBone.translation)
-      );
-      const rotationMatrix = new THREE.Matrix4().makeRotationFromQuaternion(
-        new THREE.Quaternion().copy(calBone.rotation)
-      );
-      return new THREE.Matrix4().multiplyMatrices(
-        translationMatrix,
-        rotationMatrix
-      );
-    });
-    const bones = boneMatrices.map((transformMatrix) => {
+    const rootBoneId = calSkeleton.findIndex((calBone) => calBone.parentId < 0); // Assume only one root bone...
+    const bones = calSkeleton.map((calBone) => {
       const bone = new THREE.Bone();
-      bone.applyMatrix4(transformMatrix);
+      bone.position.copy(calBone.translation);
+      bone.quaternion.copy(calBone.rotation);
       return bone;
     });
-
     bones.forEach((bone, boneId) => {
-      const parentBone = bones[calSkeleton.get(boneId)!.parentId];
-      if (parentBone) {
-        parentBone.add(bone);
-      }
+      if (boneId === rootBoneId) return;
+      bones[calSkeleton[boneId].parentId].add(bone);
     });
 
-    this.mesh.add(bones.find((bone) => !bone.parent)!); // Assume only one root bone...
+    this.mesh.add(bones[rootBoneId]);
     this.mesh.bind(new THREE.Skeleton(bones));
   }
 

@@ -12,7 +12,7 @@ class AssetCache {
   readonly actorDefs: Map<number, ActorDef>;
   readonly ddsTextures: Map<string, THREE.Texture>;
   readonly calMeshes: Map<string, CalMesh>;
-  readonly calSkeletons: Map<string, Map<number, CalBone>>;
+  readonly calSkeletons: Map<string, CalBone[]>;
   readonly calAnimations: Map<string, CalAnimation>;
   readonly customAssets: /* "Custom" = not bundled with EL client; not from /data. */ {
     textures: Map<string, THREE.Texture>;

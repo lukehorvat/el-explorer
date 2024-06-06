@@ -30,7 +30,7 @@ const skinType = atom<
 const showSkeleton = atom<boolean>(false);
 const showEnvironment = atom<boolean>(true);
 const showStats = atom<boolean>(false);
-const autoRotate = atom<boolean>(true);
+const autoRotate = atom<boolean>(process.env.NODE_ENV === 'production');
 const animationType = atom<string | null>(null);
 const animationLoop = atom<boolean>(true);
 const animationSpeed = atom<number>(1);
