@@ -113,19 +113,27 @@ export function readCalMesh(buffer: ArrayBuffer): CalMesh[] {
       const boneInfluenceCount = view.getInt32(offset, true);
       offset += 4;
 
+      const boneInfluences: { boneId: number; weight: number }[] = [];
       for (let k = 0; k < boneInfluenceCount; k++) {
-        skinIndices.push(view.getInt32(offset, true));
-        offset += 4;
-
-        skinWeights.push(view.getFloat32(offset, true));
-        offset += 4;
+        boneInfluences.push({
+          boneId: view.getInt32(offset, true),
+          weight: view.getFloat32(offset + 4, true),
+        });
+        offset += 8;
       }
 
-      // Each vertex can be influenced by up to 4 bones. For vertices with
-      // less than 4 bone influences, pad the skinning arrays with zeroes.
-      for (let k = 0; k < 4 - boneInfluenceCount; k++) {
-        skinIndices.push(0);
-        skinWeights.push(0);
+      // Each vertex can be influenced by up to 4 bones. If a vertex has more
+      // than 4, keep the 4 with the highest weights and discard the rest; if a
+      // vertex has less than 4, pad the skinning arrays with zeroes.
+      boneInfluences.sort((a, b) => b.weight - a.weight);
+      for (let k = 0; k < 4; k++) {
+        if (k < boneInfluenceCount) {
+          skinIndices.push(boneInfluences[k].boneId);
+          skinWeights.push(boneInfluences[k].weight);
+        } else {
+          skinIndices.push(0);
+          skinWeights.push(0);
+        }
       }
 
       if (springCount > 0) {
