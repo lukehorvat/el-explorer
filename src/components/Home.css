@@ -1,3 +1,17 @@
+.Home {
+  animation: 2s ease-in-out showHome;
+}
+
 .Home button {
   width: 200px;
+}
+
+@keyframes showHome {
+  0% {
+    opacity: 0;
+  }
+
+  100% {
+    opacity: 1;
+  }
 }
