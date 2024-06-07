@@ -24,7 +24,7 @@ export function Loading(): React.JSX.Element {
 function useLoadingMessage(): [message: string, isError: boolean] {
   const [loadingMessage, setLoadingMessage] = useState('Loading...');
   const [isError, setIsError] = useState(false);
-  const setIsLoaded = useSetAtom(stateAtoms.isLoaded);
+  const setPage = useSetAtom(stateAtoms.page);
 
   useEffect(() => {
     void load();
@@ -39,7 +39,7 @@ function useLoadingMessage(): [message: string, isError: boolean] {
         }
       }
 
-      setIsLoaded(true);
+      setPage('actors');
     }
   }, []);
 

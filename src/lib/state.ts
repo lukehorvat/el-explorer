@@ -1,7 +1,9 @@
 import { atom, createStore } from 'jotai';
 import { assetCache } from './asset-cache';
 
-const isLoaded = atom<boolean>(false);
+const page = atom<
+  'loading' | 'home' | 'actors' | 'maps' | 'object3ds' | 'object2ds'
+>('loading');
 const actorType = atom<number>(77); // Initially default to Feros.
 const actorTypeWithEffects = atom(
   (get) => get(actorType),
@@ -28,7 +30,7 @@ const skinType = atom<
   | null
 >('texture');
 const showSkeleton = atom<boolean>(false);
-const showEnvironment = atom<boolean>(true);
+const showEnvironment = atom<boolean>(false);
 const showStats = atom<boolean>(false);
 const autoRotate = atom<boolean>(process.env.NODE_ENV === 'production');
 const animationType = atom<string | null>(null);
@@ -41,7 +43,7 @@ const animationHandlers = atom<{
 } | null>(null);
 
 export const stateAtoms = {
-  isLoaded,
+  page,
   actorType: actorTypeWithEffects,
   skinType,
   showSkeleton,
