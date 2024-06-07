@@ -9,7 +9,7 @@ import './LeftBar.css';
 export function LeftBar(): React.JSX.Element {
   return (
     <Stack className="LeftBar p-3" direction="vertical" gap={4}>
-      <CreatureSection />
+      <ActorSection />
       <AppearanceSection />
       <AnimationSection />
       <MiscSection />
@@ -17,7 +17,7 @@ export function LeftBar(): React.JSX.Element {
   );
 }
 
-function CreatureSection(): React.JSX.Element {
+function ActorSection(): React.JSX.Element {
   const [actorType, setActorType] = useAtom(stateAtoms.actorType);
   const sortedActorDefs = [...assetCache.actorDefs.values()].sort(
     (def1, def2) => def1.name.localeCompare(def2.name)
@@ -28,7 +28,7 @@ function CreatureSection(): React.JSX.Element {
   };
 
   return (
-    <LeftBarSection title="Creature" icon="bi-person-fill">
+    <LeftBarSection title="Actor" icon="bi-person-fill">
       <Stack direction="horizontal" gap={2}>
         <Form.Label column="sm" className="flex-grow-0">
           Type:

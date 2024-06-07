@@ -6,9 +6,9 @@ export function TopBar(): React.JSX.Element {
   return (
     <Navbar className="TopBar py-2">
       <Container className="px-3" fluid>
-        <Navbar.Brand>Creatures of Eternal Lands</Navbar.Brand>
+        <Navbar.Brand>Eternal Lands Explorer</Navbar.Brand>
         <Nav.Link
-          href="https://github.com/lukehorvat/el-creatures"
+          href="https://github.com/lukehorvat/el-explorer"
           target="_blank"
           title="View on GitHub"
         >
