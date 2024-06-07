@@ -17,7 +17,11 @@ clientsClaim();
  * Each file is automatically removed from the cache after 50 days.
  */
 registerRoute(
-  ({ url }) => !!url.pathname.match(/^\/data\//),
+  ({ url }) => {
+    const basePath =
+      process.env.NODE_ENV === 'production' ? '/el-explorer/' : '/';
+    return url.pathname.startsWith(`${basePath}data/`);
+  },
   new CacheFirst({
     cacheName: 'el-data',
     matchOptions: { ignoreVary: true },
