@@ -39,7 +39,7 @@ function useLoadingMessage(): [message: string, isError: boolean] {
         }
       }
 
-      setPage('actors');
+      setPage('home');
     }
   }, []);
 

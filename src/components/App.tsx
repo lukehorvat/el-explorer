@@ -5,6 +5,7 @@ import { stateAtoms } from '../lib/state';
 import { TopBar } from './TopBar';
 import { BottomBar } from './BottomBar';
 import { Loading } from './Loading';
+import { Home } from './Home';
 import { Actors } from './Actors';
 import './App.css';
 
@@ -19,6 +20,8 @@ export function App(): React.JSX.Element {
           switch (page) {
             case 'loading':
               return <Loading />;
+            case 'home':
+              return <Home />;
             case 'actors':
               return <Actors />;
           }
