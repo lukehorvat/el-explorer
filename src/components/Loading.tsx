@@ -9,7 +9,7 @@ export function Loading(): React.JSX.Element {
 
   return (
     <Stack
-      className="Loading justify-content-center align-items-center"
+      className="Loading justify-content-center align-items-center p-5"
       direction="vertical"
       gap={4}
     >
@@ -39,7 +39,7 @@ function useLoadingMessage(): [message: string, isError: boolean] {
         }
       }
 
-      setPage('home');
+      setPage(process.env.NODE_ENV === 'production' ? 'home' : 'actors');
     }
   }, []);
 
