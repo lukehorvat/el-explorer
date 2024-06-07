@@ -1,0 +1,149 @@
+<actor type="dwarf female" id="4">
+	<skin>./meshes/dwarf_female1.dds</skin>
+	<mesh>./meshes/dwarf_female.cmf</mesh>
+	<skeleton>./skeletons/medium.csf</skeleton>
+	<actor_scale>0.83</actor_scale>
+	<defaults>
+		<shirt>
+			<mesh>./meshes/torso1_dwarff.cmf</mesh>
+		</shirt>
+		<shirt group="torso2">
+			<mesh>./meshes/torso2_dwarff.cmf</mesh>
+		</shirt>
+		<shirt group="torso3">
+			<mesh>./meshes/torso3_dwarff.cmf</mesh>
+		</shirt>
+		<shirt group="torso4">
+			<mesh>./meshes/torso4_dwarff.cmf</mesh>
+		</shirt>
+		<shirt group="torso5">
+			<mesh>./meshes/torso5_dwarff.cmf</mesh>
+		</shirt>
+		<shirt group="torso6">
+			<mesh>./meshes/torso6_dwarff.cmf</mesh>
+		</shirt>
+		<shirt group="torso7">
+			<mesh>./meshes/torso7_dwarff.cmf</mesh>
+		</shirt>
+		<shirt group="torso8">
+			<mesh>./meshes/torso8_dwarff.cmf</mesh>
+		</shirt>
+		<shirt group="torso9">
+			<mesh>./meshes/torso9_dwarff.cmf</mesh>
+		</shirt>
+		<shirt group="torso10">
+			<mesh>./meshes/torso10_dwarff.cmf</mesh>
+		</shirt>
+		<shirt group="torso11">
+			<mesh>./meshes/torso11_dwarff.cmf</mesh>
+		</shirt>		
+		<legs>
+			<mesh>./meshes/legs1_dwarff.cmf</mesh>
+		</legs>
+		<legs group="legs2">
+			<mesh>./meshes/legs2_dwarff.cmf</mesh>
+		</legs>
+		<legs group="legs3">
+			<mesh>./meshes/legs3_dwarff.cmf</mesh>
+		</legs>
+		<legs group="legs3">
+			<mesh>./meshes/legs3_dwarff.cmf</mesh>
+		</legs>
+		<legs group="legs4">
+			<mesh>./meshes/legs4_dwarff.cmf</mesh>
+		</legs>		
+		<boots group="boots1">
+			<mesh>./meshes/boots1_dwarff.cmf</mesh>
+		</boots>
+		<boots group="boots2">
+			<mesh>./meshes/boots2_dwarff.cmf</mesh>
+		</boots>
+		<boots group="boots3">
+			<mesh>./meshes/boots3_dwarff.cmf</mesh>
+		</boots>
+		<boots group="boots4">
+			<mesh>./meshes/boots4_dwarff.cmf</mesh>
+		</boots>		
+		<shield group="quiver1">
+			<mesh>./meshes/quiver1_dwarff.cmf</mesh>
+			<glow>none</glow>
+		</shield>
+		<shield group="quiver2">
+			<mesh>./meshes/quiver2_dwarff.cmf</mesh>
+		</shield>
+		<neck group="1">
+			<mesh>./meshes/medallion01_dwarff.cmf</mesh>
+		</neck>
+		<neck group="2">
+			<mesh>./meshes/medallion02_dwarff.cmf</mesh>
+		</neck>	
+		<neck group="3">
+			<mesh>./meshes/medallion03_dwarff.cmf</mesh>
+		</neck>
+		<neck group="4">
+			<mesh>./meshes/medallion04_dwarff.cmf</mesh>
+		</neck>		
+	</defaults>
+	
+	&standard_players;
+
+	<head number="1">
+		<mesh>./meshes/head1_dwarff.cmf</mesh>
+		<skin></skin>
+		<glow>none</glow>
+	</head>
+	<head number="2">
+		<mesh>./meshes/head2_dwarff.cmf</mesh>
+		<skin></skin>
+		<glow>none</glow>
+	</head>
+	<head number="3">
+		<mesh>./meshes/head3_dwarff.cmf</mesh>
+		<skin></skin>
+		<glow>none</glow>
+	</head>
+	<head number="4">
+		<mesh>./meshes/head4_dwarff.cmf</mesh>
+		<skin></skin>
+		<glow>none</glow>
+	</head>
+	<head number="5">
+		<mesh>./meshes/head1_dwarff.cmf</mesh>
+		<skin></skin>
+		<glow>none</glow>
+	</head>	
+
+		
+
+	<hskin color="brown">
+		<hands>./meshes/hands_brown.dds</hands>
+		<head>./meshes/head_dwarffbrown.dds</head>
+		<arms>./meshes/arms_skinhf_brown.dds</arms>
+		<torso>./meshes/torso_skinhf_brown.dds</torso>		
+	</hskin>
+	<hskin color="normal">
+		<hands>./meshes/hands_peach.dds</hands>
+		<head>./meshes/head_dwarffpeach.dds</head>
+		<arms>./meshes/arms_skinhf_peach.dds</arms>
+		<torso>./meshes/torso_skinhf_peach.dds</torso>		
+	</hskin>
+	<hskin color="pale">
+		<hands>./meshes/hands_pale.dds</hands>
+		<head>./meshes/head_dwarffpale.dds</head>
+		<arms>./meshes/arms_skinhf_pale.dds</arms>
+		<torso>./meshes/torso_skinhf_pale.dds</torso>			
+	</hskin>
+	<hskin color="tan">
+		<hands>./meshes/hands_tan.dds</hands>
+		<head>./meshes/head_dwarfftan.dds</head>
+		<arms>./meshes/arms_skinhf_tan.dds</arms>
+		<torso>./meshes/torso_skinhf_tan.dds</torso>		
+	</hskin>
+	<sounds>
+		<battlecry>Battlecry Female1</battlecry>
+		<walk scale="0.2"></walk> 
+		<pain1>Pain Female</pain1>
+		<die1>Die Female</die1>
+		<die2>Die Female</die2>		
+	</sounds>
+</actor>

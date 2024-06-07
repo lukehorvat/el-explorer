@@ -1,0 +1,250 @@
+	<helmet type="iron" id="0">
+		<mesh>./meshes/helmet1_medium.cmf</mesh>
+		<skin>./meshes/helmet1.dds</skin>
+		<glow>none</glow>
+	</helmet>
+	<helmet type="fur" id="1">
+		<mesh>./meshes/hat1_medium.cmf</mesh>
+		<skin>./meshes/hat1.dds</skin>
+		<glow>none</glow>
+	</helmet>
+	<helmet type="leather" id="2">
+		<mesh>./meshes/helmet2_medium.cmf</mesh>
+		<skin>./meshes/helmet2.dds</skin>
+		<glow>none</glow>
+	</helmet>	
+	<helmet type="racoon" id="3">
+		<mesh>./meshes/hat2_medium.cmf</mesh>
+		<skin>./meshes/hat2.dds</skin>
+		<glow>none</glow>
+	</helmet>
+	<helmet type="skunk" id="4">
+		<mesh>./meshes/hat3_medium.cmf</mesh>
+		<skin>./meshes/hat3.dds</skin>
+		<glow>none</glow>
+	</helmet>
+	<helmet type="crown_mana" id="5">
+		<mesh>./meshes/crown1_medium.cmf</mesh>
+		<skin>./meshes/crown2.dds</skin>
+		<glow>none</glow>
+	</helmet>
+	<helmet type="crown_life" id="6">
+		<mesh>./meshes/crown1_medium.cmf</mesh>
+		<skin>./meshes/crown1.dds</skin>
+		<glow>none</glow>
+	</helmet>	
+	<helmet type="steel" id="7">
+		<mesh>./meshes/helmet3_medium.cmf</mesh>
+		<skin>./meshes/helmet3.dds</skin>
+		<glow>none</glow>
+	</helmet>	
+	<helmet type="titanium" id="8">
+		<mesh>./meshes/helmet3_medium.cmf</mesh>
+		<skin>./meshes/helmet4.dds</skin>
+		<glow>none</glow>
+	</helmet>	
+	<helmet type="bronze" id="9">
+		<mesh>./meshes/helmet5_medium.cmf</mesh>
+		<skin>./meshes/helmet5.dds</skin>
+		<glow>none</glow>
+	</helmet>	
+	<helmet type="red dragon helm" id="10">
+		<mesh>./meshes/helmet6_medium.cmf</mesh>
+		<skin>./meshes/helmet6.dds</skin>
+		<glow>none</glow>
+	</helmet>
+	<helmet type="blue adventurer cap" id="11">
+		<mesh>./meshes/hat4_medium.cmf</mesh>
+		<skin>./meshes/hat4_blue.dds</skin>
+		<glow>none</glow>
+	</helmet>
+	<helmet type="brown adventurer cap" id="12">
+		<mesh>./meshes/hat4_medium.cmf</mesh>
+		<skin>./meshes/hat4_brown.dds</skin>
+		<glow>none</glow>
+	</helmet>
+	<helmet type="green adventurer cap" id="13">
+		<mesh>./meshes/hat4_medium.cmf</mesh>
+		<skin>./meshes/hat4_green.dds</skin>
+		<glow>none</glow>
+	</helmet>	
+	<helmet type="black adventurer cap" id="14">
+		<mesh>./meshes/hat4_medium.cmf</mesh>
+		<skin>./meshes/hat4_black.dds</skin>
+		<glow>none</glow>
+	</helmet>	
+	<helmet type="red adventurer cap" id="15">
+		<mesh>./meshes/hat4_medium.cmf</mesh>
+		<skin>./meshes/hat4_red.dds</skin>
+		<glow>none</glow>
+	</helmet>	
+	<helmet type="gold circlet" id="16">
+		<mesh>./meshes/crown2_medium.cmf</mesh>
+		<skin>./meshes/crown2_gold.dds</skin>
+		<glow>none</glow>
+	</helmet>	
+	<helmet type="silver circlet" id="17">
+		<mesh>./meshes/crown2_medium.cmf</mesh>
+		<skin>./meshes/crown2_silver.dds</skin>
+		<glow>none</glow>
+	</helmet>		
+	<helmet type="gold tiara" id="18">
+		<mesh>./meshes/crown3_medium.cmf</mesh>
+		<skin>./meshes/crown2_gold.dds</skin>
+		<glow>none</glow>
+	</helmet>
+	<helmet type="silver tiara" id="19">
+		<mesh>./meshes/crown3_medium.cmf</mesh>
+		<skin>./meshes/crown2_silver.dds</skin>
+		<glow>none</glow>
+	</helmet>		
+	<helmet type="gold crown" id="21">
+		<mesh>./meshes/crown4_medium.cmf</mesh>
+		<skin>./meshes/crown2_gold.dds</skin>
+		<glow>none</glow>
+	</helmet>	
+	<helmet type="silver crown" id="22">
+		<mesh>./meshes/crown4_medium.cmf</mesh>
+		<skin>./meshes/crown2_silver.dds</skin>
+		<glow>none</glow>
+	</helmet>
+	<helmet type="brown bandana" id="23">
+		<mesh>./meshes/bandana1_medium.cmf</mesh>
+		<skin>./meshes/bandana1_brown.dds</skin>
+		<glow>none</glow>
+	</helmet>	
+	<helmet type="blue bandana" id="24">
+		<mesh>./meshes/bandana1_medium.cmf</mesh>
+		<skin>./meshes/bandana1_blue.dds</skin>
+		<glow>none</glow>
+	</helmet>		
+	<helmet type="red bandana" id="25">
+		<mesh>./meshes/bandana1_medium.cmf</mesh>
+		<skin>./meshes/bandana1_red.dds</skin>
+		<glow>none</glow>
+	</helmet>	
+	<helmet type="black bandana" id="26">
+		<mesh>./meshes/bandana1_medium.cmf</mesh>
+		<skin>./meshes/bandana1_black.dds</skin>
+		<glow>none</glow>
+	</helmet>	
+	<helmet type="green bandana" id="27">
+		<mesh>./meshes/bandana1_medium.cmf</mesh>
+		<skin>./meshes/bandana1_green.dds</skin>
+		<glow>none</glow>
+	</helmet>
+	<helmet type="night vision" id="28">
+		<mesh>./meshes/mask01_medium.cmf</mesh>
+		<skin>./meshes/mask01.dds</skin>
+		<glow>none</glow>
+	</helmet>
+	<helmet type="skull crossbones head scarf" id="29">
+		<mesh>./meshes/bandana2_medium.cmf</mesh>
+		<skin>./meshes/bandana2_skull.dds</skin>
+		<glow>none</glow>
+	</helmet>
+	<helmet type="black head scarf" id="30">
+		<mesh>./meshes/bandana2_medium.cmf</mesh>
+		<skin>./meshes/bandana2_black.dds</skin>
+		<glow>none</glow>
+	</helmet>
+	<helmet type="red head scarf" id="31">
+		<mesh>./meshes/bandana2_medium.cmf</mesh>
+		<skin>./meshes/bandana2_red.dds</skin>
+		<glow>none</glow>
+	</helmet>
+
+	<helmet type="black tricorn hat" id="32">
+		<mesh>./meshes/hat_tricorn.cmf</mesh>
+		<skin>./meshes/hat_tricorn_black.dds</skin>
+		<glow>none</glow>
+	</helmet>
+	<helmet type="brown tricorn hat" id="33">
+		<mesh>./meshes/hat_tricorn.cmf</mesh>
+		<skin>./meshes/hat_tricorn_brown.dds</skin>
+		<glow>none</glow>
+	</helmet>
+	<helmet type="blue tricorn hat" id="34">
+		<mesh>./meshes/hat_tricorn.cmf</mesh>
+		<skin>./meshes/hat_tricorn_blue.dds</skin>
+		<glow>none</glow>
+	</helmet>
+
+	<helmet type="brown buccaneer hat" id="35">
+		<mesh>./meshes/hat_buccaneer.cmf</mesh>
+		<skin>./meshes/hat_buccaneer_brown.dds</skin>
+		<glow>none</glow>
+	</helmet>
+	<helmet type="black buccaneer hat" id="36">
+		<mesh>./meshes/hat_buccaneer.cmf</mesh>
+		<skin>./meshes/hat_buccaneer_black.dds</skin>
+		<glow>none</glow>
+	</helmet>
+	<helmet type="black cavalier hat with peacock feather" id="37">
+		<mesh>./meshes/hat_cavalier.cmf</mesh>
+		<skin>./meshes/hat_cavalier_blackpea.dds</skin>
+		<glow>none</glow>
+	</helmet>
+	<helmet type="green cavalier hat with peacock feather" id="38">
+		<mesh>./meshes/hat_cavalier.cmf</mesh>
+		<skin>./meshes/hat_cavalier_greenpea.dds</skin>
+		<glow>none</glow>
+	</helmet>
+	<helmet type="blue cavalier hat with white feather" id="39">
+		<mesh>./meshes/hat_cavalier.cmf</mesh>
+		<skin>./meshes/hat_cavalier_blue.dds</skin>
+		<glow>none</glow>
+	</helmet>
+	<helmet type="black cavalier hat with white feather" id="40">
+		<mesh>./meshes/hat_cavalier.cmf</mesh>
+		<skin>./meshes/hat_cavalier_black.dds</skin>
+		<glow>none</glow>
+	</helmet>
+	
+	<helmet type="santa hat" id="41">
+		<mesh>./meshes/hat_santa.cmf</mesh>
+		<skin>./meshes/hat_santa.dds</skin>
+		<glow>none</glow>
+	</helmet>
+	
+	<helmet type="black dragon helm" id="42">
+		<mesh>./meshes/helmet7.cmf</mesh>
+		<skin>./meshes/helmet7.dds</skin>
+		<glow>none</glow>
+	</helmet>
+	
+	<helmet type="hood" id="43">
+		<mesh>./meshes/hood1_medium.cmf</mesh>
+		<skin></skin>
+		<glow>none</glow>
+	</helmet>	
+	
+	<helmet type="ice dragon helm" id="44">
+		<mesh>./meshes/helmet8.cmf</mesh>
+		<skin>./meshes/helmet8.dds</skin>
+		<glow>none</glow>
+	</helmet>	
+		
+	<helmet type="blue dragon helm" id="45">
+		<mesh>./meshes/helmet9.cmf</mesh>
+		<skin>./meshes/helmet9.dds</skin>
+		<glow>none</glow>
+	</helmet>	
+	
+	<helmet type="Black Wizard Hat" id="46">
+		<mesh>./meshes/hat_wizard.cmf</mesh>
+		<skin>./meshes/hat_wizard_black.dds</skin>
+		<glow>none</glow>
+	</helmet>	
+	
+	<helmet type="Gray Wizard Hat" id="47">
+		<mesh>./meshes/hat_wizard.cmf</mesh>
+		<skin>./meshes/hat_wizard_gray.dds</skin>
+		<glow>none</glow>
+	</helmet>		
+	
+	<helmet type="White Wizard Hat" id="48">
+		<mesh>./meshes/hat_wizard.cmf</mesh>
+		<skin>./meshes/hat_wizard_white.dds</skin>
+		<glow>none</glow>
+	</helmet>		

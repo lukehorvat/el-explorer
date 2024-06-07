@@ -1,0 +1,53 @@
+<neck color="unicorn" id="1" group="1">
+	<skin>./meshes/medallion01.dds</skin>
+	<glow>none</glow>
+</neck>
+<neck color="sun" id="2" group="1">
+	<skin>./meshes/medallion02.dds</skin>
+	<glow>none</glow>
+</neck>
+<neck color="bluestone" id="3" group="2">
+	<skin>./meshes/medallion03.dds</skin>
+	<glow>none</glow>
+</neck>
+<neck color="redstone" id="4" group="2">
+	<skin>./meshes/medallion04.dds</skin>	
+	<glow>none</glow>
+</neck>
+<neck color="bronze" id="5" group="1">
+	<skin>./meshes/medallion05.dds</skin>
+	<glow>none</glow>
+</neck>
+<neck color="bluedragon" id="6" group="1">
+	<skin>./meshes/medallion06.dds</skin>
+	<glow>none</glow>
+</neck>
+<neck color="reddragon" id="7" group="1">
+	<skin>./meshes/medallion07.dds</skin>
+	<glow>none</glow>
+</neck>
+<neck color="silverturquiose" id="8" group="1">
+	<skin>./meshes/medallion08.dds</skin>
+	<glow>none</glow>
+</neck>
+<neck color="turquoiseamber" id="9" group="1">
+	<skin>./meshes/medallion09.dds</skin>
+	<glow>none</glow>
+</neck>
+<neck color="bluestar" id="10"  group="3">
+	<skin>./meshes/medallion10.dds</skin>
+	<glow>none</glow>
+</neck>
+<neck color="silvermoon" id="11" group="4">
+	<skin>./meshes/medallion11.dds</skin>
+	<glow>none</glow>
+</neck>
+<neck color="goldmoon" id="12" group="4">
+	<skin>./meshes/medallion12.dds</skin>
+	<glow>none</glow>
+</neck>
+<neck color="foxscarf" id="13">
+	<mesh>./meshes/scarf01.cmf</mesh>
+	<skin>./meshes/scarf01.dds</skin>
+	<glow>none</glow>
+</neck>

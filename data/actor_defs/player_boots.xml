@@ -1,0 +1,76 @@
+<boots color="black" group="boots2" id="0">
+	<skin>./meshes/boots1_black.dds</skin>
+	<glow>none</glow>
+</boots>
+<boots color="brown" group="boots2" id="1">
+	<skin>./meshes/boots1_brown.dds</skin>
+	<glow>none</glow>
+</boots>
+<boots color="dark brown" group="boots2" id="2">
+	<skin>./meshes/boots1_darkbrown.dds</skin>
+	<glow>none</glow>
+</boots>
+<boots color="dull brown" group="boots2" id="3">
+	<skin>./meshes/boots1_dullbrown.dds</skin>
+	<glow>none</glow>
+</boots>
+<boots color="light brown" group="boots2" id="4">
+	<skin>./meshes/boots1_lightbrown.dds</skin>
+	<glow>none</glow>
+</boots>
+<boots color="orange" group="boots2" id="5">
+	<skin>./meshes/boots1_orange.dds</skin>
+	<glow>none</glow>
+</boots>
+<boots color="leather" group="boots1" id="6">
+	<skin>./meshes/boots2.dds</skin>
+	<glow>none</glow>
+</boots>
+<boots color="fur" group="boots1" id="7">
+	<skin>./meshes/boots3.dds</skin>
+	<glow>none</glow>
+</boots>
+<boots color="iron greaves" group="boots3" id="8">
+	<skin>./meshes/boots4.dds</skin>
+	<glow>none</glow>
+</boots>
+<boots color="steel greaves" group="boots3" id="9">
+	<skin>./meshes/boots5.dds</skin>
+	<glow>none</glow>
+</boots>	
+<boots color="titanium greaves" group="boots3" id="10">
+	<skin>./meshes/boots6.dds</skin>
+	<glow>none</glow>
+</boots>
+<boots color="bronze greaves" group="boots1" id="11">
+	<skin>./meshes/boots7.dds</skin>
+	<glow>none</glow>
+</boots>
+<boots color="red dragon greaves" group="boots1" id="13">
+	<skin>./meshes/boots8.dds</skin>
+	<glow>none</glow>
+</boots>
+<boots color="black dragon greaves" group="boots1" id="14">
+	<skin>./meshes/boots9.dds</skin>
+	<glow>none</glow>
+</boots>
+<boots color="ice dragon greaves" group="boots1" id="15">
+	<skin>./meshes/boots10.dds</skin>
+	<glow>none</glow>
+</boots>
+<boots color="blue dragon greaves" group="boots4" id="16">
+	<skin>./meshes/boots11.dds</skin>
+	<glow>none</glow>
+</boots>
+<boots color="White Boots" group="boots1" id="17">
+	<skin>./meshes/boots12.dds</skin>
+	<glow>none</glow>
+</boots>
+<boots color="Brown Boots" group="boots1" id="18">
+	<skin>./meshes/boots13.dds</skin>
+	<glow>none</glow>
+</boots>
+<boots color="Black Boots" group="boots1" id="19">
+	<skin>./meshes/boots14.dds</skin>
+	<glow>none</glow>
+</boots>

@@ -1,0 +1,91 @@
+<cape color="black" id="0">
+	<mesh>./meshes/cape1_medium.cmf</mesh>
+	<skin>./meshes/cape1_black.dds</skin>
+	<glow>none</glow>
+</cape>
+<cape color="blue" id="1">
+	<mesh>./meshes/cape1_medium.cmf</mesh>
+	<skin>./meshes/cape1_blue.dds</skin>
+	<glow>none</glow>
+</cape>
+<cape color="blue grey" id="2">
+	<mesh>./meshes/cape1_medium.cmf</mesh>
+	<skin>./meshes/cape1_bluegray.dds</skin>
+	<glow>none</glow>
+</cape>
+<cape color="brown" id="3">
+	<mesh>./meshes/cape1_medium.cmf</mesh>
+	<skin>./meshes/cape1_brown.dds</skin>
+	<glow>none</glow>
+</cape>
+<cape color="brown grey" id="4">
+	<mesh>./meshes/cape1_medium.cmf</mesh>
+	<skin>./meshes/cape1_browngray.dds</skin>
+	<glow>none</glow>
+</cape>
+<cape color="grey" id="5">
+	<mesh>./meshes/cape1_medium.cmf</mesh>
+	<skin>./meshes/cape1_gray.dds</skin>
+	<glow>none</glow>
+</cape>
+<cape color="green" id="6">
+	<mesh>./meshes/cape1_medium.cmf</mesh>
+	<skin>./meshes/cape1_green.dds</skin>
+	<glow>none</glow>
+</cape>
+<cape color="green grey" id="7">
+	<mesh>./meshes/cape1_medium.cmf</mesh>
+	<skin>./meshes/cape1_greengray.dds</skin>
+	<glow>none</glow>
+</cape>
+<cape color="purple" id="8">
+	<mesh>./meshes/cape1_medium.cmf</mesh>
+	<skin>./meshes/cape1_purple.dds</skin>
+	<glow>none</glow>
+</cape>
+<cape color="white" id="9">
+	<mesh>./meshes/cape1_medium.cmf</mesh>
+	<skin>./meshes/cape1_white.dds</skin>
+	<glow>none</glow>
+</cape>
+<cape color="gold" id="11">
+	<mesh>./meshes/cape1_medium.cmf</mesh>
+	<skin>./meshes/cape1_gold.dds</skin>
+	<glow>none</glow>
+</cape>
+<cape color="red" id="12">
+	<mesh>./meshes/cape1_medium.cmf</mesh>
+	<skin>./meshes/cape1_red.dds</skin>
+	<glow>none</glow>
+</cape>
+<cape color="orange" id="13">
+	<mesh>./meshes/cape1_medium.cmf</mesh>
+	<skin>./meshes/cape1_orange.dds</skin>
+	<glow>none</glow>
+</cape>
+<cape color="mod" id="14">
+	<mesh>./meshes/cape1_medium.cmf</mesh>
+	<skin>./meshes/cape_mod.dds</skin>
+	<glow>none</glow>
+</cape>
+
+<cape color="fur" group="cape2" id="10">
+	<mesh>./meshes/cape2_medium.cmf</mesh>
+	<skin>./meshes/cape2.dds</skin>
+	<glow>none</glow>
+</cape>
+<cape color="custom" id="23">
+	<mesh>./meshes/cape1_medium.cmf</mesh>
+	<skin>./meshes/cape_custom.dds</skin>
+	<glow>none</glow>
+</cape>
+<cape color="royal red" group="cape2" id="24">
+	<mesh>./meshes/cape2_medium.cmf</mesh>
+	<skin>./meshes/cape2_royalred.dds</skin>
+	<glow>none</glow>
+</cape>
+<cape color="royal purple" group="cape2" id="25">
+	<mesh>./meshes/cape2_medium.cmf</mesh>
+	<skin>./meshes/cape2_royalpurple.dds</skin>
+	<glow>none</glow>
+</cape>

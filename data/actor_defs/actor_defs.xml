@@ -1,0 +1,252 @@
+<!DOCTYPE dt [
+	<!ENTITY standard_players SYSTEM "player_standard.xml">
+	<!ENTITY player_frames SYSTEM "player_frames.xml">
+	<!ENTITY shields SYSTEM "player_shields.xml">
+	<!ENTITY capes SYSTEM "player_capes.xml">
+	<!ENTITY helmets SYSTEM "player_helmets.xml">
+	<!ENTITY weapons SYSTEM "player_weapons.xml">
+	<!ENTITY shirts SYSTEM "player_shirts.xml">
+	<!ENTITY hairs SYSTEM "player_hairs.xml">
+	<!ENTITY eyes SYSTEM "player_eyes.xml">
+	<!ENTITY boots SYSTEM "player_boots.xml">
+	<!ENTITY legs SYSTEM "player_legs.xml">
+	<!ENTITY human_female SYSTEM "playerav_human_female.xml">
+	<!ENTITY human_male SYSTEM "playerav_human_male.xml">
+	<!ENTITY elf_female SYSTEM "playerav_elf_female.xml">
+	<!ENTITY elf_male SYSTEM "playerav_elf_male.xml">
+	<!ENTITY dwarf_female SYSTEM "playerav_dwarf_female.xml">
+	<!ENTITY dwarf_male SYSTEM "playerav_dwarf_male.xml">
+	<!ENTITY gnome_female SYSTEM "playerav_gnome_female.xml">
+	<!ENTITY gnome_male SYSTEM "playerav_gnome_male.xml">
+	<!ENTITY orchan_female SYSTEM "playerav_orchan_female.xml">
+	<!ENTITY orchan_male SYSTEM "playerav_orchan_male.xml">
+	<!ENTITY draegoni_female SYSTEM "playerav_draegoni_female.xml">
+	<!ENTITY draegoni_male SYSTEM "playerav_draegoni_male.xml">	
+	<!ENTITY wraith SYSTEM "wraith.xml">
+	<!ENTITY cyclops SYSTEM "cyclops.xml">
+	<!ENTITY beaver SYSTEM "beaver.xml">
+	<!ENTITY rat SYSTEM "rat.xml">
+	<!ENTITY goblin_male_2 SYSTEM "goblin_male_2.xml">
+	<!ENTITY goblin_female_1 SYSTEM "goblin_female_1.xml">
+	<!ENTITY deer SYSTEM "deer.xml">
+	<!ENTITY bear_1 SYSTEM "bear_1.xml">
+	<!ENTITY wolf SYSTEM "wolf.xml">
+	<!ENTITY white_rabbit SYSTEM "white_rabbit.xml">
+	<!ENTITY brown_rabbit SYSTEM "brown_rabbit.xml">
+	<!ENTITY boar SYSTEM "boar.xml">
+	<!ENTITY bear_2 SYSTEM "bear_2.xml">
+	<!ENTITY snake_1 SYSTEM "snake_1.xml">
+	<!ENTITY snake_2 SYSTEM "snake_2.xml">
+	<!ENTITY snake_3 SYSTEM "snake_3.xml">
+	<!ENTITY fox SYSTEM "fox.xml">
+	<!ENTITY puma SYSTEM "puma.xml">
+	<!ENTITY ogre_male_1 SYSTEM "ogre_male_1.xml">
+	<!ENTITY goblin_male_1 SYSTEM "goblin_male_1.xml">
+	<!ENTITY orc_male_1 SYSTEM "orc_male_1.xml">
+	<!ENTITY orc_female_1 SYSTEM "orc_female_1.xml">
+	<!ENTITY skeleton SYSTEM "skeleton.xml">
+	<!ENTITY gargoyle_1 SYSTEM "gargoyle_1.xml">
+	<!ENTITY gargoyle_2 SYSTEM "gargoyle_2.xml">
+	<!ENTITY gargoyle_3 SYSTEM "gargoyle_3.xml">
+	<!ENTITY troll SYSTEM "troll.xml">
+	<!ENTITY chimeran_mountain_wolf SYSTEM "chimeran_mountain_wolf.xml">
+	<!ENTITY skunk_1 SYSTEM "skunk_1.xml">
+	<!ENTITY racoon_1 SYSTEM "racoon_1.xml">
+	<!ENTITY unicorn_1 SYSTEM "unicorn_1.xml">
+	<!ENTITY unicorn_2 SYSTEM "unicorn_2.xml">
+	<!ENTITY chimeran_desert_wolf SYSTEM "chimeran_desert_wolf.xml">
+	<!ENTITY chimeran_forest_wolf SYSTEM "chimeran_forest_wolf.xml">
+	<!ENTITY chimeran_arctic_wolf SYSTEM "chimeran_arctic_wolf.xml">
+	<!ENTITY bear_3 SYSTEM "bear_3.xml">
+	<!ENTITY bear_4 SYSTEM "bear_4.xml">
+	<!ENTITY panther SYSTEM "panther.xml">
+	<!ENTITY leopard_1 SYSTEM "leopard.xml">
+	<!ENTITY leopard_2 SYSTEM "leopard_snow.xml">
+	<!ENTITY feran SYSTEM "feran.xml">
+	<!ENTITY tiger_1 SYSTEM "tiger.xml">
+	<!ENTITY tiger_2 SYSTEM "tiger_white.xml">
+	<!ENTITY armed_female_orc SYSTEM "orc_female_1_armed.xml">
+	<!ENTITY armed_male_orc SYSTEM "orc_male_1_armed.xml">
+	<!ENTITY armed_skeleton SYSTEM "skeleton_armed.xml">
+	<!ENTITY phantom_warrior SYSTEM "phantom_warrior.xml">
+	<!ENTITY imp SYSTEM "imp.xml">
+	<!ENTITY brownie SYSTEM "brownie.xml">
+	<!ENTITY spider_l_1 SYSTEM "spider_big1.xml">
+	<!ENTITY spider_l_2 SYSTEM "spider_big2.xml">
+	<!ENTITY spider_l_3 SYSTEM "spider_big3.xml">
+	<!ENTITY spider_l_4 SYSTEM "spider_big4.xml">
+	<!ENTITY spider_s_1 SYSTEM "spider_small1.xml">
+	<!ENTITY spider_s_2 SYSTEM "spider_small2.xml">
+	<!ENTITY spider_s_3 SYSTEM "spider_small3.xml">
+	<!ENTITY spider_s_4 SYSTEM "spider_small4.xml">
+	<!ENTITY wood_sprite SYSTEM "wood_sprite.xml">
+	<!ENTITY leprechaun SYSTEM "leprechaun.xml">
+	<!ENTITY giant_1 SYSTEM "giant_1.xml">
+	<!ENTITY giant_2 SYSTEM "giant_2.xml">
+	<!ENTITY hobgoblin SYSTEM "hobgoblin.xml">
+	<!ENTITY yeti SYSTEM "yeti.xml">
+	<!ENTITY yeti_2 SYSTEM "yeti_2.xml">
+	<!ENTITY snake_4 SYSTEM "snake_4.xml">
+	<!ENTITY anim_noweapon SYSTEM "anim_noweapon.xml">
+	<!ENTITY anim_weapon1 SYSTEM "anim_weapon1.xml">
+	<!ENTITY anim_weapon2 SYSTEM "anim_weapon2.xml">
+	<!ENTITY anim_bow1 SYSTEM "anim_bow1.xml">
+	<!ENTITY anim_bow2 SYSTEM "anim_bow2.xml">
+	<!ENTITY feros SYSTEM "feros.xml">
+	<!ENTITY dragon1 SYSTEM "dragon1.xml">
+	<!ENTITY dragon2 SYSTEM "dragon2.xml">
+	<!ENTITY dragon3 SYSTEM "dragon3.xml">
+	<!ENTITY dragon4 SYSTEM "dragon4.xml">	
+	<!ENTITY dragon5 SYSTEM "dragon5.xml">	
+	<!ENTITY falcon SYSTEM "bird_falcon.xml">
+	<!ENTITY hawk SYSTEM "bird_hawk.xml">
+	<!ENTITY cockatrice SYSTEM "cockatrice.xml">
+	<!ENTITY lion SYSTEM "lion.xml">
+	<!ENTITY chinstrap_penguin SYSTEM "penguin_chinstrap.xml">
+	<!ENTITY king_penguin SYSTEM "penguin_king.xml">
+	<!ENTITY gentoo_penguin SYSTEM "penguin_gentoo.xml">
+	<!ENTITY sounds_attack_bare SYSTEM "sounds_attack_bare.xml">
+	<!ENTITY sounds_attack_sword1 SYSTEM "sounds_attack_sword1.xml">
+	<!ENTITY sounds_attack_stick1 SYSTEM "sounds_attack_stick1.xml">
+	<!ENTITY sounds_attack_staff1 SYSTEM "sounds_attack_staff1.xml">
+	<!ENTITY sounds_attack_axe1 SYSTEM "sounds_attack_axe1.xml">
+	<!ENTITY sounds_attack_hammer1 SYSTEM "sounds_attack_hammer1.xml">
+	<!ENTITY sounds_attack_bow1 SYSTEM "sounds_attack_bow1.xml">
+	<!ENTITY bird_phoenix SYSTEM "bird_phoenix.xml">
+	<!ENTITY dragon2_blue SYSTEM "dragon2_blue.xml">
+	<!ENTITY dragon2_gray SYSTEM "dragon2_gray.xml">
+	<!ENTITY dragon2_pink SYSTEM "dragon2_pink.xml">
+	<!ENTITY mule1_black SYSTEM "mule1_black.xml">
+	<!ENTITY mule1_brown SYSTEM "mule1_brown.xml">
+	<!ENTITY mule1_gray SYSTEM "mule1_gray.xml">
+	<!ENTITY horse1 SYSTEM "horse1.xml">
+	<!ENTITY horse2 SYSTEM "horse2.xml">
+	<!ENTITY horse3 SYSTEM "horse3.xml">
+	<!ENTITY horse4 SYSTEM "horse4.xml">
+	<!ENTITY horse5 SYSTEM "horse5.xml">
+	<!ENTITY horse6 SYSTEM "horse6.xml">
+	<!ENTITY horse7 SYSTEM "horse7.xml">
+	<!ENTITY player_attach_horse SYSTEM "player_attach_horse.xml">
+	<!ENTITY necks SYSTEM "player_neckitems.xml">
+	<!ENTITY nenorocit SYSTEM "nenorocit.xml">
+	<!ENTITY nasparliu SYSTEM "nasparliu.xml">
+	<!ENTITY target SYSTEM "target.xml">
+	<!ENTITY bulangiu SYSTEM "bulangiu.xml">	
+	<!ENTITY bulangiumare SYSTEM "bulangiumare.xml">
+	<!ENTITY castellan SYSTEM "castellan.xml">
+	<!ENTITY troll2 SYSTEM "troll2.xml">
+]>
+
+<actors>
+	&human_female;
+	&human_male;
+	&elf_female;
+	&elf_male;
+	&dwarf_female;
+	&dwarf_male;
+	&wraith;
+	&cyclops;
+	&beaver;
+	&rat;
+	&goblin_male_2;
+	&goblin_female_1;
+	&deer;
+	&bear_1;
+	&wolf;
+	&white_rabbit;
+	&brown_rabbit;
+	&boar;
+	&bear_2;
+	&snake_1;
+	&snake_2;
+	&snake_3;
+	&snake_4;
+	&fox;
+	&puma;
+	&ogre_male_1;
+	&goblin_male_1;
+	&orc_male_1;
+	&orc_female_1;
+	&skeleton;
+	&gargoyle_1;
+	&gargoyle_2;
+	&gargoyle_3;
+	&troll;
+	&chimeran_mountain_wolf;
+	&gnome_female;
+	&gnome_male;
+	&orchan_female;
+	&orchan_male;
+	&draegoni_female;
+	&draegoni_male;
+	&skunk_1;
+	&racoon_1;
+	&unicorn_1;
+    &unicorn_2;
+	&chimeran_desert_wolf;
+	&chimeran_forest_wolf;
+	&chimeran_arctic_wolf;
+	&bear_3;
+	&bear_4;
+	&panther;
+	&leopard_1;
+	&leopard_2;
+	&feran;
+	&tiger_1;
+	&tiger_2;
+	&armed_female_orc;
+	&armed_male_orc;
+	&armed_skeleton;
+	&phantom_warrior;
+	&imp;
+	&brownie;
+	&spider_l_1;
+	&spider_l_2;
+	&spider_l_3;
+	&spider_l_4;
+	&spider_s_1;
+	&spider_s_2;
+	&spider_s_3;
+	&spider_s_4;
+	&wood_sprite;
+	&leprechaun;
+	&giant_1;
+    &giant_2;
+	&hobgoblin;
+	&yeti;
+	&yeti_2;
+	&feros;
+	&dragon1;
+	&dragon2;
+	&dragon3;
+	&dragon4;
+    &dragon5;
+	&hawk;
+	&falcon;
+	&lion;
+	&cockatrice;
+	&chinstrap_penguin;
+	&gentoo_penguin;
+	&king_penguin;
+	&bird_phoenix;
+	&dragon2_blue;
+	&dragon2_gray;
+	&dragon2_pink;
+	&mule1_black;
+	&mule1_brown;
+	&mule1_gray;
+	&horse1;	
+	&horse2;
+	&horse3;
+	&horse4;
+	&horse5;
+	&horse6;
+	&horse7;
+	&nenorocit;
+	&nasparliu;
+	&target;
+	&bulangiu;
+	&bulangiumare;
+	&castellan;
+	&troll2;
+</actors>

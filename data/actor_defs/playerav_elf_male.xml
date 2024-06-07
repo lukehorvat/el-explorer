@@ -1,0 +1,150 @@
+<actor type="elf male" id="3">
+	<skin>./meshes/elf_male1.dds</skin>
+	<mesh>./meshes/elf_male.cmf</mesh>
+	<skeleton>./skeletons/medium.csf</skeleton>
+	<defaults>
+		<shirt>
+			<mesh>./meshes/torso1_elfm.cmf</mesh>
+		</shirt>
+		<shirt group="torso2">
+			<mesh>./meshes/torso2_elfm.cmf</mesh>
+		</shirt>
+		<shirt group="torso3">
+			<mesh>./meshes/torso3_elfm.cmf</mesh>
+		</shirt>
+		<shirt group="torso4">
+			<mesh>./meshes/torso4_elfm.cmf</mesh>
+		</shirt>
+		<shirt group="torso5">
+			<mesh>./meshes/torso5_elfm.cmf</mesh>
+		</shirt>
+		<shirt group="torso6">
+			<mesh>./meshes/torso6_elfm.cmf</mesh>
+		</shirt>
+		<shirt group="torso7">
+			<mesh>./meshes/torso7_elfm.cmf</mesh>
+		</shirt>
+		<shirt group="torso8">
+			<mesh>./meshes/torso8_elfm.cmf</mesh>
+		</shirt>
+		<shirt group="torso9">
+			<mesh>./meshes/torso9_elfm.cmf</mesh>
+		</shirt>
+		<shirt group="torso10">
+			<mesh>./meshes/torso1_elfm.cmf</mesh>
+		</shirt>
+		<shirt group="torso11">
+			<mesh>./meshes/torso11_elfm.cmf</mesh>
+		</shirt>		
+		<legs>
+			<mesh>./meshes/legs1_elfm.cmf</mesh>
+		</legs>
+		<legs group="legs2">
+			<mesh>./meshes/legs2_elfm.cmf</mesh>
+		</legs>
+		<legs group="legs3">
+			<mesh>./meshes/legs3_elfm.cmf</mesh>
+		</legs>
+		<legs group="legs4">
+			<mesh>./meshes/legs2_elfm.cmf</mesh>
+		</legs>		
+		<boots group="boots1">
+			<mesh>./meshes/boots1_elfm.cmf</mesh>
+		</boots>
+		<boots group="boots2">
+			<mesh>./meshes/boots2_elfm.cmf</mesh>
+		</boots>
+		<boots group="boots3">
+			<mesh>./meshes/boots3_elfm.cmf</mesh>
+		</boots>
+		<boots group="boots4">
+			<mesh>./meshes/boots4_elfm.cmf</mesh>
+		</boots>		
+		<shield group="quiver1">
+			<mesh>./meshes/quiver1_elfm.cmf</mesh>
+			<glow>none</glow>
+		</shield>
+		<shield group="quiver2">
+			<mesh>./meshes/quiver2_elfm.cmf</mesh>
+		</shield>
+		<neck group="1">
+			<mesh>./meshes/medallion01.cmf</mesh>
+		</neck>
+		<neck group="2">
+			<mesh>./meshes/medallion02.cmf</mesh>
+		</neck>	
+		<neck group="3">
+			<mesh>./meshes/medallion03.cmf</mesh>
+		</neck>
+		<neck group="4">
+			<mesh>./meshes/medallion04.cmf</mesh>
+		</neck>			
+	</defaults>
+		
+	&standard_players;
+
+	<head number="1">
+		<mesh>./meshes/head1_elfm.cmf</mesh>
+		<skin></skin>
+		<glow>none</glow>
+	</head>
+	<head number="2">
+		<mesh>./meshes/head2_elfm.cmf</mesh>
+		<skin></skin>
+		<glow>none</glow>
+	</head>
+	<head number="3">
+		<mesh>./meshes/head3_elfm.cmf</mesh>
+		<skin></skin>
+		<glow>none</glow>
+	</head>
+	<head number="4">
+		<mesh>./meshes/head4_elfm.cmf</mesh>
+		<skin></skin>
+		<glow>none</glow>
+	</head>
+	<head number="5">
+		<mesh>./meshes/head1_elfm.cmf</mesh>
+		<skin></skin>
+		<glow>none</glow>
+	</head>	
+
+
+	<hskin color="brown">
+		<hands>./meshes/hands_brown.dds</hands>
+		<head>./meshes/head_elfmbrown.dds</head>
+		<arms>./meshes/arms_skinem_brown.dds</arms>
+		<torso>./meshes/torso_skinem_brown.dds</torso>		
+	</hskin>
+	<hskin color="normal">
+		<hands>./meshes/hands_peach.dds</hands>
+		<head>./meshes/head_elfmpeach.dds</head>
+		<arms>./meshes/arms_skinem_peach.dds</arms>
+		<torso>./meshes/torso_skinem_peach.dds</torso>		
+	</hskin>
+	<hskin color="pale">
+		<hands>./meshes/hands_pale.dds</hands>
+		<head>./meshes/head_elfmpale.dds</head>
+		<arms>./meshes/arms_skinem_pale.dds</arms>
+		<torso>./meshes/torso_skinem_pale.dds</torso>		
+	</hskin>
+	<hskin color="tan">
+		<hands>./meshes/hands_tan.dds</hands>
+		<head>./meshes/head_elfmtan.dds</head>
+		<arms>./meshes/arms_skinem_tan.dds</arms>
+		<torso>./meshes/torso_skinem_tan.dds</torso>			
+	</hskin>		
+	<hskin color="darkblue">
+		<hands>./meshes/hands_darkblue.dds</hands>
+		<head>./meshes/head_elfmdarkblue.dds</head>
+		<arms>./meshes/arms_skinem_darkblue.dds</arms>
+		<torso>./meshes/torso_skinem_darkblue.dds</torso>		
+	</hskin>		
+	<sounds>
+		<battlecry>Battlecry Male1</battlecry>
+		<walk scale="0.2"></walk> 
+		<pain1>Pain Male</pain1>
+		<die1>Die Male</die1>
+		<die2>Die Male</die2>		
+	</sounds>
+</actor>

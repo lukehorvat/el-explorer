@@ -1,0 +1,370 @@
+<shirt color="black" group="torso8" id="0">
+	<arms>./meshes/arms1_black.dds</arms>
+	<torso>./meshes/torso1_black.dds</torso>
+</shirt>
+<shirt color="blue" group="torso8" id="1">
+	<arms>./meshes/arms1_blue.dds</arms>
+	<torso>./meshes/torso1_blue.dds</torso>
+</shirt>
+<shirt color="brown" group="torso8" id="2">
+	<arms>./meshes/arms1_brown.dds</arms>
+	<torso>./meshes/torso1_brown.dds</torso>
+</shirt>
+<shirt color="grey" group="torso8" id="3">
+	<arms>./meshes/arms1_gray.dds</arms>
+	<torso>./meshes/torso1_gray.dds</torso>
+</shirt>
+<shirt color="green" group="torso8" id="4">
+	<arms>./meshes/arms1_green.dds</arms>
+	<torso>./meshes/torso1_green.dds</torso>
+</shirt>
+<shirt color="light brown" group="torso8" id="5">
+	<arms>./meshes/arms1_lightbrown.dds</arms>
+	<torso>./meshes/torso1_lightbrown.dds</torso>
+</shirt>
+<shirt color="orange" group="torso8" id="6">
+	<arms>./meshes/arms1_orange.dds</arms>
+	<torso>./meshes/torso1_orange.dds</torso>
+</shirt>
+<shirt color="pink" group="torso8" id="7">
+	<arms>./meshes/arms1_pink.dds</arms>
+	<torso>./meshes/torso1_pink.dds</torso>
+</shirt>
+<shirt color="purple" group="torso8" id="8">
+	<arms>./meshes/arms1_purple.dds</arms>
+	<torso>./meshes/torso1_purple.dds</torso>
+</shirt>
+<shirt color="red" group="torso8" id="9">
+	<arms>./meshes/arms1_red.dds</arms>
+	<torso>./meshes/torso1_red.dds</torso>
+</shirt>
+<shirt color="white" group="torso8" id="10">
+	<arms>./meshes/arms1_white.dds</arms>
+	<torso>./meshes/torso1_white.dds</torso>
+</shirt>
+<shirt color="yellow" group="torso8" id="11">
+	<arms>./meshes/arms1_yellow.dds</arms>
+	<torso>./meshes/torso1_yellow.dds</torso>
+</shirt>
+<shirt color="leather armor" id="12">
+	<arms>./meshes/arms2.dds</arms>
+	<torso>./meshes/torso2.dds</torso>
+</shirt>
+<shirt color="chain armor" group="torso4" id="13">
+	<arms>./meshes/arms3.dds</arms>
+	<torso>./meshes/torso3.dds</torso>
+</shirt>
+<shirt color="steel chain armor" group="torso4" id="14">
+	<arms>./meshes/arms4.dds</arms>
+	<torso>./meshes/torso4.dds</torso>
+</shirt>
+<shirt color="titanium chain armor" group="torso4" id="15">
+	<arms>./meshes/arms5.dds</arms>
+	<torso>./meshes/torso5.dds</torso>
+</shirt>
+<shirt color="iron plate armor" group="torso2" id="16">
+	<arms>./meshes/arms6.dds</arms>
+	<torso>./meshes/torso6.dds</torso>
+</shirt>
+<shirt color="augmented leather" id="17">
+	<arms>./meshes/arms9.dds</arms>
+	<torso>./meshes/torso9.dds</torso>
+</shirt>
+<shirt color="fur" id="18">
+	<arms>./meshes/arms_fur1.dds</arms>
+	<torso>./meshes/torso_fur1.dds</torso>
+</shirt>
+<shirt color="steel plate armor" group="torso2" id="19">
+	<arms>./meshes/arms7.dds</arms>
+	<torso>./meshes/torso7.dds</torso>
+</shirt>
+<shirt color="titanium plate armor" group="torso2" id="20">
+	<arms>./meshes/arms8.dds</arms>
+	<torso>./meshes/torso8.dds</torso>
+</shirt>
+<shirt color="bronze plate torso" id="21">
+	<arms>./meshes/arms10.dds</arms>
+	<torso>./meshes/torso10.dds</torso>
+</shirt>
+<shirt color="red dragon armor" group="torso3" id="22">
+	<arms>./meshes/arms11.dds</arms>
+	<torso>./meshes/torso11.dds</torso>
+</shirt>
+
+
+<shirt color="brown tunic" group="torso4" id="23">
+	<arms>./meshes/arms_tunic_brown.dds</arms>
+	<torso>./meshes/torso_tunic_brown.dds</torso>
+	<torsomask>./meshes/torso_tunic_mask.dds</torsomask>
+</shirt>
+<shirt color="lavender tunic" group="torso4" id="24">
+	<arms>./meshes/arms_tunic_lavender.dds</arms>
+	<torso>./meshes/torso_tunic_lavender.dds</torso>
+	<torsomask>./meshes/torso_tunic_mask.dds</torsomask>
+</shirt>
+<shirt color="green tunic" group="torso4" id="25">
+	<arms>./meshes/arms_tunic_green.dds</arms>
+	<torso>./meshes/torso_tunic_green.dds</torso>
+	<torsomask>./meshes/torso_tunic_mask.dds</torsomask>
+</shirt>
+<shirt color="black tunic" group="torso4" id="26">
+	<arms>./meshes/arms_tunic_black.dds</arms>
+	<torso>./meshes/torso_tunic_black.dds</torso>
+	<torsomask>./meshes/torso_tunic_mask.dds</torsomask>
+</shirt>
+<shirt color="red tunic" group="torso4" id="27">
+	<arms>./meshes/arms_tunic_red.dds</arms>
+	<torso>./meshes/torso_tunic_red.dds</torso>
+	<torsomask>./meshes/torso_tunic_mask.dds</torsomask>
+</shirt>
+<shirt color="blue tunic" group="torso4" id="28">
+	<arms>./meshes/arms_tunic_blue.dds</arms>
+	<torso>./meshes/torso_tunic_blue.dds</torso>
+	<torsomask>./meshes/torso_tunic_mask.dds</torsomask>
+</shirt>'
+<shirt color="white tunic" group="torso4" id="29">
+	<arms>./meshes/arms_tunic_white.dds</arms>
+	<torso>./meshes/torso_tunic_white.dds</torso>
+	<torsomask>./meshes/torso_tunic_mask.dds</torsomask>
+</shirt>
+
+
+<shirt color="red tunic white shirt" group="torso6" id="30">
+	<arms>./meshes/arms_shirt2_redwhite.dds</arms>
+	<torso>./meshes/torso_shirt2_redwhite.dds</torso>
+	<torsomask>./meshes/torso_shirt2_mask.dds</torsomask>	
+</shirt>
+<shirt color="blue tunic white shirt" group="torso6" id="31">
+	<arms>./meshes/arms_shirt2_bluewhite.dds</arms>
+	<torso>./meshes/torso_shirt2_bluewhite.dds</torso>
+	<torsomask>./meshes/torso_shirt2_mask.dds</torsomask>	
+</shirt>
+<shirt color="brown tunic white shirt" group="torso6" id="32">
+	<arms>./meshes/arms_shirt2_brownwhite.dds</arms>
+	<torso>./meshes/torso_shirt2_brownwhite.dds</torso>
+	<torsomask>./meshes/torso_shirt2_mask.dds</torsomask>	
+</shirt>
+<shirt color="black tunic white shirt" group="torso6" id="33">
+	<arms>./meshes/arms_shirt2_blackwhite.dds</arms>
+	<torso>./meshes/torso_shirt2_blackwhite.dds</torso>
+	<torsomask>./meshes/torso_shirt2_mask.dds</torsomask>	
+</shirt>
+<shirt color="black tunic green shirt" group="torso6" id="34">
+	<arms>./meshes/arms_shirt2_blackgreen.dds</arms>
+	<torso>./meshes/torso_shirt2_blackgreen.dds</torso>
+	<torsomask>./meshes/torso_shirt2_mask.dds</torsomask>	
+</shirt>
+<shirt color="black tunic purple shirt" group="torso6" id="35">
+	<arms>./meshes/arms_shirt2_blackpurple.dds</arms>
+	<torso>./meshes/torso_shirt2_blackpurple.dds</torso>
+	<torsomask>./meshes/torso_shirt2_mask.dds</torsomask>	
+</shirt>
+<shirt color="black tunic red shirt" group="torso6" id="36">
+	<arms>./meshes/arms_shirt2_blackred.dds</arms>
+	<torso>./meshes/torso_shirt2_blackred.dds</torso>
+	<torsomask>./meshes/torso_shirt2_mask.dds</torsomask>	
+</shirt>
+<shirt color="black tunic black shirt" group="torso6" id="37">
+	<arms>./meshes/arms_shirt2_blackgray.dds</arms>
+	<torso>./meshes/torso_shirt2_blackgray.dds</torso>
+	<torsomask>./meshes/torso_shirt2_mask.dds</torsomask>	
+</shirt>
+<shirt color="brown tunic blue shirt" group="torso6" id="38">
+	<arms>./meshes/arms_shirt2_brownblue.dds</arms>
+	<torso>./meshes/torso_shirt2_brownblue.dds</torso>
+	<torsomask>./meshes/torso_shirt2_mask.dds</torsomask>	
+</shirt>
+
+
+<shirt color="purple robe shirt" group="torso5" id="39">
+	<arms>./meshes/arms_robe_purple.dds</arms>
+	<torso>./meshes/torso_robe_purple.dds</torso>
+</shirt>
+<shirt color="green robe shirt" group="torso5" id="40">
+	<arms>./meshes/arms_robe_darkgreen.dds</arms>
+	<torso>./meshes/torso_robe_darkgreen.dds</torso>
+</shirt>
+<shirt color="light blue robe shirt" group="torso5" id="41">
+	<arms>./meshes/arms_robe_lightblue.dds</arms>
+	<torso>./meshes/torso_robe_lightblue.dds</torso>
+</shirt>
+<shirt color="white robe shirt" group="torso5" id="42">
+	<arms>./meshes/arms_robe_white.dds</arms>
+	<torso>./meshes/torso_robe_white.dds</torso>
+</shirt>
+<shirt color="blue robe shirt" group="torso5" id="43">
+	<arms>./meshes/arms_robe_blue.dds</arms>
+	<torso>./meshes/torso_robe_blue.dds</torso>
+</shirt>
+<shirt color="black robe shirt" group="torso5" id="44">
+	<arms>./meshes/arms_robe_black.dds</arms>
+	<torso>./meshes/torso_robe_black.dds</torso>
+</shirt>
+<shirt color="gray robe shirt" group="torso5" id="45">
+	<arms>./meshes/arms_robe_gray.dds</arms>
+	<torso>./meshes/torso_robe_gray.dds</torso>
+</shirt>
+<shirt color="brown robe shirt" group="torso5" id="46">
+	<arms>./meshes/arms_robe_brown.dds</arms>
+	<torso>./meshes/torso_robe_brown.dds</torso>
+</shirt>
+<shirt color="red robe shirt" group="torso5" id="47">
+	<arms>./meshes/arms_robe_darkred.dds</arms>
+	<torso>./meshes/torso_robe_darkred.dds</torso>
+</shirt>
+<shirt color="yellow robe shirt" group="torso5" id="48">
+	<arms>./meshes/arms_robe_yellow.dds</arms>
+	<torso>./meshes/torso_robe_yellow.dds</torso>
+</shirt>
+
+
+<shirt color="black dragon plate armor" group="torso7" id="49">
+	<arms>./meshes/arms12.dds</arms>
+	<torso>./meshes/torso12.dds</torso>	
+</shirt>
+
+<shirt color="ice dragon plate armor" group="torso4" id="50">
+	<arms>./meshes/arms13.dds</arms>
+	<torso>./meshes/torso13.dds</torso>	
+</shirt>
+
+<shirt color="mage robe shirt" group="torso5" id="51">
+	<arms>./meshes/arms_robe_mage.dds</arms>
+	<torso>./meshes/torso_robe_mage.dds</torso>	
+</shirt>
+
+<shirt color="bluegreen vest" id="52">
+	<arms>./meshes/arms_vest_bluegreen.dds</arms>
+	<torso>./meshes/torso_vest_bluegreen.dds</torso>
+	<armsmask>./meshes/arms_vest_mask.dds</armsmask>
+	<torsomask>./meshes/torso_vest_mask.dds</torsomask>	
+</shirt>
+
+<shirt color="red vest" id="53">
+	<arms>./meshes/arms_vest_red.dds</arms>
+	<torso>./meshes/torso_vest_red.dds</torso>
+	<armsmask>./meshes/arms_vest_mask.dds</armsmask>
+	<torsomask>./meshes/torso_vest_mask.dds</torsomask>	
+</shirt>
+
+<shirt color="black vest" id="54">
+	<arms>./meshes/arms_vest_black.dds</arms>
+	<torso>./meshes/torso_vest_black.dds</torso>
+	<armsmask>./meshes/arms_vest_mask.dds</armsmask>
+	<torsomask>./meshes/torso_vest_mask.dds</torsomask>	
+</shirt>
+
+<shirt color="brown vest" id="55">
+	<arms>./meshes/arms_vest_brown.dds</arms>
+	<torso>./meshes/torso_vest_brown.dds</torso>
+	<armsmask>./meshes/arms_vest_mask.dds</armsmask>
+	<torsomask>./meshes/torso_vest_mask.dds</torsomask>	
+</shirt>
+
+<shirt color="purple white dress shirt" group="torso5" id="56">
+	<arms>./meshes/arms_dress1_purple.dds</arms>
+	<torso>./meshes/torso_dress1_purple.dds</torso>
+	<torsomask>./meshes/torso_dress1_mask.dds</torsomask>	
+</shirt>
+
+<shirt color="green white dress shirt" group="torso5" id="57">
+	<arms>./meshes/arms_dress1_green.dds</arms>
+	<torso>./meshes/torso_dress1_green.dds</torso>
+	<torsomask>./meshes/torso_dress1_mask.dds</torsomask>	
+</shirt>
+
+<shirt color="black white dress shirt" group="torso5" id="58">
+	<arms>./meshes/arms_dress1_black.dds</arms>
+	<torso>./meshes/torso_dress1_black.dds</torso>
+	<torsomask>./meshes/torso_dress1_mask.dds</torsomask>	
+</shirt>
+
+<shirt color="red pink dress shirt" group="torso5" id="59">
+	<arms>./meshes/arms_dress1_red.dds</arms>
+	<torso>./meshes/torso_dress1_red.dds</torso>
+	<torsomask>./meshes/torso_dress1_mask.dds</torsomask>	
+</shirt>
+
+
+<shirt color="blue dragon armor" group="torso9" id="60">
+	<arms>./meshes/arms14.dds</arms>
+	<torso>./meshes/torso14.dds</torso>
+</shirt>
+
+
+<shirt color="white gold wedding dress" group="torso10" id="61">
+	<arms>./meshes/arms_dress2_gold.dds</arms>
+	<torso>./meshes/torso_dress2_gold.dds</torso>
+	<torsomask>./meshes/torso_dress2_mask.dds</torsomask>	
+</shirt>
+<shirt color="white silver wedding dress" group="torso10" id="62">
+	<arms>./meshes/arms_dress2_silver.dds</arms>
+	<torso>./meshes/torso_dress2_silver.dds</torso>
+	<torsomask>./meshes/torso_dress2_mask.dds</torsomask>	
+</shirt>
+
+
+<shirt color="white red peasant dress" group="torso5" id="63">
+	<arms>./meshes/arms_dress3_whitered.dds</arms>
+	<torso>./meshes/torso_dress3_whitered.dds</torso>
+	<torsomask>./meshes/torso_dress3_mask.dds</torsomask>	
+</shirt>
+<shirt color="white blue peasant dress" group="torso5" id="64">
+	<arms>./meshes/arms_dress3_whiteblue.dds</arms>
+	<torso>./meshes/torso_dress3_whiteblue.dds</torso>
+	<torsomask>./meshes/torso_dress3_mask.dds</torsomask>	
+</shirt>
+<shirt color="brown blue peasant dress" group="torso5" id="65">
+	<arms>./meshes/arms_dress3_brownblue.dds</arms>
+	<torso>./meshes/torso_dress3_brownblue.dds</torso>
+	<torsomask>./meshes/torso_dress3_mask.dds</torsomask>	
+</shirt>
+<shirt color="purple peasant dress" group="torso5" id="66">
+	<arms>./meshes/arms_dress3_purple.dds</arms>
+	<torso>./meshes/torso_dress3_purple.dds</torso>
+	<torsomask>./meshes/torso_dress3_mask.dds</torsomask>	
+</shirt>
+
+
+<shirt color="white doublet" group="torso11" id="67">
+	<arms>./meshes/arms_doublet_white.dds</arms>
+	<torso>./meshes/torso_doublet_white.dds</torso>
+	<torsomask>./meshes/torso_doublet_mask.dds</torsomask>	
+</shirt>
+<shirt color="black doublet" group="torso11" id="68">
+	<arms>./meshes/arms_doublet_black.dds</arms>
+	<torso>./meshes/torso_doublet_black.dds</torso>
+	<torsomask>./meshes/torso_doublet_mask.dds</torsomask>	
+</shirt>
+<shirt color="navy doublet" group="torso11" id="69">
+	<arms>./meshes/arms_doublet_navy.dds</arms>
+	<torso>./meshes/torso_doublet_navy.dds</torso>
+	<torsomask>./meshes/torso_doublet_mask.dds</torsomask>	
+</shirt>
+<shirt color="brown doublet" group="torso11" id="70">
+	<arms>./meshes/arms_doublet_brown.dds</arms>
+	<torso>./meshes/torso_doublet_brown.dds</torso>
+	<torsomask>./meshes/torso_doublet_mask.dds</torsomask>	
+</shirt>
+
+
+<shirt color="brown jacket" group="torso11" id="71">
+	<arms>./meshes/arms_jacket_brown.dds</arms>
+	<torso>./meshes/torso_jacket_brown.dds</torso>
+	<torsomask>./meshes/torso_doublet_mask.dds</torsomask>	
+</shirt>
+<shirt color="green jacket" group="torso11" id="72">
+	<arms>./meshes/arms_jacket_green.dds</arms>
+	<torso>./meshes/torso_jacket_green.dds</torso>
+	<torsomask>./meshes/torso_doublet_mask.dds</torsomask>	
+</shirt>
+<shirt color="navy jacket" group="torso11" id="73">
+	<arms>./meshes/arms_jacket_navy.dds</arms>
+	<torso>./meshes/torso_jacket_navy.dds</torso>
+	<torsomask>./meshes/torso_doublet_mask.dds</torsomask>	
+</shirt>
+<shirt color="black jacket" group="torso11" id="74">
+	<arms>./meshes/arms_jacket_black.dds</arms>
+	<torso>./meshes/torso_jacket_black.dds</torso>
+	<torsomask>./meshes/torso_doublet_mask.dds</torsomask>	
+</shirt>

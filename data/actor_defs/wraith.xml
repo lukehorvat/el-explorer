@@ -1,0 +1,13 @@
+<actor type="wraith" id="6">
+	<skin>./meshes/wraith1.dds</skin>
+	<mesh>./meshes/wraith1.cmf</mesh>
+	<skeleton>./skeletons/wraith.csf</skeleton>
+	<frames>
+		<CAL_idle>./animations/wraith_idle1.caf 0</CAL_idle>
+	
+	</frames>
+	<ghost>yes</ghost>
+	<walk_speed>0.1111111119</walk_speed>
+	<run_speed>0.1111111111</run_speed>
+</actor>
+

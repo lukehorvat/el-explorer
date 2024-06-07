@@ -1,0 +1,145 @@
+<actor type="orchan male" id="40">
+	<skin>./meshes/orchan_male.dds</skin>
+	<mesh>./meshes/orchan_male.cmf</mesh>
+	<skeleton>./skeletons/medium.csf</skeleton>
+	<actor_scale>1.07</actor_scale>
+	<defaults>
+		<shirt>
+			<mesh>./meshes/torso1_dwarfm.cmf</mesh>
+		</shirt>
+		<shirt group="torso2">
+			<mesh>./meshes/torso2_dwarfm.cmf</mesh>
+		</shirt>
+		<shirt group="torso3">
+			<mesh>./meshes/torso3_dwarfm.cmf</mesh>
+		</shirt>
+		<shirt group="torso4">
+			<mesh>./meshes/torso4_dwarfm.cmf</mesh>
+		</shirt>
+		<shirt group="torso5">
+			<mesh>./meshes/torso5_dwarfm.cmf</mesh>
+		</shirt>
+		<shirt group="torso6">
+			<mesh>./meshes/torso6_dwarfm.cmf</mesh>
+		</shirt>
+		<shirt group="torso7">
+			<mesh>./meshes/torso7_dwarfm.cmf</mesh>
+		</shirt>
+		<shirt group="torso8">
+			<mesh>./meshes/torso8_dwarfm.cmf</mesh>
+		</shirt>
+		<shirt group="torso9">
+			<mesh>./meshes/torso9_dwarfm.cmf</mesh>
+		</shirt>
+		<shirt group="torso10">
+			<mesh>./meshes/torso1_dwarfm.cmf</mesh>
+		</shirt>
+		<shirt group="torso11">
+			<mesh>./meshes/torso11_dwarfm.cmf</mesh>
+		</shirt>		
+		<legs>
+			<mesh>./meshes/legs1_dwarfm.cmf</mesh>
+		</legs>
+		<legs group="legs2">
+			<mesh>./meshes/legs2_dwarfm.cmf</mesh>
+		</legs>
+		<legs group="legs3">
+			<mesh>./meshes/legs3_dwarfm.cmf</mesh>
+		</legs>
+		<legs group="legs4">
+			<mesh>./meshes/legs2_dwarfm.cmf</mesh>
+		</legs>		
+		<boots group="boots1">
+			<mesh>./meshes/boots1_dwarfm.cmf</mesh>
+		</boots>
+		<boots group="boots2">
+			<mesh>./meshes/boots2_dwarfm.cmf</mesh>
+		</boots>
+		<boots group="boots3">
+			<mesh>./meshes/boots3_dwarfm.cmf</mesh>
+		</boots>
+		<boots group="boots4">
+			<mesh>./meshes/boots4_dwarfm.cmf</mesh>
+		</boots>		
+		<shield group="quiver1">
+			<mesh>./meshes/quiver1_dwarfm.cmf</mesh>
+			<glow>none</glow>
+		</shield>
+		<shield group="quiver2">
+			<mesh>./meshes/quiver2_dwarfm.cmf</mesh>
+		</shield>
+		<neck group="1">
+			<mesh>./meshes/medallion01.cmf</mesh>
+		</neck>
+		<neck group="2">
+			<mesh>./meshes/medallion02.cmf</mesh>
+		</neck>	
+		<neck group="3">
+			<mesh>./meshes/medallion03.cmf</mesh>
+		</neck>
+		<neck group="4">
+			<mesh>./meshes/medallion04.cmf</mesh>
+		</neck>			
+	</defaults>
+
+	&standard_players;
+
+	<head number="1">
+		<mesh>./meshes/head1_orchanm.cmf</mesh>
+		<skin></skin>
+		<glow>none</glow>
+	</head>
+	<head number="2">
+		<mesh>./meshes/head2_orchanm.cmf</mesh>
+		<skin></skin>
+		<glow>none</glow>
+	</head>
+	<head number="3">
+		<mesh>./meshes/head3_orchanm.cmf</mesh>
+		<skin></skin>
+		<glow>none</glow>
+	</head>
+	<head number="4">
+		<mesh>./meshes/head4_orchanm.cmf</mesh>
+		<skin></skin>
+		<glow>none</glow>
+	</head>
+	<head number="5">
+		<mesh>./meshes/head1_orchanm.cmf</mesh>
+		<skin></skin>
+		<glow>none</glow>
+	</head>
+
+
+	<hskin color="brown">
+		<hands>./meshes/hands_orchanblue.dds</hands>
+		<head>./meshes/head_orchanmblue.dds</head>
+		<arms>./meshes/arms_skinom_blue.dds</arms>
+		<torso>./meshes/torso_skinom_blue.dds</torso>		
+	</hskin>
+	<hskin color="normal">
+		<hands>./meshes/hands_orchangreen.dds</hands>
+		<head>./meshes/head_orchanmgreen.dds</head>
+		<arms>./meshes/arms_skinom_green.dds</arms>
+		<torso>./meshes/torso_skinom_green.dds</torso>		
+	</hskin>
+	<hskin color="pale">
+		<hands>./meshes/hands_orchanpurple.dds</hands>
+		<head>./meshes/head_orchanmpurple.dds</head>
+		<arms>./meshes/arms_skinom_purple.dds</arms>
+		<torso>./meshes/torso_skinom_purple.dds</torso>		
+	</hskin>
+	<hskin color="tan">
+		<hands>./meshes/hands_tan.dds</hands>
+		<head>./meshes/head_orchanmtan.dds</head>
+		<arms>./meshes/arms_skinom_tan.dds</arms>
+		<torso>./meshes/torso_skinom_tan.dds</torso>		
+	</hskin>
+	<sounds>
+		<battlecry>Battlecry Male1</battlecry>
+		<walk scale="0.2"></walk> 
+		<pain1>Pain Male Orchan</pain1> 
+		<die1>Die Male</die1>
+		<die2>Die Male</die2>
+	</sounds>
+</actor>

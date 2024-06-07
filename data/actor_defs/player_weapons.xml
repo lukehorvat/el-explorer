@@ -1,0 +1,512 @@
+<weapon type="none" id="0" turn_horse="1" unarmed="1">
+	<mesh></mesh>
+	<skin></skin>
+        &anim_noweapon;
+	<glow>none</glow>
+		&sounds_attack_bare;
+</weapon>		
+<weapon type="sword 1" id="1" turn_horse="1">
+	<mesh>./meshes/sword1.cmf</mesh>
+	<skin>./meshes/sword1.dds</skin>
+        &anim_weapon1;
+	<glow>none</glow>
+		&sounds_attack_sword1;
+</weapon>
+<weapon type="sword 2" id="2" turn_horse="1">
+	<mesh>./meshes/sword2.cmf</mesh>
+	<skin>./meshes/sword2.dds</skin>
+        &anim_weapon1;
+	<glow>none</glow>
+		&sounds_attack_sword1;
+</weapon>
+<weapon type="sword 3" id="3" turn_horse="1">
+	<mesh>./meshes/sword3.cmf</mesh>
+	<skin>./meshes/sword3.dds</skin>
+        &anim_weapon1;
+	<glow>none</glow>
+		&sounds_attack_sword1;
+</weapon>
+<weapon type="sword 4" id="4" turn_horse="1">
+	<mesh>./meshes/sword4.cmf</mesh>
+	<skin>./meshes/sword4.dds</skin>
+        &anim_weapon1;
+	<glow>none</glow>
+		&sounds_attack_sword1;
+</weapon>
+<weapon type="sword 5" id="5" turn_horse="1">
+	<mesh>./meshes/sword5.cmf</mesh>
+	<skin>./meshes/sword5.dds</skin>
+        &anim_weapon1;
+	<glow>none</glow>
+		&sounds_attack_sword1;
+</weapon>
+<weapon type="sword 6" id="6" turn_horse="1">
+	<mesh>./meshes/sword6.cmf</mesh>
+	<skin>./meshes/sword6.dds</skin>
+        &anim_weapon1;
+	<glow>none</glow>
+		&sounds_attack_sword1;
+</weapon>
+<weapon type="sword 7" id="7" turn_horse="1">
+	<mesh>./meshes/sword7.cmf</mesh>
+	<skin>./meshes/sword7.dds</skin>
+        &anim_weapon1;
+	<glow>none</glow>
+		&sounds_attack_sword1;
+</weapon>
+<weapon type="sword 8" id="51" turn_horse="1">
+	<mesh>./meshes/sword8.cmf</mesh>
+	<skin>./meshes/sword8.dds</skin>
+        &anim_weapon1;
+	<glow>none</glow>
+		&sounds_attack_sword1;
+</weapon>	
+<weapon type="sword 9" id="52" turn_horse="1">
+	<mesh>./meshes/sword9.cmf</mesh>
+	<skin>./meshes/sword6.dds</skin>
+        &anim_weapon1;
+	<glow>none</glow>
+		&sounds_attack_sword1;
+</weapon>	
+<weapon type="sword 10" id="53" turn_horse="1">
+	<mesh>./meshes/sword10.cmf</mesh>
+	<skin>./meshes/sword10.dds</skin>
+        &anim_weapon1;
+	<glow>none</glow>
+		&sounds_attack_sword1;
+</weapon>	
+<weapon type="sword 11" id="54" turn_horse="1">
+	<mesh>./meshes/sword11.cmf</mesh>
+	<skin>./meshes/sword11.dds</skin>
+        &anim_weapon1;
+	<glow>none</glow>
+		&sounds_attack_sword1;
+</weapon>
+<weapon type="sword 12" id="55" turn_horse="1">
+	<mesh>./meshes/sword12.cmf</mesh>
+	<skin>./meshes/sword12.dds</skin>
+        &anim_weapon1;
+	<glow>none</glow>
+		&sounds_attack_sword1;
+</weapon>	
+<weapon type="sword 13" id="56" turn_horse="1">
+	<mesh>./meshes/sword13.cmf</mesh>
+	<skin>./meshes/sword13.dds</skin>
+        &anim_weapon1;
+	<glow>none</glow>
+		&sounds_attack_sword1;
+</weapon>	
+<weapon type="sword 14" id="57" turn_horse="1">
+	<mesh>./meshes/sword14.cmf</mesh>
+	<skin>./meshes/sword14.dds</skin>
+        &anim_weapon1;
+	<glow>none</glow>
+		&sounds_attack_sword1;
+</weapon>	
+<weapon type="staff 1" id="8" turn_horse="1">
+	<mesh>./meshes/staff1.cmf</mesh>
+	<skin>./meshes/staff1_brown.dds</skin>
+        &anim_weapon2;
+	<glow>none</glow>
+		&sounds_attack_staff1;
+</weapon>
+<weapon type="staff 2" id="9" turn_horse="1">
+	<mesh>./meshes/staff1.cmf</mesh>
+	<skin>./meshes/staff1_green.dds</skin>
+        &anim_weapon2;
+	<glow>none</glow>
+		&sounds_attack_staff1;
+</weapon>
+<weapon type="staff 3" id="10" turn_horse="1">
+	<mesh>./meshes/staff2.cmf</mesh>
+	<skin>./meshes/staff2.dds</skin>
+        &anim_weapon2;
+	<glow>none</glow>
+		&sounds_attack_staff1;
+</weapon>
+<weapon type="staff 4" id="11" turn_horse="1">
+	<mesh>./meshes/staff3.cmf</mesh>
+	<skin>./meshes/staff3.dds</skin>
+        &anim_weapon2;
+	<glow>none</glow>
+		&sounds_attack_staff1;
+</weapon>
+<weapon type="hammer 1" id="12" turn_horse="1">
+	<mesh>./meshes/warhammer1.cmf</mesh>
+	<skin>./meshes/warhammer1.dds</skin>
+        &anim_weapon1;
+	<glow>none</glow>
+		&sounds_attack_axe1;
+</weapon>
+<weapon type="hammer 2" id="13" turn_horse="1">
+	<mesh>./meshes/warhammer2.cmf</mesh>
+	<skin>./meshes/warhammer2.dds</skin>
+        &anim_weapon1;
+	<glow>none</glow>
+		&sounds_attack_hammer1;
+</weapon>
+<weapon type="pickaxe" id="14" turn_horse="1">
+	<mesh>./meshes/pickaxe1.cmf</mesh>
+	<skin>./meshes/pickaxe1.dds</skin>
+        &anim_weapon1;
+	<glow>none</glow>
+		&sounds_attack_hammer1;
+</weapon>
+<weapon type="sword 1 of fire" id="15" turn_horse="1">
+	<mesh>./meshes/sword1.cmf</mesh>
+	<skin>./meshes/sword1.dds</skin>
+        &anim_weapon1;
+	<glow>fire</glow>
+		&sounds_attack_sword1;
+</weapon>
+<weapon type="sword 2 of fire" id="16" turn_horse="1">
+	<mesh>./meshes/sword2.cmf</mesh>
+	<skin>./meshes/sword2.dds</skin>
+        &anim_weapon1;
+	<glow>fire</glow>
+		&sounds_attack_sword1;
+</weapon>
+<weapon type="sword 2 of ice" id="17" turn_horse="1">
+	<mesh>./meshes/sword2.cmf</mesh>
+	<skin>./meshes/sword2.dds</skin>
+        &anim_weapon1;
+	<glow>ice</glow>
+		&sounds_attack_sword1;
+</weapon>
+<weapon type="sword 3 of fire" id="18" turn_horse="1">
+	<mesh>./meshes/sword3.cmf</mesh>
+	<skin>./meshes/sword3.dds</skin>
+        &anim_weapon1;
+	<glow>fire</glow>
+		&sounds_attack_sword1;
+</weapon>
+<weapon type="sword 3 of ice" id="19" turn_horse="1">
+	<mesh>./meshes/sword3.cmf</mesh>
+	<skin>./meshes/sword3.dds</skin>
+        &anim_weapon1;
+	<glow>ice</glow>
+		&sounds_attack_sword1;
+</weapon>
+<weapon type="sword 3 of magic" id="20" turn_horse="1">
+	<mesh>./meshes/sword3.cmf</mesh>
+	<skin>./meshes/sword3.dds</skin>
+        &anim_weapon1;
+	<glow>magic</glow>
+		&sounds_attack_sword1;
+</weapon>
+<weapon type="sword 4 of fire" id="21" turn_horse="1">
+	<mesh>./meshes/sword4.cmf</mesh>
+	<skin>./meshes/sword4.dds</skin>
+        &anim_weapon1;
+	<glow>fire</glow>
+		&sounds_attack_sword1;
+</weapon>
+<weapon type="sword 4 of ice" id="22" turn_horse="1">
+	<mesh>./meshes/sword4.cmf</mesh>
+	<skin>./meshes/sword4.dds</skin>
+        &anim_weapon1;
+	<glow>ice</glow>
+		&sounds_attack_sword1;
+</weapon>
+<weapon type="sword 4 of magic" id="23" turn_horse="1">
+	<mesh>./meshes/sword4.cmf</mesh>
+	<skin>./meshes/sword4.dds</skin>
+        &anim_weapon1;
+	<glow>magic</glow>
+		&sounds_attack_sword1;
+</weapon>
+<weapon type="thermal sword 4" id="24" turn_horse="1">
+	<mesh>./meshes/sword4.cmf</mesh>
+	<skin>./meshes/sword4.dds</skin>
+        &anim_weapon1;
+	<glow>thermal</glow>
+		&sounds_attack_sword1;
+</weapon>
+<weapon type="sword 5 of fire" id="25" turn_horse="1">
+	<mesh>./meshes/sword5.cmf</mesh>
+	<skin>./meshes/sword5.dds</skin>
+        &anim_weapon1;
+	<glow>fire</glow>
+		&sounds_attack_sword1;
+</weapon>
+<weapon type="sword 5 of ice" id="26" turn_horse="1">
+	<mesh>./meshes/sword5.cmf</mesh>
+	<skin>./meshes/sword5.dds</skin>
+        &anim_weapon1;
+	<glow>ice</glow>
+		&sounds_attack_sword1;
+</weapon>
+<weapon type="sword 5 of magic" id="27" turn_horse="1">
+	<mesh>./meshes/sword5.cmf</mesh>
+	<skin>./meshes/sword5.dds</skin>
+        &anim_weapon1;
+	<glow>magic</glow>
+		&sounds_attack_sword1;
+</weapon>
+<weapon type="thermal sword 5" id="28" turn_horse="1">
+	<mesh>./meshes/sword5.cmf</mesh>
+	<skin>./meshes/sword5.dds</skin>
+        &anim_weapon1;
+	<glow>thermal</glow>
+		&sounds_attack_sword1;
+</weapon>
+<weapon type="sword 6 of fire" id="29" turn_horse="1">
+	<mesh>./meshes/sword6.cmf</mesh>
+	<skin>./meshes/sword6.dds</skin>
+        &anim_weapon1;
+	<glow>fire</glow>
+		&sounds_attack_sword1;
+</weapon>
+<weapon type="sword 6 of ice" id="30" turn_horse="1">
+	<mesh>./meshes/sword6.cmf</mesh>
+	<skin>./meshes/sword6.dds</skin>
+        &anim_weapon1;
+	<glow>ice</glow>
+		&sounds_attack_sword1;
+</weapon>
+<weapon type="sword 6 of magic" id="31" turn_horse="1">
+	<mesh>./meshes/sword6.cmf</mesh>
+	<skin>./meshes/sword6.dds</skin>
+        &anim_weapon1;
+	<glow>magic</glow>
+		&sounds_attack_sword1;
+</weapon>
+<weapon type="thermal sword 6" id="32" turn_horse="1">
+	<mesh>./meshes/sword6.cmf</mesh>
+	<skin>./meshes/sword6.dds</skin>
+        &anim_weapon1;
+	<glow>thermal</glow>
+		&sounds_attack_sword1;
+</weapon>
+<weapon type="sword 7 of fire" id="33" turn_horse="1">
+	<mesh>./meshes/sword7.cmf</mesh>
+	<skin>./meshes/sword7.dds</skin>
+        &anim_weapon1;
+	<glow>fire</glow>
+		&sounds_attack_sword1;
+</weapon>
+<weapon type="sword 7 of ice" id="34" turn_horse="1">
+	<mesh>./meshes/sword7.cmf</mesh>
+	<skin>./meshes/sword7.dds</skin>
+        &anim_weapon1;
+	<glow>ice</glow>
+		&sounds_attack_sword1;
+</weapon>
+<weapon type="sword 7 of magic" id="35" turn_horse="1">
+	<mesh>./meshes/sword7.cmf</mesh>
+	<skin>./meshes/sword7.dds</skin>
+        &anim_weapon1;
+	<glow>magic</glow>
+		&sounds_attack_sword1;
+</weapon>
+<weapon type="thermal sword 7" id="36" turn_horse="1">
+	<mesh>./meshes/sword7.cmf</mesh>
+	<skin>./meshes/sword7.dds</skin>
+        &anim_weapon1;
+	<glow>thermal</glow>
+		&sounds_attack_sword1;
+</weapon>
+<weapon type="pickaxe of magic" id="37" turn_horse="1"> 
+	<mesh>./meshes/pickaxe1.cmf</mesh>
+	<skin>./meshes/pickaxe1.dds</skin>
+        &anim_weapon1;
+	<glow>magic</glow>
+		&sounds_attack_axe1;
+</weapon>
+<weapon type="iron battle axe" id="38" turn_horse="1">
+	<mesh>./meshes/axe1.cmf</mesh>
+	<skin>./meshes/axe1.dds</skin>
+        &anim_weapon1;
+	<glow>none</glow>
+		&sounds_attack_axe1;
+</weapon>
+<weapon type="steel battle axe" id="39" turn_horse="1">
+	<mesh>./meshes/axe2.cmf</mesh>
+	<skin>./meshes/axe2.dds</skin>
+        &anim_weapon1;
+	<glow>none</glow>
+		&sounds_attack_axe1;
+</weapon>
+<weapon type="titanium battle axe" id="40" turn_horse="1">
+	<mesh>./meshes/axe3.cmf</mesh>
+	<skin>./meshes/axe3.dds</skin>
+        &anim_weapon1;
+	<glow>none</glow>
+		&sounds_attack_axe1;
+</weapon>
+<weapon type="iron battle axe of fire" id="41" turn_horse="1">
+	<mesh>./meshes/axe1.cmf</mesh>
+	<skin>./meshes/axe1.dds</skin>
+        &anim_weapon1;
+	<glow>fire</glow>
+		&sounds_attack_axe1;
+</weapon>
+<weapon type="steel battle axe of ice" id="42" turn_horse="1">
+	<mesh>./meshes/axe2.cmf</mesh>
+	<skin>./meshes/axe2.dds</skin>
+        &anim_weapon1;
+	<glow>ice</glow>
+		&sounds_attack_axe1;
+</weapon>
+<weapon type="steel battle axe of fire" id="43" turn_horse="1">
+	<mesh>./meshes/axe2.cmf</mesh>
+	<skin>./meshes/axe2.dds</skin>
+        &anim_weapon1;
+	<glow>fire</glow>
+		&sounds_attack_axe1;
+</weapon>
+<weapon type="titanium battle axe of ice" id="44" turn_horse="1">
+	<mesh>./meshes/axe3.cmf</mesh>
+	<skin>./meshes/axe3.dds</skin>
+        &anim_weapon1;
+	<glow>ice</glow>
+		&sounds_attack_axe1;
+</weapon>
+<weapon type="titanium battle axe of fire" id="45" turn_horse="1">
+	<mesh>./meshes/axe3.cmf</mesh>
+	<skin>./meshes/axe3.dds</skin>
+        &anim_weapon1;
+	<glow>fire</glow>
+		&sounds_attack_axe1;
+</weapon>
+<weapon type="titanium battle axe of magic" id="46" turn_horse="1">
+	<mesh>./meshes/axe3.cmf</mesh>
+	<skin>./meshes/axe3.dds</skin>
+        &anim_weapon1;
+	<glow>magic</glow>
+		&sounds_attack_axe1;
+</weapon>
+<weapon type="fur gloves" id="47" turn_horse="1" unarmed="1">
+	<mesh></mesh>
+	<skin>./meshes/gloves_fur.dds</skin>
+	&anim_noweapon;
+	<glow>none</glow>
+		&sounds_attack_bare;
+</weapon>
+<weapon type="leather gloves" id="48" turn_horse="1" unarmed="1">
+	<mesh></mesh>
+	<skin>./meshes/gloves_leather.dds</skin>
+        &anim_noweapon;
+	<glow>none</glow>
+		&sounds_attack_bare;
+</weapon>
+<weapon type="bone 1" id="49" turn_horse="1">
+	<mesh>./meshes/bone1.cmf</mesh>
+	<skin>./meshes/bone1.dds</skin>
+        &anim_weapon1;
+	<glow>none</glow>
+		&sounds_attack_stick1;
+</weapon>
+<weapon type="stick 1" id="50" turn_horse="1">
+	<mesh>./meshes/stick1.cmf</mesh>
+	<skin>./meshes/sticks.dds</skin>
+        &anim_weapon1;
+	<glow>none</glow>
+		&sounds_attack_stick1;
+</weapon>
+<weapon type="sword 15" id="58" turn_horse="1">
+	<mesh>./meshes/sword15.cmf</mesh>
+	<skin>./meshes/sword15.dds</skin>
+         &anim_weapon1;
+	<glow>none</glow>
+		&sounds_attack_sword1;
+</weapon>
+<weapon type="spear 1" id="59" turn_horse="1">
+	<mesh>./meshes/spear01.cmf</mesh>
+	<skin>./meshes/spear01.dds</skin>
+         &anim_weapon2;
+	<glow>none</glow>
+		&sounds_attack_hammer1;
+</weapon>
+<weapon type="halberd 1" id="60" turn_horse="1">
+	<mesh>./meshes/halberd01.cmf</mesh>
+	<skin>./meshes/halberd01.dds</skin>
+         &anim_weapon2;
+	<glow>none</glow>
+		&sounds_attack_sword1;
+</weapon>
+<weapon type="golden star mace" id="61" turn_horse="1">
+	<mesh>./meshes/mace01.cmf</mesh>
+	<skin>./meshes/mace01.dds</skin>
+         &anim_weapon1;
+	<glow>none</glow>
+		&sounds_attack_hammer1;
+</weapon>
+<weapon type="fryingpan1" id="62" turn_horse="1">
+	<mesh>./meshes/fryingpan01.cmf</mesh>
+	<skin>./meshes/fryingpan01.dds</skin>
+         &anim_weapon1;
+	<glow>none</glow>
+		&sounds_attack_bare;
+</weapon>
+<weapon type="dragon blade" id="63" turn_horse="1">
+	<mesh>./meshes/staff_sword1.cmf</mesh>
+	<skin>./meshes/staff_sword1.dds</skin>
+         &anim_weapon2;
+	<glow>none</glow>
+		&sounds_attack_sword1;
+</weapon>
+<weapon type="longbow" id="64" turn_horse="1">
+	<mesh>./meshes/bow_long01.cmf</mesh>
+	<skin>./meshes/bow_long01.dds</skin>
+         &anim_bow1;
+	<glow>none</glow>
+</weapon>
+<weapon type="shortbow" id="65" turn_horse="1">
+	<mesh>./meshes/bow_short01.cmf</mesh>
+	<skin>./meshes/bow_short01.dds</skin>
+         &anim_bow1;
+	<glow>none</glow>
+		&sounds_attack_bow1;
+</weapon>
+<weapon type="recurvebow" id="66" turn_horse="1">
+	<mesh>./meshes/bow_recurve01.cmf</mesh>
+	<skin>./meshes/bow_recurve01.dds</skin>
+         &anim_bow1;
+	<glow>none</glow>
+		&sounds_attack_bow1;
+</weapon>
+<weapon type="elvenbow" id="67" turn_horse="1">
+	<mesh>./meshes/bow_elven.cmf</mesh>
+	<skin>./meshes/bow_elven.dds</skin>
+         &anim_bow1;
+	<glow>none</glow>
+		&sounds_attack_bow1;
+</weapon>
+<weapon type="crossbow" id="68" turn_horse="1">
+	<mesh>./meshes/bow_cross01.cmf</mesh>
+	<skin>./meshes/bow_cross01.dds</skin>
+         &anim_bow2;
+	<glow>none</glow>
+		&sounds_attack_bow1;
+</weapon>
+<weapon type="saw" id="69" turn_horse="1">
+	<mesh>./meshes/saw01.cmf</mesh>
+	<skin>./meshes/saw01.dds</skin>
+        &anim_weapon1;
+	<glow>none</glow>
+		&sounds_attack_sword1;
+</weapon>
+<weapon type="scythe" id="70" turn_horse="1">
+	<mesh>./meshes/scythe01.cmf</mesh>
+	<skin>./meshes/scythe01.dds</skin>
+        &anim_weapon2;
+	<glow>none</glow>
+		&sounds_attack_staff1;
+</weapon>
+
+<weapon type="flower bouquet" id="71" turn_horse="1" unarmed="1">
+	<mesh>./meshes/bouquet01.cmf</mesh>
+	<skin>./meshes/bouquet_roses01.dds</skin>
+        &anim_noweapon;
+	<glow>none</glow>
+		&sounds_attack_bare;
+</weapon>
+
+<weapon type="sword 16" id="72" turn_horse="1">
+	<mesh>./meshes/sword16.cmf</mesh>
+	<skin>./meshes/sword16.dds</skin>
+         &anim_weapon1;
+	<glow>none</glow>
+		&sounds_attack_sword1;
+</weapon>

@@ -1,0 +1,42 @@
+<actor type="falcon" id="83">
+	<skin>./meshes/birds01.dds</skin>
+	<mesh>./meshes/bird_falcon1.cmf</mesh>
+	<skeleton>./skeletons/bird.csf</skeleton>
+	<scale>1</scale>
+	<bone_scale>1</bone_scale>
+	<mesh_scale>1</mesh_scale>
+	<frames>
+		<CAL_walk sound_scale="0.0">./animations/bird_fly1.caf 0</CAL_walk>
+		<CAL_idle>./animations/bird_fly1.caf 0</CAL_idle>
+		<CAL_idle2>./animations/bird_fly1.caf 0</CAL_idle2>
+		<CAL_in_combat duration="500">./animations/bird_intofight1.caf 1</CAL_in_combat>
+		<CAL_out_combat duration="500">./animations/bird_outfight1.caf 1</CAL_out_combat>
+		<CAL_combat_idle duration="500">./animations/bird_fightidle.caf 0</CAL_combat_idle>
+		<CAL_pain1 duration="500">./animations/bird_pain1.caf 1</CAL_pain1>
+		<CAL_die1 duration="500" sound="Eagle">./animations/bird_die1.caf 1</CAL_die1>
+		<CAL_attack_up_1 duration="500">./animations/bird_attack1.caf 1</CAL_attack_up_1>
+          	<CAL_attack_up_2 duration="500">./animations/bird_attack1.caf 1</CAL_attack_up_2>
+		<CAL_attack_up_3 duration="500">./animations/bird_attack1.caf 1</CAL_attack_up_3>
+		<CAL_attack_up_4 duration="500">./animations/bird_attack1.caf 1</CAL_attack_up_4>
+		<CAL_attack_up_5 duration="500">./animations/bird_attack1.caf 1</CAL_attack_up_5>
+		<CAL_attack_up_6 duration="500">./animations/bird_attack1.caf 1</CAL_attack_up_6>
+		<CAL_attack_up_7 duration="500">./animations/bird_attack1.caf 1</CAL_attack_up_7>
+		<CAL_attack_up_8 duration="500">./animations/bird_attack1.caf 1</CAL_attack_up_8>
+		<CAL_attack_up_9 duration="500">./animations/bird_attack1.caf 1</CAL_attack_up_9>
+		<CAL_attack_up_10 duration="500">./animations/bird_attack1.caf 1</CAL_attack_up_10>		
+		<CAL_attack_down_1 duration="500">./animations/bird_attack1.caf 1</CAL_attack_down_1>
+		<CAL_attack_down_2 duration="500">./animations/bird_attack1.caf 1</CAL_attack_down_2>
+		<CAL_attack_down_3 duration="500">./animations/bird_attack1.caf 1</CAL_attack_down_3>
+		<CAL_attack_down_4 duration="500">./animations/bird_attack1.caf 1</CAL_attack_down_4>
+		<CAL_attack_down_5 duration="500">./animations/bird_attack1.caf 1</CAL_attack_down_5>
+		<CAL_attack_down_6 duration="500">./animations/bird_attack1.caf 1</CAL_attack_down_6>
+		<CAL_attack_down_7 duration="500">./animations/bird_attack1.caf 1</CAL_attack_down_7>
+		<CAL_attack_down_8 duration="500">./animations/bird_attack1.caf 1</CAL_attack_down_8>
+		<CAL_attack_down_9 duration="500">./animations/bird_attack1.caf 1</CAL_attack_down_9>
+		<CAL_attack_down_10 duration="500">./animations/bird_attack1.caf 1</CAL_attack_down_10>	
+	</frames>
+	<ghost>no</ghost>
+	<walk_speed>0.1111111119</walk_speed>
+	<run_speed>0.1111111111</run_speed>
+</actor>
+

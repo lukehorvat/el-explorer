@@ -1,0 +1,41 @@
+<actor type="nenorocit" id="95">
+	<skin>./meshes/nenorocit.dds</skin>
+	<mesh>./meshes/nenorocit.cmf</mesh>
+	<skeleton>./skeletons/nenorocit.csf</skeleton>
+	<actor_scale>1.5</actor_scale>
+	<frames>
+		<CAL_walk sound_scale="0.2">./animations/nenorocit_walk.caf 0</CAL_walk>
+		<CAL_idle>./animations/nenorocit_idle1.caf 0</CAL_idle>
+		<CAL_idle2>./animations/nenorocit_idle2.caf 0</CAL_idle2>
+		<CAL_in_combat duration="500">./animations/nenorocit_fightin.caf 1</CAL_in_combat>
+		<CAL_out_combat duration="500">./animations/nenorocit_fightout.caf 1</CAL_out_combat>
+		<CAL_combat_idle duration="500">./animations/nenorocit_fightidle.caf 0</CAL_combat_idle>
+		<CAL_pain1 duration="500">./animations/nenorocit_pain.caf 1</CAL_pain1>
+		<CAL_die1 duration="500">./animations/nenorocit_die.caf 1</CAL_die1>
+		<CAL_attack_up_1 duration="500">./animations/nenorocit_attack1.caf 1</CAL_attack_up_1>
+          	<CAL_attack_up_2 duration="500">./animations/nenorocit_attack2.caf 1</CAL_attack_up_2>
+		<CAL_attack_up_3 duration="500">./animations/nenorocit_attack1.caf 1</CAL_attack_up_3>
+		<CAL_attack_up_4 duration="500">./animations/nenorocit_attack2.caf 1</CAL_attack_up_4>
+		<CAL_attack_up_5 duration="500">./animations/nenorocit_attack1.caf 1</CAL_attack_up_5>
+		<CAL_attack_up_6 duration="500">./animations/nenorocit_attack2.caf 1</CAL_attack_up_6>
+		<CAL_attack_up_7 duration="500">./animations/nenorocit_attack1.caf 1</CAL_attack_up_7>
+		<CAL_attack_up_8 duration="500">./animations/nenorocit_attack2.caf 1</CAL_attack_up_8>
+		<CAL_attack_up_9 duration="500">./animations/nenorocit_attack2.caf 1</CAL_attack_up_9>
+		<CAL_attack_up_10 duration="500">./animations/nenorocit_attack1.caf 1</CAL_attack_up_10>		
+		<CAL_attack_down_1 duration="500">./animations/nenorocit_attack1.caf 1</CAL_attack_down_1>
+		<CAL_attack_down_2 duration="500">./animations/nenorocit_attack1.caf 1</CAL_attack_down_2>
+		<CAL_attack_down_3 duration="500">./animations/nenorocit_attack1.caf 1</CAL_attack_down_3>
+		<CAL_attack_down_4 duration="500">./animations/nenorocit_attack1.caf 1</CAL_attack_down_4>
+		<CAL_attack_down_5 duration="500">./animations/nenorocit_attack1.caf 1</CAL_attack_down_5>
+		<CAL_attack_down_6 duration="500">./animations/nenorocit_attack1.caf 1</CAL_attack_down_6>
+		<CAL_attack_down_7 duration="500">./animations/nenorocit_attack1.caf 1</CAL_attack_down_7>
+		<CAL_attack_down_8 duration="500">./animations/nenorocit_attack1.caf 1</CAL_attack_down_8>
+		<CAL_attack_down_9 duration="500">./animations/nenorocit_attack1.caf 1</CAL_attack_down_9>
+		<CAL_attack_down_10 duration="500">./animations/nenorocit_attack1.caf 1</CAL_attack_down_10>
+
+	</frames>
+	<ghost>no</ghost>
+	<walk_speed>0.1111111119</walk_speed>
+	<run_speed>0.1111111111</run_speed>
+</actor>
+

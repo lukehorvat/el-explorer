@@ -1,0 +1,208 @@
+<legs color="black" id="0">
+	<skin>./meshes/pants1_black.dds</skin>
+	<glow>none</glow>
+</legs>
+<legs color="blue" id="1">
+	<skin>./meshes/pants1_blue.dds</skin>
+	<glow>none</glow>
+</legs>
+<legs color="brown" id="2">
+	<skin>./meshes/pants1_brown.dds</skin>
+	<glow>none</glow>
+</legs>
+<legs color="dark brown" id="3">
+	<skin>./meshes/pants1_darkbrown.dds</skin>
+	<glow>none</glow>
+</legs>
+<legs color="grey" id="4">
+	<skin>./meshes/pants1_gray.dds</skin>
+	<glow>none</glow>
+</legs>
+<legs color="green" id="5">
+	<skin>./meshes/pants1_green.dds</skin>
+	<glow>none</glow>
+</legs>
+<legs color="light brown" id="6">
+	<skin>./meshes/pants1_lightbrown.dds</skin>
+	<glow>none</glow>
+</legs>
+<legs color="red" id="7">
+	<skin>./meshes/pants1_red.dds</skin>
+	<glow>none</glow>
+</legs>
+<legs color="white" id="8">
+	<skin>./meshes/pants1_white.dds</skin>
+	<glow>none</glow>
+</legs>
+<legs color="leather" id="9">
+	<skin>./meshes/pants2.dds</skin>
+	<glow>none</glow>
+</legs>
+<legs color="iron cuisses" id="10">
+	<skin>./meshes/pants3.dds</skin>
+	<glow>none</glow>
+</legs>
+<legs color="fur" id="11">
+	<skin>./meshes/pants_fur1.dds</skin>
+	<glow>none</glow>
+</legs>
+<legs color="steel cuisses" id="12">
+	<skin>./meshes/pants4.dds</skin>
+	<glow>none</glow>
+</legs>	
+<legs color="titanium cuisses" id="13">
+	<skin>./meshes/pants5.dds</skin>
+	<glow>none</glow>
+</legs>
+<legs color="bronze cuisses" id="14">
+	<skin>./meshes/pants7.dds</skin>
+	<glow>none</glow>
+</legs>	
+<legs color="augmented leather" id="15">
+	<skin>./meshes/pants6.dds</skin>
+	<glow>none</glow>
+</legs>	
+<legs color="red dragon cuisses" id="16">
+	<skin>./meshes/pants8.dds</skin>
+	<glow>none</glow>
+</legs>	
+
+
+
+<legs color="black robe skirt" group="legs2" id="17">
+	<skin>./meshes/skirt_black.dds</skin>
+	<glow>none</glow>
+</legs>
+<legs color="gray robe skirt" group="legs2" id="18">
+	<skin>./meshes/skirt_gray.dds</skin>
+	<glow>none</glow>
+</legs>	
+<legs color="brown robe skirt" group="legs2" id="19">
+	<skin>./meshes/skirt_brown.dds</skin>
+	<glow>none</glow>
+</legs>
+<legs color="white robe skirt" group="legs2" id="20">
+	<skin>./meshes/skirt_white.dds</skin>
+	<glow>none</glow>
+</legs>	
+<legs color="blue robe skirt" group="legs2" id="21">
+	<skin>./meshes/skirt_blue.dds</skin>
+	<glow>none</glow>
+</legs>	
+<legs color="purple robe skirt" group="legs2" id="22">
+	<skin>./meshes/skirt_purple.dds</skin>
+	<glow>none</glow>
+</legs>
+<legs color="dark green robe skirt" group="legs2" id="23">
+	<skin>./meshes/skirt_darkgreen.dds</skin>
+	<glow>none</glow>
+</legs>
+<legs color="light blue robe skirt" group="legs2" id="24">
+	<skin>./meshes/skirt_lightblue.dds</skin>
+	<glow>none</glow>
+</legs>
+<legs color="dark red robe skirt" group="legs2" id="25">
+	<skin>./meshes/skirt_darkred.dds</skin>
+	<glow>none</glow>
+</legs>
+<legs color="yellow robe skirt" group="legs2" id="26">
+	<skin>./meshes/skirt_yellow.dds</skin>
+	<glow>none</glow>
+</legs>	
+
+
+
+<legs color="black red striped pants" group="legs3" id="27">
+	<skin>./meshes/pants_stripe_blackred.dds</skin>
+	<glow>none</glow>
+</legs>	
+<legs color="red white striped pants" group="legs3" id="28">
+	<skin>./meshes/pants_stripe_redwhite.dds</skin>
+	<glow>none</glow>
+</legs>	
+<legs color="black purple striped pants" group="legs3" id="29">
+	<skin>./meshes/pants_stripe_blackpurple.dds</skin>
+	<glow>none</glow>
+</legs>
+<legs color="black blue striped pants" group="legs3" id="30">
+	<skin>./meshes/pants_stripe_blackblue.dds</skin>
+	<glow>none</glow>
+</legs>
+<legs color="black baggy pants" group="legs3" id="31">
+	<skin>./meshes/pants9_black.dds</skin>
+	<glow>none</glow>
+</legs>
+<legs color="brown baggy pants" group="legs3" id="32">
+	<skin>./meshes/pants9_brown.dds</skin>
+	<glow>none</glow>
+</legs>
+
+
+<legs color="black dragon cuisses" id="33">
+	<skin>./meshes/pants10.dds</skin>
+	<glow>none</glow>
+</legs>	
+<legs color="ice dragon cuisses" group="legs3" id="34">
+	<skin>./meshes/pants11.dds</skin>
+	<glow>none</glow>
+</legs>	
+<legs color="mage robe skirt" group="legs2" id="35">
+	<skin>./meshes/skirt_mage.dds</skin>
+	<glow>none</glow>
+</legs>
+
+
+<legs color="purple white skirt" group="legs2" id="36">
+	<skin>./meshes/skirt_dress1_purple.dds</skin>
+	<glow>none</glow>
+</legs>
+
+<legs color="green white skirt" group="legs2" id="37">
+	<skin>./meshes/skirt_dress1_green.dds</skin>
+	<glow>none</glow>
+</legs>
+
+<legs color="black white skirt" group="legs2" id="38">
+	<skin>./meshes/skirt_dress1_black.dds</skin>
+	<glow>none</glow>
+</legs>
+
+<legs color="red pink skirt" group="legs2" id="39">
+	<skin>./meshes/skirt_dress1_red.dds</skin>
+	<glow>none</glow>
+</legs>
+
+<legs color="blue dragon cuisses" id="40">
+	<skin>./meshes/pants12.dds</skin>
+	<glow>none</glow>
+</legs>
+
+<legs color="white gold wedding skirt" group="legs4" id="41">
+	<skin>./meshes/skirt_dress2_gold.dds</skin>
+	<glow>none</glow>
+</legs>
+
+<legs color="white silver wedding skirt" group="legs4" id="42">
+	<skin>./meshes/skirt_dress2_silver.dds</skin>
+	<glow>none</glow>
+</legs>
+
+<legs color="white red peasant skirt" group="legs4" id="43">
+	<skin>./meshes/skirt_dress3_whitered.dds</skin>
+	<glow>none</glow>
+</legs>
+
+<legs color="white blue peasant skirt" group="legs4" id="44">
+	<skin>./meshes/skirt_dress3_whiteblue.dds</skin>
+	<glow>none</glow>
+</legs>
+
+<legs color="brown blue peasant skirt" group="legs4" id="45">
+	<skin>./meshes/skirt_dress3_brownblue.dds</skin>
+	<glow>none</glow>
+</legs>
+
+<legs color="purple peasant skirt" group="legs4" id="46">
+	<skin>./meshes/skirt_dress3_purple.dds</skin>
+	<glow>none</glow>
+</legs>

@@ -1,0 +1,24 @@
+<frames>
+	<CAL_walk>./animations/player_walk.caf 0</CAL_walk>
+	<CAL_run>./animations/player_run.caf 0</CAL_run>
+	<CAL_turn_left>./animations/player_turnright.caf 1</CAL_turn_left>
+	<CAL_turn_right>./animations/player_turnleft.caf 1</CAL_turn_right>
+	<CAL_pain1 duration="500">./animations/player_pain1.caf 1</CAL_pain1>
+	<CAL_idle>./animations/player_idle1.caf 0</CAL_idle>
+	<CAL_idle_sit>./animations/player_sit_idle.caf 0</CAL_idle_sit>
+	<CAL_sit_down>./animations/player_sit_in.caf 1</CAL_sit_down>
+	<CAL_stand_up>./animations/player_sit_out.caf 1</CAL_stand_up>
+	<CAL_in_combat duration="500">./animations/player_fight_in.caf 1</CAL_in_combat>
+	<CAL_out_combat duration="500">./animations/player_fight_out.caf 1</CAL_out_combat>
+	<CAL_combat_idle duration="500">./animations/player_fight_idle.caf 0</CAL_combat_idle>
+
+	<CAL_in_combat_held duration="500">./animations/player_horse_fightin2.caf 1</CAL_in_combat_held>
+	<CAL_out_combat_held duration="500">./animations/player_horse_fightout2.caf 1</CAL_out_combat_held>
+	<CAL_combat_idle_held duration="500">./animations/player_horse_fightidle2.caf 0</CAL_combat_idle_held>
+
+
+	<CAL_in_combat_held_unarmed duration="500">./animations/player_horse_fightin.caf 1</CAL_in_combat_held_unarmed>
+	<CAL_out_combat_held_unarmed duration="500">./animations/player_horse_fightout.caf 1</CAL_out_combat_held_unarmed>
+	<CAL_combat_idle_held_unarmed duration="500">./animations/player_horse_fightidle.caf 0</CAL_combat_idle_held_unarmed>
+
+</frames>

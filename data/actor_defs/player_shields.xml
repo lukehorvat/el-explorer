@@ -1,0 +1,105 @@
+<shield type="wood" id="0">
+	<mesh>./meshes/shield1.cmf</mesh>
+	<skin>./meshes/shield1_wood1.dds</skin>
+	<glow>none</glow>
+</shield>
+<shield type="wood enhanced" id="1">
+	<mesh>./meshes/shield1.cmf</mesh>
+	<skin>./meshes/shield1_wood2.dds</skin>
+	<glow>none</glow>
+</shield>
+<shield type="iron" id="2">
+	<mesh>./meshes/shield1.cmf</mesh>
+	<skin>./meshes/shield1_iron.dds</skin>
+	<glow>none</glow>
+</shield>
+<shield type="steel" id="3">
+	<mesh>./meshes/shield1.cmf</mesh>
+	<skin>./meshes/shield1_steel.dds</skin>
+	<glow>none</glow>
+</shield>
+<shield type="titanium" id="4">
+	<mesh>./meshes/shield2.cmf</mesh>
+	<skin>./meshes/shield2_titanium.dds</skin>
+	<glow>none</glow>
+</shield>	
+<shield type="bronze" id="5">
+	<mesh>./meshes/shield3.cmf</mesh>
+	<skin>./meshes/shield3_bronze.dds</skin>
+	<glow>none</glow>
+</shield>
+<shield type="custom" id="6">
+	<mesh>./meshes/shield4.cmf</mesh>
+	<skin>./meshes/shield4_custom.dds</skin>
+	<glow>none</glow>
+</shield>
+
+
+<shield type="quiver arrows" group="quiver1" id="7">
+	<skin>./meshes/quiver1.dds</skin>
+	<missile>0</missile>
+	<glow>none</glow>
+</shield>
+<shield type="quiver magic arrows" group="quiver1" id="8">
+	<skin>./meshes/quiver1_magic.dds</skin>
+	<missile>1</missile>
+	<glow>none</glow>
+</shield>
+<shield type="quiver fire arrows" group="quiver1" id="9">
+	<skin>./meshes/quiver1_fire.dds</skin>
+	<missile>2</missile>
+	<glow>none</glow>
+</shield>
+<shield type="quiver ice arrows" group="quiver1" id="10">
+	<skin>./meshes/quiver1_ice.dds</skin>
+	<missile>3</missile>
+	<glow>none</glow>
+</shield>
+<shield type="quiver explosive arrows" group="quiver1" id="12">
+	<skin>./meshes/quiver1_explosive.dds</skin>
+	<missile>4</missile>
+	<glow>none</glow>
+</shield>
+<shield type="quiver bolts" group="quiver2" id="13">
+	<skin>./meshes/quiver2.dds</skin>
+	<missile>5</missile>
+	<glow>none</glow>
+</shield>
+<shield type="quiver magic bolts" group="quiver2" id="14">
+	<skin>./meshes/quiver2_magic.dds</skin>
+	<missile>6</missile>
+	<glow>none</glow>
+</shield>
+<shield type="quiver fire bolts" group="quiver2" id="15">
+	<skin>./meshes/quiver2_fire.dds</skin>
+	<missile>7</missile>
+	<glow>none</glow>
+</shield>
+<shield type="quiver ice bolts" group="quiver2" id="16">
+	<skin>./meshes/quiver2_ice.dds</skin>
+	<missile>8</missile>
+	<glow>none</glow>
+</shield>
+<shield type="quiver explosive bolts" group="quiver2" id="17">
+	<skin>./meshes/quiver2_explosive.dds</skin>
+	<missile>9</missile>
+	<glow>none</glow>
+</shield>
+
+<shield type="quiver training arrows" group="quiver1" id="18">
+	<skin>./meshes/quiver1_training.dds</skin>
+	<missile>10</missile>
+	<glow>none</glow>
+</shield>
+
+<shield type="quiver training bolts" group="quiver2" id="19">
+	<skin>./meshes/quiver2_training.dds</skin>
+	<missile>11</missile>
+	<glow>none</glow>
+</shield>
+
+<shield type="blue dragon shield" id="20">
+	<mesh>./meshes/shield4.cmf</mesh>
+	<skin>./meshes/shield_bluedragon.dds</skin>
+	<glow>none</glow>
+</shield>

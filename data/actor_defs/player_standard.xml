@@ -1,0 +1,14 @@
+	<ghost>no</ghost>
+	<walk_speed>0.1111111119</walk_speed>
+	<run_speed>0.1111111111</run_speed>
+	&player_frames;
+	&boots;
+	&legs;
+	&shirts;
+	&necks;	
+	&capes;
+	&hairs;	
+	&eyes;	
+	&helmets;
+	&weapons;	
+	&shields;

@@ -1,0 +1,12 @@
+<eyes color="brown" id="0">./meshes/eyes_brown.dds</eyes>
+<eyes color="dark_brown" id="1">./meshes/eyes_browndark.dds</eyes>
+<eyes color="brown_red" id="2">./meshes/eyes_brownred.dds</eyes>
+<eyes color="light_blue" id="3">./meshes/eyes_bluelight.dds</eyes>
+<eyes color="blue" id="4">./meshes/eyes_blue.dds</eyes>
+<eyes color="dark_blue" id="5">./meshes/eyes_bluedark.dds</eyes>
+<eyes color="light_green" id="6">./meshes/eyes_greenlight.dds</eyes>
+<eyes color="green" id="7">./meshes/eyes_green.dds</eyes>
+<eyes color="dark_green" id="8">./meshes/eyes_greendark.dds</eyes>
+<eyes color="lavender" id="9">./meshes/eyes_lavender.dds</eyes>
+<eyes color="violet" id="10">./meshes/eyes_violet.dds</eyes>
+<eyes color="gold" id="11">./meshes/eyes_gold.dds</eyes>

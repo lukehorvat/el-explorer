@@ -1,0 +1,9 @@
+<holder>yes</holder>
+<parent_bone>root</parent_bone>
+<local_bone>root</local_bone>
+<held_shift x="0.0" y="0.0" z="0.16" />
+<CAL_held_walk>./animations/player_horse_walk.caf 0</CAL_held_walk>
+<CAL_held_run>./animations/player_horse_walk.caf 0</CAL_held_run>
+<CAL_held_idle>./animations/player_horse_idle.caf 0</CAL_held_idle>
+<CAL_held_pain duration="500">./animations/player_horse_pain2.caf 1</CAL_held_pain>
+<CAL_held_armed_pain duration="500">./animations/player_horse_pain2.caf 1</CAL_held_armed_pain>

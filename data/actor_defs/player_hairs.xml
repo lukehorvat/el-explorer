@@ -1,0 +1,13 @@
+<hair color="black" id="0">./meshes/hair_black.dds</hair>
+<hair color="blond" id="1">./meshes/hair_blond.dds</hair>
+<hair color="brown" id="2">./meshes/hair_brown.dds</hair>
+<hair color="grey" id="3">./meshes/hair_gray.dds</hair>
+<hair color="red" id="4">./meshes/hair_red.dds</hair>
+<hair color="white" id="5">./meshes/hair_white.dds</hair>
+<hair color="dark_brown" id="9">./meshes/hair_browndark.dds</hair>
+<hair color="strawberry" id="10">./meshes/hair_blondstrawberry.dds</hair>
+<hair color="light_blond" id="11">./meshes/hair_blondlight.dds</hair>
+<hair color="dirty_blond" id="12">./meshes/hair_blonddirty.dds</hair>
+<hair color="brown_gray" id="13">./meshes/hair_graybrown.dds</hair>
+<hair color="dark_gray" id="14">./meshes/hair_graydark.dds</hair>
+<hair color="dark_red" id="15">./meshes/hair_reddark.dds</hair>
