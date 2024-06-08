@@ -1,6 +1,7 @@
 import * as THREE from 'three';
 import WebGL from 'three/addons/capabilities/WebGL.js';
 import { DDSLoader } from 'three/addons/loaders/DDSLoader.js';
+import PromiseQueue from 'p-queue';
 import { expandXmlEntityRefs, parseXmlEntityDecls } from '../io/xml-entities';
 import { ActorDef, readActorDefs } from '../io/actor-defs';
 import { CalMesh, readCalMesh } from '../io/cal3d-meshes';
@@ -21,6 +22,7 @@ class AssetCache {
   private readonly bufferLoader: THREE.FileLoader;
   private readonly textureLoader: THREE.TextureLoader;
   private readonly ddsTextureLoader: DDSLoader;
+  private readonly taskQueue: PromiseQueue;
 
   constructor() {
     this.actorDefs = new Map();
@@ -37,6 +39,8 @@ class AssetCache {
     this.bufferLoader.setResponseType('arraybuffer');
     this.textureLoader = new THREE.TextureLoader();
     this.ddsTextureLoader = new DDSLoader();
+
+    this.taskQueue = new PromiseQueue({ concurrency: 10 });
   }
 
   async *loadAssets(): AsyncGenerator<[message: string, error?: unknown]> {
@@ -54,42 +58,19 @@ class AssetCache {
       yield ['Failed to load actor definitions.', error];
     }
 
-    yield ['Loading actor skins...'];
-    try {
-      for (const actorDef of this.actorDefs.values()) {
-        await this.loadDDSTexture(actorDef.skinPath);
+    for (const actorDef of this.actorDefs.values()) {
+      void this.loadDDSTexture(actorDef.skinPath);
+      void this.loadCalMesh(actorDef.meshPath);
+      void this.loadCalSkeleton(actorDef.skeletonPath);
+      for (const animation of actorDef.animations) {
+        void this.loadCalAnimation(animation.path);
       }
-    } catch (error) {
-      yield ['Failed to load actor skins.', error];
     }
 
-    yield ['Loading actor meshes...'];
     try {
-      for (const actorDef of this.actorDefs.values()) {
-        await this.loadCalMesh(actorDef.meshPath);
-      }
+      await this.taskQueue.onIdle();
     } catch (error) {
-      yield ['Failed to load actor meshes.', error];
-    }
-
-    yield ['Loading actor skeletons...'];
-    try {
-      for (const actorDef of this.actorDefs.values()) {
-        await this.loadCalSkeleton(actorDef.skeletonPath);
-      }
-    } catch (error) {
-      yield ['Failed to load actor skeletons.', error];
-    }
-
-    yield ['Loading actor animations...'];
-    try {
-      for (const actorDef of this.actorDefs.values()) {
-        for (const animation of actorDef.animations) {
-          await this.loadCalAnimation(animation.path);
-        }
-      }
-    } catch (error) {
-      yield ['Failed to load actor animations.', error];
+      yield ['Failed to load actors.', error];
     }
 
     yield ['Loading custom assets...'];
@@ -105,14 +86,20 @@ class AssetCache {
       'data/actor_defs/actor_defs.xml'
     )) as string;
     const entityXmls = new Map<string, string>();
+    const tasks: Promise<void>[] = [];
 
     for (const [entityName, entityUri] of parseXmlEntityDecls(xml)) {
-      const entityXml = (await this.stringLoader.loadAsync(
-        `data/actor_defs/${entityUri}`
-      )) as string;
-      entityXmls.set(entityName, entityXml);
+      tasks.push(
+        this.taskQueue.add(async () => {
+          const entityXml = (await this.stringLoader.loadAsync(
+            `data/actor_defs/${entityUri}`
+          )) as string;
+          entityXmls.set(entityName, entityXml);
+        })
+      );
     }
 
+    await Promise.all(tasks);
     const expandedXml = expandXmlEntityRefs(xml, entityXmls);
     const actorDefs = readActorDefs(expandedXml).filter(
       (def) => !ignoredActorDefs.has(def.name)
@@ -124,35 +111,43 @@ class AssetCache {
   }
 
   private async loadDDSTexture(filePath: string): Promise<void> {
-    if (this.ddsTextures.has(filePath)) return;
-
-    const texture = await this.ddsTextureLoader.loadAsync(`data/${filePath}`);
-    texture.wrapS = texture.wrapT = THREE.RepeatWrapping;
-    this.ddsTextures.set(filePath, texture);
+    return this.taskQueue.add(async () => {
+      if (this.ddsTextures.has(filePath)) return;
+      const texture = await this.ddsTextureLoader.loadAsync(`data/${filePath}`);
+      if (this.ddsTextures.has(filePath)) return;
+      texture.wrapS = texture.wrapT = THREE.RepeatWrapping;
+      this.ddsTextures.set(filePath, texture);
+    });
   }
 
   private async loadCalMesh(filePath: string): Promise<void> {
-    if (this.calMeshes.has(filePath)) return;
-
-    const buffer = await this.bufferLoader.loadAsync(`data/${filePath}`);
-    const calMesh = readCalMesh(buffer as ArrayBuffer)[0]; // EL's Cal3D meshes only have one sub-mesh. 🤷‍♂️
-    this.calMeshes.set(filePath, calMesh);
+    return this.taskQueue.add(async () => {
+      if (this.calMeshes.has(filePath)) return;
+      const buffer = await this.bufferLoader.loadAsync(`data/${filePath}`);
+      if (this.calMeshes.has(filePath)) return;
+      const calMesh = readCalMesh(buffer as ArrayBuffer)[0]; // EL's Cal3D meshes only have one sub-mesh. 🤷‍♂️
+      this.calMeshes.set(filePath, calMesh);
+    });
   }
 
   private async loadCalSkeleton(filePath: string): Promise<void> {
-    if (this.calSkeletons.has(filePath)) return;
-
-    const buffer = await this.bufferLoader.loadAsync(`data/${filePath}`);
-    const calSkeleton = readCalSkeleton(buffer as ArrayBuffer);
-    this.calSkeletons.set(filePath, calSkeleton);
+    return this.taskQueue.add(async () => {
+      if (this.calSkeletons.has(filePath)) return;
+      const buffer = await this.bufferLoader.loadAsync(`data/${filePath}`);
+      if (this.calSkeletons.has(filePath)) return;
+      const calSkeleton = readCalSkeleton(buffer as ArrayBuffer);
+      this.calSkeletons.set(filePath, calSkeleton);
+    });
   }
 
   private async loadCalAnimation(filePath: string): Promise<void> {
-    if (this.calAnimations.has(filePath)) return;
-
-    const buffer = await this.bufferLoader.loadAsync(`data/${filePath}`);
-    const calAnimation = readCalAnimation(buffer as ArrayBuffer);
-    this.calAnimations.set(filePath, calAnimation);
+    return this.taskQueue.add(async () => {
+      if (this.calAnimations.has(filePath)) return;
+      const buffer = await this.bufferLoader.loadAsync(`data/${filePath}`);
+      if (this.calAnimations.has(filePath)) return;
+      const calAnimation = readCalAnimation(buffer as ArrayBuffer);
+      this.calAnimations.set(filePath, calAnimation);
+    });
   }
 
   private async loadCustomAssets(): Promise<void> {
