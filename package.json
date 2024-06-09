@@ -6,6 +6,7 @@
     "lint": "eslint src"
   },
   "dependencies": {
+    "@react-three/drei": "^9.106.0",
     "@react-three/fiber": "^8.16.8",
     "bootstrap": "^5.3.3",
     "bootstrap-icons": "^1.11.3",

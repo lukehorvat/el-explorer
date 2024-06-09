@@ -1,5 +1,5 @@
 import React, { ReactNode } from 'react';
-import { Button, ButtonGroup, Stack } from 'react-bootstrap';
+import { ButtonGroup, Stack } from 'react-bootstrap';
 import './Sidebar.css';
 
 export function Sidebar(props: { children?: ReactNode }): React.JSX.Element {
@@ -34,12 +34,20 @@ export function SidebarNavButtons(props: {
 }): React.JSX.Element {
   return (
     <ButtonGroup className="SidebarNavButtons" size="sm">
-      <Button onClick={() => props.onNavigate('prev')} title="Previous">
+      <button
+        className="btn btn-primary"
+        onClick={() => props.onNavigate('prev')}
+        title="Previous"
+      >
         <i className="bi-arrow-up" />
-      </Button>
-      <Button onClick={() => props.onNavigate('next')} title="Next">
+      </button>
+      <button
+        className="btn btn-primary"
+        onClick={() => props.onNavigate('next')}
+        title="Next"
+      >
         <i className="bi-arrow-down" />
-      </Button>
+      </button>
     </ButtonGroup>
   );
 }

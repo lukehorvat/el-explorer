@@ -1,5 +1,5 @@
 import React from 'react';
-import { Button, OverlayTrigger, Stack, Tooltip } from 'react-bootstrap';
+import { OverlayTrigger, Stack, Tooltip } from 'react-bootstrap';
 import { ExtractAtomValue, useSetAtom } from 'jotai';
 import { appState } from '../app-state';
 import './Home.css';
@@ -42,13 +42,13 @@ export function Home(): React.JSX.Element {
       {pages
         .map<[page: (typeof pages)[0], button: React.JSX.Element]>((page) => [
           page,
-          <Button
-            size="lg"
+          <button // See: https://github.com/pmndrs/drei/issues/1193
+            className="btn btn-primary btn-lg"
             onClick={() => page.enabled && setPage(page.id)}
             key={page.id}
           >
             {page.name}
-          </Button>,
+          </button>,
         ])
         .map(([page, button]) =>
           page.enabled ? (
