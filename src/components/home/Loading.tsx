@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import { Spinner, Stack } from 'react-bootstrap';
 import { useSetAtom } from 'jotai';
-import { stateAtoms } from '../lib/state';
-import { assetCache } from '../lib/asset-cache';
+import { stateAtoms } from '../../lib/state';
+import { assetCache } from '../../lib/asset-cache';
 
 export function Loading(): React.JSX.Element {
   const [loadingMessage, isError] = useLoadingMessage();

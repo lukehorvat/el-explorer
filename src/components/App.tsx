@@ -2,11 +2,11 @@ import React from 'react';
 import { Stack } from 'react-bootstrap';
 import { useAtomValue } from 'jotai';
 import { stateAtoms } from '../lib/state';
-import { TopBar } from './TopBar';
-import { BottomBar } from './BottomBar';
-import { Loading } from './Loading';
-import { Home } from './Home';
-import { Actors } from './Actors';
+import { Navbar } from './shell/Navbar';
+import { Footer } from './shell/Footer';
+import { Loading } from './home/Loading';
+import { Home } from './home/Home';
+import { Actors } from './actors/Actors';
 import './App.css';
 
 export function App(): React.JSX.Element {
@@ -14,7 +14,7 @@ export function App(): React.JSX.Element {
 
   return (
     <Stack className="App" direction="vertical">
-      <TopBar />
+      <Navbar />
       <Stack className="Middle" direction="vertical">
         {(() => {
           switch (page) {
@@ -27,7 +27,7 @@ export function App(): React.JSX.Element {
           }
         })()}
       </Stack>
-      <BottomBar />
+      <Footer />
     </Stack>
   );
 }

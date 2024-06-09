@@ -1,23 +1,23 @@
 import React from 'react';
-import { Container, Nav, Navbar } from 'react-bootstrap';
+import { Container, Nav, Navbar as BsNavbar } from 'react-bootstrap';
 import { useAtom } from 'jotai';
-import { stateAtoms } from '../lib/state';
-import './TopBar.css';
+import { stateAtoms } from '../../lib/state';
+import './Navbar.css';
 
-export function TopBar(): React.JSX.Element {
+export function Navbar(): React.JSX.Element {
   const [page, setPage] = useAtom(stateAtoms.page);
 
   return (
-    <Navbar className="TopBar py-2">
+    <BsNavbar className="Navbar py-2">
       <Container className="px-3" fluid>
-        <Navbar.Brand href="#" onClick={() => setPage('home')}>
+        <BsNavbar.Brand href="#" onClick={() => setPage('home')}>
           Eternal Lands Explorer
-        </Navbar.Brand>
+        </BsNavbar.Brand>
         {page !== 'loading' && page !== 'home' && (
-          <Navbar.Text className="me-auto fs-5">
+          <BsNavbar.Text className="me-auto fs-5">
             <i className="bi-arrow-right me-3 fs-6" />
             Actors
-          </Navbar.Text>
+          </BsNavbar.Text>
         )}
         <Nav.Link
           href="https://github.com/lukehorvat/el-explorer"
@@ -27,6 +27,6 @@ export function TopBar(): React.JSX.Element {
           <i className="bi-github fs-4" />
         </Nav.Link>
       </Container>
-    </Navbar>
+    </BsNavbar>
   );
 }

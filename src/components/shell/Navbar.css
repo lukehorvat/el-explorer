@@ -1,9 +1,9 @@
-.TopBar {
+.Navbar {
   background: var(--bs-tertiary-bg);
   z-index: 1;
 }
 
-.TopBar .navbar-text {
+.Navbar .navbar-text {
   padding-top: var(--bs-navbar-brand-padding-y);
   padding-bottom: var(--bs-navbar-brand-padding-y);
 }

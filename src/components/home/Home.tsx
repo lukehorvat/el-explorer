@@ -1,7 +1,7 @@
 import React from 'react';
 import { Button, OverlayTrigger, Stack, Tooltip } from 'react-bootstrap';
 import { ExtractAtomValue, useSetAtom } from 'jotai';
-import { stateAtoms } from '../lib/state';
+import { stateAtoms } from '../../lib/state';
 import './Home.css';
 
 export function Home(): React.JSX.Element {

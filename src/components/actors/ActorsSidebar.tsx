@@ -1,19 +1,24 @@
-import React, { ReactNode } from 'react';
-import { Button, ButtonGroup, Form, Stack } from 'react-bootstrap';
+import React from 'react';
+import { Form, Stack } from 'react-bootstrap';
 import { useAtom, useAtomValue } from 'jotai';
-import { stateAtoms } from '../lib/state';
-import { assetCache } from '../lib/asset-cache';
-import { useAnimationFrames } from '../hooks/useAnimationFrames';
-import './LeftBar.css';
+import { stateAtoms } from '../../lib/state';
+import { assetCache } from '../../lib/asset-cache';
+import { useAnimationFrames } from '../../hooks/useAnimationFrames';
+import {
+  Sidebar,
+  SidebarNavButtons,
+  SidebarSection,
+  navigateTo,
+} from '../shell/Sidebar';
 
-export function LeftBar(): React.JSX.Element {
+export function ActorsSidebar(): React.JSX.Element {
   return (
-    <Stack className="LeftBar p-3" direction="vertical" gap={4}>
+    <Sidebar>
       <ActorSection />
       <AppearanceSection />
       <AnimationSection />
       <MiscSection />
-    </Stack>
+    </Sidebar>
   );
 }
 
@@ -24,11 +29,11 @@ function ActorSection(): React.JSX.Element {
   );
   const moveToActor = (direction: 'prev' | 'next'): void => {
     const actorTypes = sortedActorDefs.map((def) => def.type);
-    setActorType(moveTo(actorType, actorTypes, direction));
+    setActorType(navigateTo(actorType, actorTypes, direction));
   };
 
   return (
-    <LeftBarSection title="Actor" icon="bi-person-fill">
+    <SidebarSection title="Actor" icon="bi-person-fill">
       <Stack direction="horizontal" gap={2}>
         <Form.Label column="sm" className="flex-grow-0">
           Type:
@@ -44,9 +49,9 @@ function ActorSection(): React.JSX.Element {
             </option>
           ))}
         </Form.Select>
-        <NavigationButtons onNavigate={moveToActor} />
+        <SidebarNavButtons onNavigate={moveToActor} />
       </Stack>
-    </LeftBarSection>
+    </SidebarSection>
   );
 }
 
@@ -63,11 +68,11 @@ function AppearanceSection(): React.JSX.Element {
     'silhouette',
   ];
   const moveToSkin = (direction: 'prev' | 'next'): void => {
-    setSkinType(moveTo(skinType, skinTypes, direction));
+    setSkinType(navigateTo(skinType, skinTypes, direction));
   };
 
   return (
-    <LeftBarSection title="Appearance" icon="bi-palette-fill">
+    <SidebarSection title="Appearance" icon="bi-palette-fill">
       <Stack direction="horizontal" gap={2}>
         <Form.Label column="sm" className="flex-grow-0">
           Skin:
@@ -85,7 +90,7 @@ function AppearanceSection(): React.JSX.Element {
             </option>
           ))}
         </Form.Select>
-        <NavigationButtons onNavigate={moveToSkin} />
+        <SidebarNavButtons onNavigate={moveToSkin} />
       </Stack>
       <Stack direction="horizontal" gap={2}>
         <Form.Label column="sm">Skeleton:</Form.Label>
@@ -95,7 +100,7 @@ function AppearanceSection(): React.JSX.Element {
           onChange={(event) => setShowSkeleton(event.target.checked)}
         />
       </Stack>
-    </LeftBarSection>
+    </SidebarSection>
   );
 }
 
@@ -115,15 +120,15 @@ function AnimationSection(): React.JSX.Element {
     ...actorDef.animations.map((animation) => animation.type),
   ];
   const moveToAnimation = (direction: 'prev' | 'next'): void => {
-    setAnimationType(moveTo(animationType, animationTypes, direction));
+    setAnimationType(navigateTo(animationType, animationTypes, direction));
   };
   const animationSpeeds = [1.5, 1, 0.5, 0.1];
   const moveToSpeed = (direction: 'prev' | 'next'): void => {
-    setAnimationSpeed(moveTo(animationSpeed, animationSpeeds, direction));
+    setAnimationSpeed(navigateTo(animationSpeed, animationSpeeds, direction));
   };
 
   return (
-    <LeftBarSection title="Animation" icon="bi-person-walking">
+    <SidebarSection title="Animation" icon="bi-person-walking">
       <Stack direction="horizontal" gap={2}>
         <Form.Label column="sm" className="flex-grow-0">
           Type:
@@ -139,7 +144,7 @@ function AnimationSection(): React.JSX.Element {
             </option>
           ))}
         </Form.Select>
-        <NavigationButtons onNavigate={moveToAnimation} />
+        <SidebarNavButtons onNavigate={moveToAnimation} />
       </Stack>
       {animationType && (
         <>
@@ -168,7 +173,7 @@ function AnimationSection(): React.JSX.Element {
                 </option>
               ))}
             </Form.Select>
-            <NavigationButtons onNavigate={moveToSpeed} />
+            <SidebarNavButtons onNavigate={moveToSpeed} />
           </Stack>
           <Stack direction="horizontal" gap={2}>
             <Form.Label column="sm">Playback:</Form.Label>
@@ -185,7 +190,7 @@ function AnimationSection(): React.JSX.Element {
           </Stack>
         </>
       )}
-    </LeftBarSection>
+    </SidebarSection>
   );
 }
 
@@ -197,7 +202,7 @@ function MiscSection(): React.JSX.Element {
   const [autoRotate, setAutoRotate] = useAtom(stateAtoms.autoRotate);
 
   return (
-    <LeftBarSection title="Miscellaneous" icon="bi-gear-fill">
+    <SidebarSection title="Miscellaneous" icon="bi-gear-fill">
       <Stack direction="horizontal" gap={2}>
         <Form.Label column="sm">Environment:</Form.Label>
         <Form.Check
@@ -222,51 +227,6 @@ function MiscSection(): React.JSX.Element {
           onChange={(event) => setShowStats(event.target.checked)}
         />
       </Stack>
-    </LeftBarSection>
+    </SidebarSection>
   );
-}
-
-function LeftBarSection(props: {
-  title: string;
-  icon: string;
-  children?: ReactNode;
-}): React.JSX.Element {
-  return (
-    <Stack className="flex-grow-0" direction="vertical" gap={1}>
-      <Stack direction="horizontal" gap={2}>
-        <i className={props.icon} />
-        <span className="flex-grow-1 fw-bold">{props.title}</span>
-      </Stack>
-      <hr className="my-0" />
-      <Stack className="mt-1" direction="vertical" gap={1}>
-        {props.children}
-      </Stack>
-    </Stack>
-  );
-}
-
-function NavigationButtons(props: {
-  onNavigate: (direction: 'prev' | 'next') => void;
-}): React.JSX.Element {
-  return (
-    <ButtonGroup className="NavigationButtons" size="sm">
-      <Button onClick={() => props.onNavigate('prev')} title="Previous">
-        <i className="bi-arrow-up" />
-      </Button>
-      <Button onClick={() => props.onNavigate('next')} title="Next">
-        <i className="bi-arrow-down" />
-      </Button>
-    </ButtonGroup>
-  );
-}
-
-function moveTo<T>(currentItem: T, items: T[], direction: 'prev' | 'next'): T {
-  const currentIndex = items.indexOf(currentItem);
-  let newIndex = currentIndex + (direction === 'next' ? 1 : -1);
-  if (newIndex < 0) {
-    newIndex = items.length - 1;
-  } else if (newIndex >= items.length) {
-    newIndex = 0;
-  }
-  return items[newIndex];
 }

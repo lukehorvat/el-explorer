@@ -1,0 +1,14 @@
+.Sidebar {
+  /* Prevent weird shifts in width caused by scrollbar as screen is shortened. */
+  --sidebar-width: 250px;
+  width: var(--sidebar-width);
+  min-width: var(--sidebar-width);
+  max-width: var(--sidebar-width);
+  overflow-y: auto; /* Show scrollbar on short screens. */
+}
+
+.Sidebar .SidebarNavButtons button {
+  --sidebar-nav-button-padding-x: calc(var(--bs-btn-padding-x) / 4);
+  padding-left: var(--sidebar-nav-button-padding-x);
+  padding-right: var(--sidebar-nav-button-padding-x);
+}

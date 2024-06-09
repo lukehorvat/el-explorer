@@ -1,7 +1,7 @@
 import React from 'react';
 import { Stack } from 'react-bootstrap';
-import { LeftBar } from './LeftBar';
-import { Scene } from './Scene';
+import { ActorsSidebar } from './ActorsSidebar';
+import { ActorsScene } from './ActorsScene';
 import './Actors.css';
 
 export function Actors(): React.JSX.Element {
@@ -10,8 +10,8 @@ export function Actors(): React.JSX.Element {
       className="Actors flex-grow-1 align-items-stretch"
       direction="horizontal"
     >
-      <LeftBar />
-      <Scene />
+      <ActorsSidebar />
+      <ActorsScene />
     </Stack>
   );
 }

@@ -1,8 +1,8 @@
 import React, { useEffect, useRef } from 'react';
-import { SceneManager } from '../lib/scene-manager';
-import './Scene.css';
+import { SceneManager } from '../../lib/scene-manager';
+import './ActorsScene.css';
 
-export function Scene(): React.JSX.Element {
+export function ActorsScene(): React.JSX.Element {
   const canvasRef = useRef<HTMLCanvasElement>(null!);
 
   useEffect(() => {
@@ -13,5 +13,5 @@ export function Scene(): React.JSX.Element {
     };
   }, []);
 
-  return <canvas className="Scene flex-grow-1" ref={canvasRef} />;
+  return <canvas className="ActorsScene flex-grow-1" ref={canvasRef} />;
 }
