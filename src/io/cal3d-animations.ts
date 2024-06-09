@@ -80,6 +80,10 @@ export function readCalAnimation(buffer: ArrayBuffer): CalAnimation {
     });
   }
 
+  if (offset !== buffer.byteLength) {
+    throw new Error('Failed to read entire Cal3D animation file.');
+  }
+
   return {
     duration,
     tracks,

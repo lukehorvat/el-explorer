@@ -97,5 +97,9 @@ export function readCalSkeleton(buffer: ArrayBuffer): CalBone[] {
     });
   }
 
+  if (offset !== buffer.byteLength) {
+    throw new Error('Failed to read entire Cal3D skeleton file.');
+  }
+
   return skeleton;
 }

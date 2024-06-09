@@ -190,5 +190,9 @@ export function readCalMesh(buffer: ArrayBuffer): CalMesh[] {
     });
   }
 
+  if (offset !== buffer.byteLength) {
+    throw new Error('Failed to read entire Cal3D mesh file.');
+  }
+
   return subMeshes;
 }
