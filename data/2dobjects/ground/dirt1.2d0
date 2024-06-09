@@ -1,0 +1,10 @@
+texture: dirt.dds
+file_x_len: 255
+file_y_len: 255
+x_size: 2.0
+y_size: 2.0
+u_start: 0
+u_end: 128
+v_start: 0
+v_end: 128
+type: ground

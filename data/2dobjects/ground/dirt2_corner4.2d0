@@ -1,0 +1,10 @@
+texture: dirt2_edges.dds
+file_x_len: 255
+file_y_len: 255
+x_size: 0.75
+y_size: 0.75
+u_start: 192
+u_end: 254
+v_start: 193
+v_end: 255
+type: ground

@@ -1,0 +1,10 @@
+texture: corners1.dds
+file_x_len: 255
+file_y_len: 255
+x_size: 0.75
+y_size: 0.75
+u_start: 0
+u_end: 84
+v_start: 1
+v_end: 64
+type: ground

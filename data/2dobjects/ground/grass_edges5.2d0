@@ -1,0 +1,11 @@
+texture: grass_edges2.dds
+file_x_len: 255
+file_y_len: 255
+x_size: 1.0
+y_size: 3.0
+u_start: 86
+u_end: 168
+v_start: 1
+v_end: 255
+type: ground
+alpha_test: 0.1

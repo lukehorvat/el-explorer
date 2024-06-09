@@ -1,0 +1,11 @@
+texture: stones1.dds
+file_x_len: 127
+file_y_len: 127
+x_size: 1.0
+y_size: 1.0
+u_start: 0
+u_end: 64
+v_start: 64
+v_end: 127
+type: ground
+alpha_test: 0.3

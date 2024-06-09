@@ -1,0 +1,10 @@
+texture: bones.dds
+file_x_len: 255
+file_y_len: 255
+x_size: 0.75
+y_size: 0.75
+u_start: 64
+u_end: 128
+v_start: 128
+v_end: 192
+type: ground
