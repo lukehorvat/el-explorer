@@ -2,6 +2,7 @@ import * as THREE from 'three';
 import WebGL from 'three/addons/capabilities/WebGL.js';
 import { DDSLoader } from 'three/addons/loaders/DDSLoader.js';
 import { expandXmlEntityRefs, parseXmlEntityDecls } from '../io/xml-entities';
+import { Object2dDef, readObject2dDef } from '../io/object2d-defs';
 import { ActorDef, readActorDefs } from '../io/actor-defs';
 import { CalMesh, readCalMesh } from '../io/cal3d-meshes';
 import { CalBone, readCalSkeleton } from '../io/cal3d-skeletons';
@@ -9,6 +10,7 @@ import { CalAnimation, readCalAnimation } from '../io/cal3d-animations';
 import groundImageUrl from '../../images/ground.jpg';
 
 class AssetCache {
+  readonly object2dDefs: Map<string, Object2dDef>;
   readonly actorDefs: Map<number, ActorDef>;
   readonly ddsTextures: Map<string, THREE.Texture>;
   readonly calMeshes: Map<string, CalMesh>;
@@ -23,6 +25,7 @@ class AssetCache {
   private readonly ddsTextureLoader: DDSLoader;
 
   constructor() {
+    this.object2dDefs = new Map();
     this.actorDefs = new Map();
     this.ddsTextures = new Map();
     this.calMeshes = new Map();
@@ -45,6 +48,24 @@ class AssetCache {
         'Your browser does not support WebGL.',
         new Error('WebGL not supported.'),
       ];
+    }
+
+    yield ['Loading 2D object definitions...'];
+    try {
+      await this.loadObject2dDefs();
+    } catch (error) {
+      yield ['Failed to load 2D object definitions.', error];
+    }
+
+    yield ['Loading 2D object textures...'];
+    try {
+      for (const [object2dDefPath, object2dDef] of this.object2dDefs) {
+        // Texture path is relative to the 2D object def's path.
+        const dir = object2dDefPath.slice(0, object2dDefPath.lastIndexOf('/'));
+        await this.loadDDSTexture(`${dir}/${object2dDef.texturePath}`);
+      }
+    } catch (error) {
+      yield ['Failed to load 2D object textures.', error];
     }
 
     yield ['Loading actor definitions...'];
@@ -100,6 +121,16 @@ class AssetCache {
     }
   }
 
+  private async loadObject2dDefs(): Promise<void> {
+    const object2dDefPaths: string[] = JSON.parse(
+      (await this.stringLoader.loadAsync('2dobjects.json')) as string
+    );
+
+    for (const object2dDefPath of object2dDefPaths) {
+      await this.loadObject2dDef(`2dobjects/${object2dDefPath}`);
+    }
+  }
+
   private async loadActorDefs(): Promise<void> {
     const xml = (await this.stringLoader.loadAsync(
       'data/actor_defs/actor_defs.xml'
@@ -121,6 +152,14 @@ class AssetCache {
     for (const actorDef of actorDefs) {
       this.actorDefs.set(actorDef.type, actorDef);
     }
+  }
+
+  private async loadObject2dDef(filePath: string): Promise<void> {
+    if (this.object2dDefs.has(filePath)) return;
+
+    const data = await this.stringLoader.loadAsync(`data/${filePath}`);
+    const object2dDef = readObject2dDef(data as string);
+    this.object2dDefs.set(filePath, object2dDef);
   }
 
   private async loadDDSTexture(filePath: string): Promise<void> {

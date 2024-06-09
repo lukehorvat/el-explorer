@@ -75,9 +75,9 @@ export default {
       patterns: [{ from: 'data', to: 'data' }],
     }),
     new AddAssetPlugin(
-      'maps.json',
+      '2dobjects.json',
       JSON.stringify(
-        globSync('**/*.elm.gz', { cwd: path.join(dirname, 'data/maps') })
+        globSync('**/*.2d0', { cwd: path.join(dirname, 'data/2dobjects') })
       )
     ),
     new AddAssetPlugin(
@@ -87,9 +87,9 @@ export default {
       )
     ),
     new AddAssetPlugin(
-      '2dobjects.json',
+      'maps.json',
       JSON.stringify(
-        globSync('**/*.2d0', { cwd: path.join(dirname, 'data/2dobjects') })
+        globSync('**/*.elm.gz', { cwd: path.join(dirname, 'data/maps') })
       )
     ),
   ],
