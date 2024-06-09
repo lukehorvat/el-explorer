@@ -7,7 +7,6 @@ import { ActorDef, readActorDefs } from '../io/actor-defs';
 import { CalMesh, readCalMesh } from '../io/cal3d-meshes';
 import { CalBone, readCalSkeleton } from '../io/cal3d-skeletons';
 import { CalAnimation, readCalAnimation } from '../io/cal3d-animations';
-import groundImageUrl from '../../images/ground.jpg';
 
 class AssetCache {
   readonly object2dDefs: Map<string, Object2dDef>;
@@ -16,9 +15,6 @@ class AssetCache {
   readonly calMeshes: Map<string, CalMesh>;
   readonly calSkeletons: Map<string, CalBone[]>;
   readonly calAnimations: Map<string, CalAnimation>;
-  readonly customAssets: /* "Custom" = not bundled with EL client; not from /data. */ {
-    textures: Map<string, THREE.Texture>;
-  };
   private readonly stringLoader: THREE.FileLoader;
   private readonly bufferLoader: THREE.FileLoader;
   private readonly textureLoader: THREE.TextureLoader;
@@ -31,9 +27,6 @@ class AssetCache {
     this.calMeshes = new Map();
     this.calSkeletons = new Map();
     this.calAnimations = new Map();
-    this.customAssets = {
-      textures: new Map(),
-    };
 
     this.stringLoader = new THREE.FileLoader();
     this.bufferLoader = new THREE.FileLoader();
@@ -112,13 +105,6 @@ class AssetCache {
     } catch (error) {
       yield ['Failed to load actor animations.', error];
     }
-
-    yield ['Loading custom assets...'];
-    try {
-      await this.loadCustomAssets();
-    } catch (error) {
-      yield ['Failed to load custom assets.', error];
-    }
   }
 
   private async loadObject2dDefs(): Promise<void> {
@@ -192,11 +178,6 @@ class AssetCache {
     const buffer = await this.bufferLoader.loadAsync(`data/${filePath}`);
     const calAnimation = readCalAnimation(buffer as ArrayBuffer);
     this.calAnimations.set(filePath, calAnimation);
-  }
-
-  private async loadCustomAssets(): Promise<void> {
-    const groundImage = await this.textureLoader.loadAsync(groundImageUrl); // TODO: Delete?
-    this.customAssets.textures.set('ground', groundImage);
   }
 }
 
