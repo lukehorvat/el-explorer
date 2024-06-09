@@ -33,5 +33,6 @@ module.exports = {
       'warn',
       { ignoreArrowShorthand: true },
     ],
+    'react/no-unknown-property': 'off', // Doesn't seem to work with react-three-fiber.
   },
 };
