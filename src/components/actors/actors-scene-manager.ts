@@ -1,12 +1,14 @@
 import * as THREE from 'three';
 import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
 import Stats from 'three/addons/libs/stats.module.js';
-import { stateAtoms, store } from './state';
-import { Actor } from './actor';
-import { SkyMaterial } from './sky-material';
-import { GroundMaterial } from './ground-material';
+import { useStore } from 'jotai';
+import { actorsState } from './actors-state';
+import { Actor } from '../../lib/actor';
+import { SkyMaterial } from '../../lib/sky-material';
+import { GroundMaterial } from '../../lib/ground-material';
 
-export class SceneManager {
+export class ActorsSceneManager {
+  private readonly store: ReturnType<typeof useStore>;
   private readonly renderer: THREE.WebGLRenderer;
   private readonly clock: THREE.Clock;
   private readonly scene: THREE.Scene;
@@ -17,7 +19,9 @@ export class SceneManager {
   private readonly stats: Stats;
   private actor!: Actor;
 
-  constructor(canvas: HTMLCanvasElement) {
+  constructor(canvas: HTMLCanvasElement, store: ReturnType<typeof useStore>) {
+    this.store = store;
+
     this.renderer = new THREE.WebGLRenderer({
       canvas,
       alpha: true,
@@ -133,24 +137,24 @@ export class SceneManager {
     this.syncStats();
     this.syncAutoRotate();
 
-    store.sub(stateAtoms.actorType, () => {
+    this.store.sub(actorsState.actorType, () => {
       this.syncActorType();
       this.syncSkinType();
       this.syncSkeleton();
       this.syncAnimation();
     });
-    store.sub(stateAtoms.skinType, () => this.syncSkinType());
-    store.sub(stateAtoms.showSkeleton, () => this.syncSkeleton());
-    store.sub(stateAtoms.animationType, () => this.syncAnimation());
-    store.sub(stateAtoms.animationLoop, () => this.syncAnimation());
-    store.sub(stateAtoms.animationSpeed, () => this.syncAnimation());
-    store.sub(stateAtoms.showEnvironment, () => this.syncEnvironment());
-    store.sub(stateAtoms.showStats, () => this.syncStats());
-    store.sub(stateAtoms.autoRotate, () => this.syncAutoRotate());
+    this.store.sub(actorsState.skinType, () => this.syncSkinType());
+    this.store.sub(actorsState.showSkeleton, () => this.syncSkeleton());
+    this.store.sub(actorsState.animationType, () => this.syncAnimation());
+    this.store.sub(actorsState.animationLoop, () => this.syncAnimation());
+    this.store.sub(actorsState.animationSpeed, () => this.syncAnimation());
+    this.store.sub(actorsState.showEnvironment, () => this.syncEnvironment());
+    this.store.sub(actorsState.showStats, () => this.syncStats());
+    this.store.sub(actorsState.autoRotate, () => this.syncAutoRotate());
   }
 
   private syncActorType(): void {
-    const actorType = store.get(stateAtoms.actorType);
+    const actorType = this.store.get(actorsState.actorType);
 
     // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
     if (this.actor) {
@@ -171,7 +175,7 @@ export class SceneManager {
   }
 
   private syncSkinType(): void {
-    const skinType = store.get(stateAtoms.skinType);
+    const skinType = this.store.get(actorsState.skinType);
     this.actor.mesh.visible = !!skinType;
 
     switch (skinType) {
@@ -220,44 +224,44 @@ export class SceneManager {
   }
 
   private syncSkeleton(): void {
-    const showSkeleton = store.get(stateAtoms.showSkeleton);
+    const showSkeleton = this.store.get(actorsState.showSkeleton);
     this.actor.skeletonHelper.visible = showSkeleton;
   }
 
   private syncAnimation(): void {
     const animationHandlers = {
       playAnimation: () => {
-        const animationType = store.get(stateAtoms.animationType)!;
-        const animationLoop = store.get(stateAtoms.animationLoop);
-        const animationSpeed = store.get(stateAtoms.animationSpeed);
+        const animationType = this.store.get(actorsState.animationType)!;
+        const animationLoop = this.store.get(actorsState.animationLoop);
+        const animationSpeed = this.store.get(actorsState.animationSpeed);
         this.actor.playAnimation(animationType, animationLoop, animationSpeed);
       },
       getAnimationTime: () => {
-        const animationType = store.get(stateAtoms.animationType);
+        const animationType = this.store.get(actorsState.animationType);
         return animationType ? this.actor.getAnimationTime(animationType) : 0;
       },
       isAnimationPlaying: () => {
-        const animationType = store.get(stateAtoms.animationType);
+        const animationType = this.store.get(actorsState.animationType);
         return !!animationType && this.actor.isAnimationPlaying(animationType);
       },
     };
 
-    store.set(stateAtoms.animationHandlers, animationHandlers);
+    this.store.set(actorsState.animationHandlers, animationHandlers);
     animationHandlers.playAnimation();
   }
 
   private syncEnvironment(): void {
-    const showEnvironment = store.get(stateAtoms.showEnvironment);
+    const showEnvironment = this.store.get(actorsState.showEnvironment);
     this.sky.visible = this.ground.visible = showEnvironment;
   }
 
   private syncStats(): void {
-    const showStats = store.get(stateAtoms.showStats);
+    const showStats = this.store.get(actorsState.showStats);
     this.stats.dom.classList.toggle('Hidden', !showStats);
   }
 
   private syncAutoRotate(): void {
-    const autoRotate = store.get(stateAtoms.autoRotate);
+    const autoRotate = this.store.get(actorsState.autoRotate);
     this.orbitControls.autoRotate = autoRotate;
   }
 

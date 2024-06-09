@@ -1,13 +1,13 @@
 import React from 'react';
 import { Button, OverlayTrigger, Stack, Tooltip } from 'react-bootstrap';
 import { ExtractAtomValue, useSetAtom } from 'jotai';
-import { stateAtoms } from '../../lib/state';
+import { appState } from '../app-state';
 import './Home.css';
 
 export function Home(): React.JSX.Element {
-  const setPage = useSetAtom(stateAtoms.page);
+  const setPage = useSetAtom(appState.page);
   const pages: {
-    id: ExtractAtomValue<typeof stateAtoms.page>;
+    id: ExtractAtomValue<typeof appState.page>;
     name: string;
     enabled: boolean;
   }[] = [

@@ -1,7 +1,7 @@
 import React from 'react';
 import { Stack } from 'react-bootstrap';
 import { useAtomValue } from 'jotai';
-import { stateAtoms } from '../lib/state';
+import { appState } from './app-state';
 import { Navbar } from './shell/Navbar';
 import { Footer } from './shell/Footer';
 import { Loading } from './home/Loading';
@@ -10,7 +10,7 @@ import { Actors } from './actors/Actors';
 import './App.css';
 
 export function App(): React.JSX.Element {
-  const page = useAtomValue(stateAtoms.page);
+  const page = useAtomValue(appState.page);
 
   return (
     <Stack className="App" direction="vertical">
