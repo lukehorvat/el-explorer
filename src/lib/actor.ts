@@ -85,6 +85,7 @@ export class Actor extends THREE.Group {
     this.add(this.mesh);
 
     this.skeletonHelper = new THREE.SkeletonHelper(this.mesh);
+    (this.skeletonHelper.material as THREE.LineBasicMaterial).dispose();
     this.skeletonHelper.material = new THREE.LineBasicMaterial({
       color: '#ffaa7f',
       depthTest: false,
@@ -236,8 +237,7 @@ export class Actor extends THREE.Group {
   }
 
   dispose(): void {
-    this.remove(this.mesh);
-    this.remove(this.skeletonHelper);
+    this.clear();
     this.mesh.geometry.dispose();
     (this.mesh.material as THREE.MeshBasicMaterial).dispose();
     this.skeletonHelper.dispose();

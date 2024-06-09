@@ -4,10 +4,13 @@ import './Scene.css';
 
 export function Scene(): React.JSX.Element {
   const canvasRef = useRef<HTMLCanvasElement>(null!);
-  const sceneManagerRef = useRef<SceneManager>(null!);
 
   useEffect(() => {
-    sceneManagerRef.current = new SceneManager(canvasRef.current);
+    const sceneManager = new SceneManager(canvasRef.current);
+
+    return () => {
+      sceneManager.dispose();
+    };
   }, []);
 
   return <canvas className="Scene flex-grow-1" ref={canvasRef} />;

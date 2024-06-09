@@ -260,4 +260,14 @@ export class SceneManager {
     const autoRotate = store.get(stateAtoms.autoRotate);
     this.orbitControls.autoRotate = autoRotate;
   }
+
+  dispose(): void {
+    this.scene.clear();
+    (this.sky.material as SkyMaterial).dispose();
+    (this.ground.material as GroundMaterial).dispose();
+    this.orbitControls.dispose();
+    document.body.removeChild(this.stats.dom);
+    this.actor.dispose();
+    this.renderer.dispose();
+  }
 }
