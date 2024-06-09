@@ -1,7 +1,7 @@
 import * as THREE from 'three';
 import WebGL from 'three/addons/capabilities/WebGL.js';
 import { DDSLoader } from 'three/addons/loaders/DDSLoader.js';
-import { XmlEntitiesExpander } from '../io/xml-entities';
+import { expandXmlEntityRefs, parseXmlEntityDecls } from '../io/xml-entities';
 import { ActorDef, readActorDefs } from '../io/actor-defs';
 import { CalMesh, readCalMesh } from '../io/cal3d-meshes';
 import { CalBone, readCalSkeleton } from '../io/cal3d-skeletons';
@@ -104,17 +104,16 @@ class AssetCache {
     const xml = (await this.stringLoader.loadAsync(
       'data/actor_defs/actor_defs.xml'
     )) as string;
-    const xmlExpander = new XmlEntitiesExpander(xml);
-    const entityXmls: string[] = [];
+    const entityXmls = new Map<string, string>();
 
-    for (const entityUri of xmlExpander.entityUris) {
+    for (const [entityName, entityUri] of parseXmlEntityDecls(xml)) {
       const entityXml = (await this.stringLoader.loadAsync(
         `data/actor_defs/${entityUri}`
       )) as string;
-      entityXmls.push(entityXml);
+      entityXmls.set(entityName, entityXml);
     }
 
-    const expandedXml = xmlExpander.expand(entityXmls);
+    const expandedXml = expandXmlEntityRefs(xml, entityXmls);
     const actorDefs = readActorDefs(expandedXml).filter(
       (def) => !ignoredActorDefs.has(def.name)
     );

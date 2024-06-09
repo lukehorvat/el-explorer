@@ -1,37 +1,6 @@
 /**
- * A convenient interface for dealing with XML that has references to external
- * entities. When instantiated, you can use the `entityUris` prop to determine
- * which entity XML files need to be loaded into memory. Once that is done,
- * they should then be passed to the `expand` method, which will replace each
- * entity reference with the entity's XML.
- *
- * @see https://www.w3schools.com/xml/xml_dtd_entities.asp
- */
-export class XmlEntitiesExpander {
-  private readonly xml: string;
-  private readonly entityUriMap: Map<string, string>;
-
-  constructor(xml: string) {
-    this.xml = xml;
-    this.entityUriMap = getEntityDecls(xml);
-  }
-
-  expand(entityXmls: string[]): string {
-    const entityXmlMap = entityXmls.reduce((map, entityXml: string, index) => {
-      const [entityName] = [...this.entityUriMap][index];
-      return map.set(entityName, entityXml);
-    }, new Map<string, string>());
-
-    return expandEntityRefs(this.xml, entityXmlMap);
-  }
-
-  get entityUris(): string[] {
-    return [...this.entityUriMap.values()];
-  }
-}
-
-/**
- * Extract all external entity declarations from an XML string.
+ * Extract all external entity declarations from an XML string, returning a
+ * mapping of entity name to entity uri.
  *
  * This function is needed because I can't find any JS XML parsers that don't
  * completely ignore them... :(
@@ -52,9 +21,11 @@ export class XmlEntitiesExpander {
  * ```
  * { 'eins' => 'one.xml', 'zwei' => 'two.xml', 'drei' => 'three.xml' }
  * ```
+ *
+ * @see https://www.w3schools.com/xml/xml_dtd_entities.asp
  */
-function getEntityDecls(xml: string): Map<string, string> {
-  const entityUriMap = new Map<string, string>();
+export function parseXmlEntityDecls(xml: string): Map<string, string> {
+  const entityUris = new Map<string, string>();
   const doctypeRegex = /<!DOCTYPE +\w+ +\[([\S\s]*)\]>/;
   const entityDeclRegex = /<!ENTITY +([\w]+)+ +SYSTEM +"(.*)">/g;
 
@@ -64,17 +35,17 @@ function getEntityDecls(xml: string): Map<string, string> {
     while ((match = entityDeclRegex.exec(doctypeMatch[1]))) {
       const [entityName, entityUri] = match.slice(1);
 
-      if (entityUriMap.has(entityName)) {
+      if (entityUris.has(entityName)) {
         throw new Error(
           `Duplicate declaration of entity "${entityName}" encountered.`
         );
       }
 
-      entityUriMap.set(entityName, entityUri);
+      entityUris.set(entityName, entityUri);
     }
   }
 
-  return entityUriMap;
+  return entityUris;
 }
 
 /**
@@ -103,9 +74,9 @@ function getEntityDecls(xml: string): Map<string, string> {
  * <a><b><c /></b></a>
  * ```
  */
-function expandEntityRefs(
+export function expandXmlEntityRefs(
   xml: string,
-  entityXmlMap: Map<string, string>,
+  entityXmls: Map<string, string>,
   visitedEntities: Set<string> = new Set<string>()
 ): string {
   const entityRefs = getEntityRefs(xml);
@@ -126,7 +97,7 @@ function expandEntityRefs(
       continue;
     }
 
-    if (!entityXmlMap.has(entityName)) {
+    if (!entityXmls.has(entityName)) {
       throw new Error(`Unknown entity "${entityName}" encountered.`);
     }
 
@@ -134,9 +105,9 @@ function expandEntityRefs(
       throw new Error(`Recursive entity "${entityName}" encountered.`);
     }
 
-    const expandedEntityXml = expandEntityRefs(
-      entityXmlMap.get(entityName)!,
-      entityXmlMap,
+    const expandedEntityXml = expandXmlEntityRefs(
+      entityXmls.get(entityName)!,
+      entityXmls,
       new Set(visitedEntities).add(entityName)
     );
 
