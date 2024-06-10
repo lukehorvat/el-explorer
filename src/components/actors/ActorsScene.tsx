@@ -9,11 +9,21 @@ import {
   Stats,
 } from '@react-three/drei';
 import * as THREE from 'three';
+import { useAtomValue } from 'jotai';
+import { actorsState } from './actors-state';
+import { Actor } from './Actor';
 import './ActorsScene.css';
 
 export function ActorsScene(): React.JSX.Element {
+  const actorType = useAtomValue(actorsState.actorType);
+
   return (
-    <Canvas className="ActorsScene flex-grow-1" linear shadows>
+    <Canvas
+      className="ActorsScene flex-grow-1"
+      gl={{ toneMapping: THREE.NoToneMapping }}
+      linear
+      shadows
+    >
       <PerspectiveCamera makeDefault fov={45} near={0.001} far={5000}>
         <pointLight intensity={1.5} distance={0} decay={0} />
       </PerspectiveCamera>
@@ -36,7 +46,7 @@ export function ActorsScene(): React.JSX.Element {
         ]}
         scale={[1, 0.15, 1]} // ellipsoid
       >
-        <meshBasicMaterial side={THREE.BackSide}>
+        <meshBasicMaterial side={THREE.BackSide} depthTest={false}>
           <GradientTexture colors={['#7cbfff', '#fff']} stops={[0, 1]} />
         </meshBasicMaterial>
       </Sphere>
@@ -45,7 +55,7 @@ export function ActorsScene(): React.JSX.Element {
         rotation-x={THREE.MathUtils.degToRad(-90)}
         receiveShadow
       >
-        <meshToonMaterial color="#e5e3e2" />
+        <meshToonMaterial color="#e5e3e2" depthTest={false} />
       </Plane>
       <OrbitControls
         autoRotateSpeed={3}
@@ -56,6 +66,7 @@ export function ActorsScene(): React.JSX.Element {
         maxDistance={20}
       />
       <Stats />
+      <Actor actorType={actorType} />
     </Canvas>
   );
 }
