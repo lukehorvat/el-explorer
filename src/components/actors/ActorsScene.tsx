@@ -24,14 +24,20 @@ export function ActorsScene(): React.JSX.Element {
         castShadow
         shadow-mapSize={[4096, 4096]}
       />
-
       <Sphere
-        args={[4000, 24, 12, undefined, undefined, undefined, Math.PI * 0.5]}
-        // rotation={[THREE.MathUtils.degToRad(90), 0, 0]}
+        args={[
+          4000,
+          undefined,
+          undefined,
+          undefined,
+          undefined,
+          undefined,
+          Math.PI / 2, // half-sphere (dome)
+        ]}
         scale={[1, 0.15, 1]} // ellipsoid
       >
-        <meshBasicMaterial color="skyblue" side={THREE.BackSide}>
-          <GradientTexture stops={[0, 1]} colors={['aquamarine', 'hotpink']} />
+        <meshBasicMaterial side={THREE.BackSide}>
+          <GradientTexture colors={['#7cbfff', '#fff']} stops={[0, 1]} />
         </meshBasicMaterial>
       </Sphere>
       <Plane
@@ -39,7 +45,7 @@ export function ActorsScene(): React.JSX.Element {
         rotation-x={THREE.MathUtils.degToRad(-90)}
         receiveShadow
       >
-        <meshBasicMaterial color="forestgreen" />
+        <meshToonMaterial color="#e5e3e2" />
       </Plane>
       <OrbitControls
         autoRotateSpeed={3}
