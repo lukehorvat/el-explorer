@@ -13,8 +13,7 @@ export interface CalBone {
 /**
  * Read a Cal3D skeleton (.csf) file.
  *
- * Implemented according to the spec defined here:
- * https://github.com/mp3butcher/Cal3D/blob/cf9cb3ec1df6bf6afa0d7ccf72f98ed4484694f4/cal3d/fileformats.txt.in#L52
+ * @see https://github.com/mp3butcher/Cal3D/blob/cf9cb3ec1df6bf6afa0d7ccf72f98ed4484694f4/cal3d/fileformats.txt.in#L52
  */
 export function readCalSkeleton(buffer: ArrayBuffer): CalBone[] {
   const view = new DataView(buffer);

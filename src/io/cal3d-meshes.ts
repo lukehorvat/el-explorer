@@ -1,12 +1,12 @@
 import { Vector2, Vector3, leftZUpToRightYUp } from './utils';
 
 export interface CalMesh {
-  positions: Vector3[];
-  normals: Vector3[];
-  uvs: Vector2[];
-  indices: number[];
-  skinIndices: number[];
-  skinWeights: number[];
+  positions: Float32Array;
+  normals: Float32Array;
+  uvs: Float32Array;
+  indices: Uint32Array;
+  skinIndices: Uint16Array;
+  skinWeights: Float32Array;
   vertexCollapseIds: number[];
   vertexFaceCollapses: number[];
   vertexWeights: (number | null)[];
@@ -23,8 +23,7 @@ export interface CalMesh {
 /**
  * Read a Cal3D mesh (.cmf) file.
  *
- * Implemented according to the spec defined here:
- * https://github.com/mp3butcher/Cal3D/blob/cf9cb3ec1df6bf6afa0d7ccf72f98ed4484694f4/cal3d/fileformats.txt.in#L134
+ * @see https://github.com/mp3butcher/Cal3D/blob/cf9cb3ec1df6bf6afa0d7ccf72f98ed4484694f4/cal3d/fileformats.txt.in#L134
  */
 export function readCalMesh(buffer: ArrayBuffer): CalMesh[] {
   const view = new DataView(buffer);
@@ -64,12 +63,12 @@ export function readCalMesh(buffer: ArrayBuffer): CalMesh[] {
     const mapCount = view.getInt32(offset, true);
     offset += 4;
 
-    const positions: CalMesh['positions'] = [];
-    const normals: CalMesh['normals'] = [];
-    const uvs: CalMesh['uvs'] = [];
-    const indices: CalMesh['indices'] = [];
-    const skinIndices: CalMesh['skinIndices'] = [];
-    const skinWeights: CalMesh['skinWeights'] = [];
+    const positions: Vector3[] = [];
+    const normals: Vector3[] = [];
+    const uvs: Vector2[] = [];
+    const faces: Vector3[] = [];
+    const skinIndices: number[] = [];
+    const skinWeights: number[] = [];
     const vertexCollapseIds: CalMesh['vertexCollapseIds'] = [];
     const vertexFaceCollapses: CalMesh['vertexFaceCollapses'] = [];
     const vertexWeights: CalMesh['vertexWeights'] = [];
@@ -166,21 +165,21 @@ export function readCalMesh(buffer: ArrayBuffer): CalMesh[] {
     }
 
     for (let j = 0; j < faceCount; j++) {
-      indices.push(
-        view.getInt32(offset, true),
-        view.getInt32(offset + 4, true),
-        view.getInt32(offset + 8, true)
-      );
+      faces.push({
+        x: view.getInt32(offset, true),
+        y: view.getInt32(offset + 4, true),
+        z: view.getInt32(offset + 8, true),
+      });
       offset += 12;
     }
 
     subMeshes.push({
-      positions,
-      normals,
-      uvs,
-      indices,
-      skinIndices,
-      skinWeights,
+      positions: new Float32Array(positions.map((p) => [p.x, p.y, p.z]).flat()),
+      normals: new Float32Array(normals.map((n) => [n.x, n.y, n.z]).flat()),
+      uvs: new Float32Array(uvs.map((uv) => [uv.x, uv.y]).flat()),
+      indices: new Uint32Array(faces.map((f) => [f.x, f.y, f.z]).flat()),
+      skinIndices: new Uint16Array(skinIndices),
+      skinWeights: new Float32Array(skinWeights),
       vertexCollapseIds,
       vertexFaceCollapses,
       vertexWeights,

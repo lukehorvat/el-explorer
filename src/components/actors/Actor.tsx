@@ -27,24 +27,21 @@ export function Actor(props: {
         blendDst={isTransparent ? THREE.OneMinusSrcAlphaFactor : undefined}
       />
       <bufferGeometry>
-        <float32BufferAttribute
+        <bufferAttribute
           attach="attributes-position"
-          args={[calMesh.positions.map((p) => [p.x, p.y, p.z]).flat(), 3]}
+          args={[calMesh.positions, 3]}
         />
-        <float32BufferAttribute
+        <bufferAttribute
           attach="attributes-normal"
-          args={[calMesh.normals.map((n) => [n.x, n.y, n.z]).flat(), 3]}
+          args={[calMesh.normals, 3]}
         />
-        <float32BufferAttribute
-          attach="attributes-uv"
-          args={[calMesh.uvs.map((uv) => [uv.x, uv.y]).flat(), 2]}
-        />
-        <uint32BufferAttribute attach="index" args={[calMesh.indices, 1]} />
-        <uint16BufferAttribute
+        <bufferAttribute attach="attributes-uv" args={[calMesh.uvs, 2]} />
+        <bufferAttribute attach="index" args={[calMesh.indices, 1]} />
+        <bufferAttribute
           attach="attributes-skinIndex"
           args={[calMesh.skinIndices, 4]}
         />
-        <float32BufferAttribute
+        <bufferAttribute
           attach="attributes-skinWeight"
           args={[calMesh.skinWeights, 4]}
         />

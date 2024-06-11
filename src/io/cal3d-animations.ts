@@ -15,8 +15,7 @@ export interface CalAnimation {
 /**
  * Read a Cal3D animation (.caf) file.
  *
- * Implemented according to the spec defined here:
- * https://github.com/mp3butcher/Cal3D/blob/cf9cb3ec1df6bf6afa0d7ccf72f98ed4484694f4/cal3d/fileformats.txt.in#L96
+ * @see https://github.com/mp3butcher/Cal3D/blob/cf9cb3ec1df6bf6afa0d7ccf72f98ed4484694f4/cal3d/fileformats.txt.in#L96
  */
 export function readCalAnimation(buffer: ArrayBuffer): CalAnimation {
   const view = new DataView(buffer);

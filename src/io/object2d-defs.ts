@@ -14,8 +14,8 @@ export interface Object2dDef {
   texturePath: string;
   width: number;
   height: number;
-  uvs: Vector2[] | null;
-  alphaTest?: number | null;
+  uvs: Float32Array | null;
+  alphaTest: number | null;
 }
 
 /**
@@ -97,7 +97,7 @@ export function readObject2dDef(data: string): Object2dDef {
     }
   }
 
-  let uvs: Object2dDef['uvs'] = null;
+  let uvs!: Vector2[] | null;
   if (uStart != null && uEnd != null && vStart != null && vEnd != null) {
     uStart /= fileWidth;
     uEnd /= fileWidth;
@@ -120,7 +120,7 @@ export function readObject2dDef(data: string): Object2dDef {
     texturePath,
     width,
     height,
-    uvs,
+    uvs: uvs ? new Float32Array(uvs.map((uv) => [uv.x, uv.y]).flat()) : null,
     alphaTest,
   };
 }
