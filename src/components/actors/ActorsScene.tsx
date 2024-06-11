@@ -73,6 +73,7 @@ export function ActorsScene(): React.JSX.Element {
         enablePan={false}
         minDistance={1}
         maxDistance={20}
+        autoRotate={autoRotate}
       />
       {showStats && <Stats className="Stats m-3" />}
       <Actor
