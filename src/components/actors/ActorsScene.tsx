@@ -16,6 +16,7 @@ import './ActorsScene.css';
 
 export function ActorsScene(): React.JSX.Element {
   const actorType = useAtomValue(actorsState.actorType);
+  const showSkeleton = useAtomValue(actorsState.showSkeleton);
 
   return (
     <Canvas
@@ -66,7 +67,7 @@ export function ActorsScene(): React.JSX.Element {
         maxDistance={20}
       />
       <Stats />
-      <Actor actorType={actorType} />
+      <Actor actorType={actorType} showSkeleton={showSkeleton} />
     </Canvas>
   );
 }
