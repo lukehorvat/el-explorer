@@ -1,8 +1,7 @@
-import React, { useLayoutEffect, useMemo, useRef } from 'react';
-import { useHelper } from '@react-three/drei';
+import React, { useRef } from 'react';
 import * as THREE from 'three';
 import { assetCache } from '../../lib/asset-cache';
-import { CalBone } from '../../io/cal3d-skeletons';
+import { useCalSkeleton } from '../../hooks/useCalSkeleton';
 
 export function Actor(props: {
   actorType: number;
@@ -12,20 +11,11 @@ export function Actor(props: {
   const skin = assetCache.ddsTextures.get(actorDef.skinPath)!;
   const calMesh = assetCache.calMeshes.get(actorDef.meshPath)!;
   const calSkeleton = assetCache.calSkeletons.get(actorDef.skeletonPath)!;
-  const [skeleton, rootBone] = useMemo(
-    () => composeSkeleton(calSkeleton),
-    [calSkeleton]
-  );
   const hasAlpha = skin.format === THREE.RGBA_S3TC_DXT5_Format;
   const hasAlphaTest = hasAlpha && !actorDef.ghost;
   const isTransparent = hasAlpha || actorDef.ghost;
   const meshRef = useRef<THREE.SkinnedMesh>(null!);
-
-  useLayoutEffect(() => {
-    meshRef.current.bind(skeleton);
-  }, [skeleton]);
-
-  useHelper(!!props.showSkeleton && meshRef, THREE.SkeletonHelper);
+  useCalSkeleton(meshRef, calSkeleton, props.showSkeleton);
 
   return (
     <skinnedMesh receiveShadow castShadow ref={meshRef}>
@@ -59,28 +49,6 @@ export function Actor(props: {
           args={[calMesh.skinWeights, 4]}
         />
       </bufferGeometry>
-      <primitive object={rootBone} />
     </skinnedMesh>
   );
-}
-
-/**
- * Convert the actor's Cal3D skeleton to a Three.js one.
- */
-function composeSkeleton(
-  calSkeleton: CalBone[]
-): [skeleton: THREE.Skeleton, rootBone: THREE.Bone] {
-  const bones = calSkeleton.map((calBone) => {
-    const bone = new THREE.Bone();
-    bone.position.copy(calBone.translation);
-    bone.quaternion.copy(calBone.rotation);
-    return bone;
-  });
-  const rootBone =
-    bones[calSkeleton.findIndex((calBone) => calBone.parentId < 0)];
-  bones.forEach((bone, boneId) => {
-    if (bone === rootBone) return;
-    bones[calSkeleton[boneId].parentId].add(bone); // Construct the bone hierarchy.
-  });
-  return [new THREE.Skeleton(bones), rootBone];
 }
