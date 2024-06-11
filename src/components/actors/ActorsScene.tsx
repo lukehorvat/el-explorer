@@ -67,7 +67,11 @@ export function ActorsScene(): React.JSX.Element {
         maxDistance={20}
       />
       <Stats />
-      <Actor actorType={actorType} showSkeleton={showSkeleton} />
+      <Actor
+        actorType={actorType}
+        showSkeleton={showSkeleton}
+        key={actorType} // Remount whenever actor type changes.
+      />
     </Canvas>
   );
 }

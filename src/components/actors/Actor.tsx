@@ -1,5 +1,5 @@
 import React, { useLayoutEffect, useMemo, useRef } from 'react';
-import { useThree } from '@react-three/fiber';
+import { useHelper } from '@react-three/drei';
 import * as THREE from 'three';
 import { assetCache } from '../../lib/asset-cache';
 import { CalBone } from '../../io/cal3d-skeletons';
@@ -20,18 +20,12 @@ export function Actor(props: {
   const hasAlphaTest = hasAlpha && !actorDef.ghost;
   const isTransparent = hasAlpha || actorDef.ghost;
   const meshRef = useRef<THREE.SkinnedMesh>(null!);
-  const materialRef = useRef<THREE.MeshBasicMaterial>(null!);
-
-  useLayoutEffect(() => {
-    // See: https://github.com/pmndrs/drei/issues/1605
-    materialRef.current.needsUpdate = true;
-  }, [props.actorType]);
 
   useLayoutEffect(() => {
     meshRef.current.bind(skeleton);
   }, [skeleton]);
 
-  useSkeletonHelper(!!props.showSkeleton && meshRef, props.actorType);
+  useHelper(!!props.showSkeleton && meshRef, THREE.SkeletonHelper);
 
   return (
     <skinnedMesh receiveShadow castShadow ref={meshRef}>
@@ -41,7 +35,6 @@ export function Actor(props: {
         blending={isTransparent ? THREE.CustomBlending : undefined}
         blendSrc={isTransparent ? THREE.SrcAlphaFactor : undefined}
         blendDst={isTransparent ? THREE.OneMinusSrcAlphaFactor : undefined}
-        ref={materialRef}
       />
       <bufferGeometry>
         <float32BufferAttribute
@@ -69,28 +62,6 @@ export function Actor(props: {
       <primitive object={rootBone} />
     </skinnedMesh>
   );
-}
-
-/**
- * Hook that creates a SkeletonHelper (and recreates it when the `watchValue`
- * changes).
- */
-function useSkeletonHelper(
-  objectRef: React.MutableRefObject<THREE.Object3D | null> | false,
-  watchValue: any // Value that, when changed, will recreate the helper.
-): void {
-  const helperRef = useRef<THREE.SkeletonHelper>(null!);
-  const scene = useThree((state) => state.scene);
-
-  useLayoutEffect(() => {
-    if (!objectRef || !objectRef.current) return;
-    helperRef.current = new THREE.SkeletonHelper(objectRef.current);
-    scene.add(helperRef.current);
-    return () => {
-      scene.remove(helperRef.current);
-      helperRef.current.dispose();
-    };
-  }, [scene, objectRef, watchValue]);
 }
 
 /**
