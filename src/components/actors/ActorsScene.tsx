@@ -16,7 +16,12 @@ import './ActorsScene.css';
 
 export function ActorsScene(): React.JSX.Element {
   const actorType = useAtomValue(actorsState.actorType);
+  const skinType = useAtomValue(actorsState.skinType);
   const showSkeleton = useAtomValue(actorsState.showSkeleton);
+  const showEnvironment = useAtomValue(actorsState.showEnvironment);
+  const showStats = useAtomValue(actorsState.showStats);
+  const autoRotate = useAtomValue(actorsState.autoRotate);
+  const animationType = useAtomValue(actorsState.animationType);
 
   return (
     <Canvas
@@ -26,6 +31,7 @@ export function ActorsScene(): React.JSX.Element {
       shadows
     >
       <PerspectiveCamera makeDefault fov={45} near={0.001} far={5000}>
+        {/* Shine a light from the camera. */}
         <pointLight intensity={1.5} distance={0} decay={0} />
       </PerspectiveCamera>
       <ambientLight intensity={0.5} />
@@ -46,6 +52,7 @@ export function ActorsScene(): React.JSX.Element {
           Math.PI / 2, // half-sphere (dome)
         ]}
         scale={[1, 0.15, 1]} // ellipsoid
+        visible={showEnvironment}
       >
         <meshBasicMaterial side={THREE.BackSide} depthTest={false}>
           <GradientTexture colors={['#7cbfff', '#fff']} stops={[0, 1]} />
@@ -55,6 +62,7 @@ export function ActorsScene(): React.JSX.Element {
         args={[10000, 10000]}
         rotation-x={THREE.MathUtils.degToRad(-90)}
         receiveShadow
+        visible={showEnvironment}
       >
         <meshToonMaterial color="#e5e3e2" depthTest={false} />
       </Plane>
@@ -66,11 +74,12 @@ export function ActorsScene(): React.JSX.Element {
         minDistance={1}
         maxDistance={20}
       />
-      <Stats />
+      {showStats && <Stats className="Stats m-3" />}
       <Actor
-        actorType={actorType}
-        showSkeleton={showSkeleton}
         key={actorType} // Remount whenever actor type changes.
+        actorType={actorType}
+        skinType={skinType}
+        showSkeleton={showSkeleton}
       />
     </Canvas>
   );

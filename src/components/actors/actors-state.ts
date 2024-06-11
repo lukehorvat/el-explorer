@@ -1,5 +1,6 @@
 import { atom } from 'jotai';
 import { assetCache } from '../../lib/asset-cache';
+import { ActorSkinType } from './Actor';
 
 const actorType = atom<number>(77); // Initially default to Feros.
 const actorTypeWithEffects = atom(
@@ -17,15 +18,7 @@ const actorTypeWithEffects = atom(
     }
   }
 );
-const skinType = atom<
-  | 'texture'
-  | 'wireframe'
-  | 'vectors'
-  | 'metal'
-  | 'crystal'
-  | 'silhouette'
-  | null
->('texture');
+const skinType = atom<ActorSkinType>(ActorSkinType.TEXTURE);
 const showSkeleton = atom<boolean>(false);
 const showEnvironment = atom<boolean>(false);
 const showStats = atom<boolean>(false);

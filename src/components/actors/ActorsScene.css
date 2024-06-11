@@ -11,7 +11,3 @@
   left: unset !important;
   bottom: unset !important;
 }
-
-.Stats.Hidden {
-  display: none;
-}

@@ -5,6 +5,7 @@ import { useCalSkeleton } from '../../hooks/useCalSkeleton';
 
 export function Actor(props: {
   actorType: number;
+  skinType?: ActorSkinType;
   showSkeleton?: boolean;
 }): React.JSX.Element {
   const actorDef = assetCache.actorDefs.get(props.actorType)!;
@@ -19,13 +20,66 @@ export function Actor(props: {
 
   return (
     <skinnedMesh receiveShadow castShadow ref={meshRef}>
-      <meshBasicMaterial
-        map={skin}
-        alphaTest={hasAlphaTest ? 0.06 : undefined}
-        blending={isTransparent ? THREE.CustomBlending : undefined}
-        blendSrc={isTransparent ? THREE.SrcAlphaFactor : undefined}
-        blendDst={isTransparent ? THREE.OneMinusSrcAlphaFactor : undefined}
-      />
+      {(() => {
+        switch (props.skinType) {
+          case ActorSkinType.NONE:
+            return <meshBasicMaterial key={props.skinType} visible={false} />;
+          case ActorSkinType.WIREFRAME:
+            return (
+              <meshBasicMaterial
+                key={props.skinType}
+                color="#d75a45"
+                wireframe
+              />
+            );
+          case ActorSkinType.VECTORS:
+            return <meshNormalMaterial key={props.skinType} />;
+          case ActorSkinType.METAL:
+            return (
+              <meshPhysicalMaterial
+                key={props.skinType}
+                color="#fffcef"
+                emissive="#808080"
+                emissiveIntensity={0.8}
+                roughness={0.5}
+                metalness={1}
+              />
+            );
+          case ActorSkinType.CRYSTAL:
+            return (
+              <meshPhysicalMaterial
+                key={props.skinType}
+                color="#fff"
+                emissive="#f653a6"
+                sheenColor="#8ab9f1"
+                emissiveIntensity={0.5}
+                sheen={3}
+                roughness={0.3}
+                thickness={2}
+                transmission={1}
+                ior={5}
+                anisotropy={1}
+                flatShading
+              />
+            );
+          case ActorSkinType.SILHOUETTE:
+            return <meshBasicMaterial key={props.skinType} color="#a2a4a5" />;
+          case ActorSkinType.TEXTURE:
+          default:
+            return (
+              <meshBasicMaterial
+                key={props.skinType} // Remount whenever skin type changes.
+                map={skin}
+                alphaTest={hasAlphaTest ? 0.06 : undefined}
+                blending={isTransparent ? THREE.CustomBlending : undefined}
+                blendSrc={isTransparent ? THREE.SrcAlphaFactor : undefined}
+                blendDst={
+                  isTransparent ? THREE.OneMinusSrcAlphaFactor : undefined
+                }
+              />
+            );
+        }
+      })()}
       <bufferGeometry>
         <bufferAttribute
           attach="attributes-position"
@@ -48,4 +102,14 @@ export function Actor(props: {
       </bufferGeometry>
     </skinnedMesh>
   );
+}
+
+export enum ActorSkinType {
+  NONE,
+  TEXTURE,
+  WIREFRAME,
+  VECTORS,
+  METAL,
+  CRYSTAL,
+  SILHOUETTE,
 }

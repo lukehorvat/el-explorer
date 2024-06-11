@@ -10,6 +10,7 @@ import {
   SidebarSection,
   navigateTo,
 } from '../shell/Sidebar';
+import { ActorSkinType } from './Actor';
 
 export function ActorsSidebar(): React.JSX.Element {
   return (
@@ -58,15 +59,9 @@ function ActorSection(): React.JSX.Element {
 function AppearanceSection(): React.JSX.Element {
   const [skinType, setSkinType] = useAtom(actorsState.skinType);
   const [showSkeleton, setShowSkeleton] = useAtom(actorsState.showSkeleton);
-  const skinTypes: (typeof skinType)[] = [
-    null,
-    'texture',
-    'wireframe',
-    'vectors',
-    'metal',
-    'crystal',
-    'silhouette',
-  ];
+  const skinTypes = (Object.values(ActorSkinType) as ActorSkinType[]).filter(
+    (value) => !isNaN(Number(value)) // TS enums... 🙈
+  );
   const moveToSkin = (direction: 'prev' | 'next'): void => {
     setSkinType(navigateTo(skinType, skinTypes, direction));
   };
@@ -79,14 +74,14 @@ function AppearanceSection(): React.JSX.Element {
         </Form.Label>
         <Form.Select
           size="sm"
-          value={skinType ?? ''}
+          value={skinType}
           onChange={(event) => {
-            setSkinType((event.target.value || null) as typeof skinType);
+            setSkinType(event.target.value as unknown as ActorSkinType);
           }}
         >
           {skinTypes.map((type) => (
-            <option value={type ?? ''} key={type}>
-              {type ?? 'none'}
+            <option value={type} key={type}>
+              {ActorSkinType[type].toLowerCase()}
             </option>
           ))}
         </Form.Select>
