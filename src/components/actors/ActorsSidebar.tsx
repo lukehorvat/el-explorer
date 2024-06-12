@@ -106,7 +106,7 @@ function AnimationSection(): React.JSX.Element {
   const [animationSpeed, setAnimationSpeed] = useAtom(
     actorsState.animationSpeed
   );
-  const animationHandlers = useAtomValue(actorsState.animationHandlers);
+  const animationController = useAtomValue(actorsState.animationController);
   useAnimationFrames();
 
   const actorDef = assetCache.actorDefs.get(actorType)!;
@@ -141,7 +141,7 @@ function AnimationSection(): React.JSX.Element {
         </Form.Select>
         <SidebarNavButtons onNavigate={moveToAnimation} />
       </Stack>
-      {animationName && (
+      {animationName && animationController && (
         <>
           <Stack direction="horizontal" gap={2}>
             <Form.Label column="sm">Loop:</Form.Label>
@@ -173,12 +173,16 @@ function AnimationSection(): React.JSX.Element {
           <Stack direction="horizontal" gap={2}>
             <Form.Label column="sm">Playback:</Form.Label>
             <Form.Range
-              value={animationHandlers!.getAnimationTime()}
+              value={animationController.getElapsedTime(animationName)}
               max={1}
               onClick={() => {
-                animationHandlers!.playAnimation();
+                animationController.play(
+                  animationName,
+                  animationLoop,
+                  animationSpeed
+                );
               }}
-              disabled={animationHandlers!.isAnimationPlaying()}
+              disabled={animationController.isPlaying(animationName)}
               title="Replay"
               readOnly
             />

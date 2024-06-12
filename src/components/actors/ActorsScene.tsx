@@ -1,4 +1,4 @@
-import React, { useCallback } from 'react';
+import React, { useCallback, useLayoutEffect } from 'react';
 import { Canvas } from '@react-three/fiber';
 import {
   GradientTexture,
@@ -9,7 +9,7 @@ import {
   Stats,
 } from '@react-three/drei';
 import * as THREE from 'three';
-import { useAtomValue } from 'jotai';
+import { useAtom, useAtomValue } from 'jotai';
 import { actorsState } from './actors-state';
 import { Actor } from './Actor';
 import { CameraReset, CameraResetListener } from './CameraReset';
@@ -25,6 +25,13 @@ export function ActorsScene(): React.JSX.Element {
   const animationName = useAtomValue(actorsState.animationName);
   const animationLoop = useAtomValue(actorsState.animationLoop);
   const animationSpeed = useAtomValue(actorsState.animationSpeed);
+  const [animationController, setAnimationController] = useAtom(
+    actorsState.animationController
+  );
+
+  useLayoutEffect(() => {
+    animationController?.play(animationName, animationLoop, animationSpeed);
+  }, [animationController, animationName, animationLoop, animationSpeed]);
 
   const onActorTypeChange: CameraResetListener = useCallback(
     (camera, orbitControls, center) => {
@@ -99,9 +106,7 @@ export function ActorsScene(): React.JSX.Element {
           actorType={actorType}
           skinType={skinType}
           showSkeleton={showSkeleton}
-          animationName={animationName}
-          animationLoop={animationLoop}
-          animationSpeed={animationSpeed}
+          getAnimationController={setAnimationController}
         />
       </CameraReset>
       {showStats && <Stats className="Stats m-3" />}

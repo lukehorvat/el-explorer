@@ -1,6 +1,7 @@
 import { atom } from 'jotai';
 import { assetCache } from '../../lib/asset-cache';
 import { ActorSkinType } from './Actor';
+import { CalAnimationController } from '../../hooks/useCalAnimation';
 
 const actorType = atom<number>(77); // Initially default to Feros.
 const actorTypeWithEffects = atom(
@@ -26,11 +27,7 @@ const autoRotate = atom<boolean>(process.env.NODE_ENV === 'production');
 const animationName = atom<string | null>(null);
 const animationLoop = atom<boolean>(true);
 const animationSpeed = atom<number>(1);
-const animationHandlers = atom<{
-  playAnimation: () => void;
-  getAnimationTime: () => number;
-  isAnimationPlaying: () => boolean;
-} | null>(null);
+const animationController = atom<CalAnimationController | null>(null);
 
 export const actorsState = {
   actorType: actorTypeWithEffects,
@@ -42,5 +39,5 @@ export const actorsState = {
   animationName,
   animationLoop,
   animationSpeed,
-  animationHandlers,
+  animationController,
 };

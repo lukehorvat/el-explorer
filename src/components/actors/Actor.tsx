@@ -1,4 +1,4 @@
-import React, { useMemo, useRef } from 'react';
+import React, { useEffect, useMemo, useRef } from 'react';
 import * as THREE from 'three';
 import { assetCache } from '../../lib/asset-cache';
 import { ActorDef } from '../../io/actor-defs';
@@ -6,53 +6,53 @@ import { CalMesh } from '../../io/cal3d-meshes';
 import { CalBone } from '../../io/cal3d-skeletons';
 import { useCalSkeleton } from '../../hooks/useCalSkeleton';
 import {
+  CalAnimationController,
   CalAnimationWithConfig,
   useCalAnimation,
 } from '../../hooks/useCalAnimation';
 
-export function Actor(props: {
+export function Actor({
+  actorType,
+  skinType,
+  showSkeleton,
+  getAnimationController,
+}: {
   actorType: number;
   skinType?: ActorSkinType;
   showSkeleton?: boolean;
-  animationName?: string | null;
-  animationLoop?: boolean;
-  animationSpeed?: number;
+  getAnimationController?: (
+    animationController: CalAnimationController
+  ) => void;
 }): React.JSX.Element {
   const { actorDef, skin, calMesh, calSkeleton, calAnimations } =
-    useActorAssets(props.actorType);
+    useActorAssets(actorType);
   const hasAlpha = skin.format === THREE.RGBA_S3TC_DXT5_Format;
   const hasAlphaTest = hasAlpha && !actorDef.ghost;
   const isTransparent = hasAlpha || actorDef.ghost;
   const meshRef = useRef<THREE.SkinnedMesh>(null!);
-  useCalSkeleton(meshRef, calSkeleton, props.showSkeleton);
-  useCalAnimation(
-    meshRef,
-    calAnimations,
-    props.animationName,
-    props.animationLoop,
-    props.animationSpeed
-  );
+  useCalSkeleton(meshRef, calSkeleton, showSkeleton);
+  const animationController = useCalAnimation(meshRef, calAnimations);
+
+  useEffect(() => {
+    getAnimationController?.(animationController);
+  }, [getAnimationController, animationController]);
 
   return (
     <skinnedMesh receiveShadow castShadow ref={meshRef}>
       {(() => {
-        switch (props.skinType) {
+        switch (skinType) {
           case ActorSkinType.NONE:
-            return <meshBasicMaterial key={props.skinType} visible={false} />;
+            return <meshBasicMaterial key={skinType} visible={false} />;
           case ActorSkinType.WIREFRAME:
             return (
-              <meshBasicMaterial
-                key={props.skinType}
-                color="#d75a45"
-                wireframe
-              />
+              <meshBasicMaterial key={skinType} color="#d75a45" wireframe />
             );
           case ActorSkinType.VECTORS:
-            return <meshNormalMaterial key={props.skinType} />;
+            return <meshNormalMaterial key={skinType} />;
           case ActorSkinType.METAL:
             return (
               <meshPhysicalMaterial
-                key={props.skinType}
+                key={skinType}
                 color="#fffcef"
                 emissive="#808080"
                 emissiveIntensity={0.8}
@@ -63,7 +63,7 @@ export function Actor(props: {
           case ActorSkinType.CRYSTAL:
             return (
               <meshPhysicalMaterial
-                key={props.skinType}
+                key={skinType}
                 color="#fff"
                 emissive="#f653a6"
                 sheenColor="#8ab9f1"
@@ -78,12 +78,12 @@ export function Actor(props: {
               />
             );
           case ActorSkinType.SILHOUETTE:
-            return <meshBasicMaterial key={props.skinType} color="#a2a4a5" />;
+            return <meshBasicMaterial key={skinType} color="#a2a4a5" />;
           case ActorSkinType.TEXTURE:
           default:
             return (
               <meshBasicMaterial
-                key={props.skinType} // Remount whenever skin type changes.
+                key={skinType} // Remount whenever skin type changes.
                 map={skin}
                 alphaTest={hasAlphaTest ? 0.06 : undefined}
                 blending={isTransparent ? THREE.CustomBlending : undefined}

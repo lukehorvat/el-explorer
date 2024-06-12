@@ -1,61 +1,93 @@
-import { useEffect, useMemo } from 'react';
+import { useMemo } from 'react';
 import { useAnimations } from '@react-three/drei';
 import * as THREE from 'three';
 import { CalAnimation } from '../io/cal3d-animations';
 
 /**
- * Hook that binds Cal3D animations to a Three.js skinned mesh.
- *
- * Optionally plays a specified animation via the `animationName` parameter.
+ * Hook that binds Cal3D animations to a Three.js skinned mesh and returns an
+ * object that can be used to control animation playback.
  */
 export function useCalAnimation(
   meshRef: React.MutableRefObject<THREE.SkinnedMesh>,
-  calAnimations: CalAnimationWithConfig[],
-  animationName?: string | null,
-  animationLoop?: boolean,
-  animationSpeed?: number
-): void {
+  calAnimations: CalAnimationWithConfig[]
+): CalAnimationController {
   const clips = useMemo(
     () => getAnimationClips(calAnimations),
     [calAnimations]
   );
   const { mixer, actions } = useAnimations(clips, meshRef);
-
-  useEffect(() => {
-    const calAnimation = calAnimations.find(
-      (calAnimation) => calAnimation.name === animationName
-    );
-
-    if (!calAnimation) {
-      mixer.stopAllAction();
-      return;
-    }
-
-    const action = actions[calAnimation.name]!;
-    action.loop = animationLoop ? THREE.LoopRepeat : THREE.LoopOnce;
-    action.clampWhenFinished = true;
-    if (calAnimation.durationOverride > 0) {
-      action.setDuration(calAnimation.durationOverride);
-    }
-    mixer.timeScale = animationSpeed ?? 1;
-
-    // Play the animation (if not already playing).
-    if (!action.isRunning()) {
-      mixer.stopAllAction(); // Ensure only one animation is played at a time.
-      action.play();
-    }
-  }, [
-    mixer,
-    actions,
-    calAnimations,
-    animationName,
-    animationLoop,
-    animationSpeed,
-  ]);
+  const animationController = useMemo(() => {
+    return new CalAnimationController(mixer, actions, calAnimations);
+  }, [mixer, actions, calAnimations]);
+  return animationController;
 }
 
 /**
- * Convert Cal3D animations to Three.js animation clips that can be played on demand.
+ * Controller for Three.js playback of Cal3D animations.
+ */
+export class CalAnimationController {
+  private readonly mixer: THREE.AnimationMixer;
+  private readonly actions: Record<string, THREE.AnimationAction | null>;
+  private readonly calAnimations: CalAnimationWithConfig[];
+
+  constructor(
+    mixer: THREE.AnimationMixer,
+    actions: Record<string, THREE.AnimationAction | null>,
+    calAnimations: CalAnimationWithConfig[]
+  ) {
+    this.mixer = mixer;
+    this.actions = actions;
+    this.calAnimations = calAnimations;
+  }
+
+  /**
+   * Play the specified animation.
+   */
+  play(name: string | null, loop?: boolean, speed?: number): void {
+    const action = name && this.actions[name];
+    if (!action) {
+      this.mixer.stopAllAction(); // Stop all animation and revert back to default pose.
+      return;
+    }
+
+    action.loop = loop ? THREE.LoopRepeat : THREE.LoopOnce;
+    action.clampWhenFinished = true;
+    this.mixer.timeScale = speed ?? 1;
+
+    const calAnimation = this.calAnimations.find(
+      (calAnimation) => calAnimation.name === name
+    )!;
+    if (calAnimation.durationOverride > 0) {
+      action.setDuration(calAnimation.durationOverride);
+    }
+
+    // Play the animation (if not already playing).
+    if (!action.isRunning()) {
+      this.mixer.stopAllAction(); // Ensure only one animation is played at a time.
+      action.play();
+    }
+  }
+
+  /**
+   * Get the elapsed time of the specified animation (as a percentage between 0
+   * and 1).
+   */
+  getElapsedTime(name: string | null): number {
+    const action = name && this.actions[name];
+    return action ? action.time / action.getClip().duration : 0;
+  }
+
+  /**
+   * Check if the specified animation is currently playing.
+   */
+  isPlaying(name: string | null): boolean {
+    const action = name && this.actions[name];
+    return action ? action.isRunning() : false;
+  }
+}
+
+/**
+ * Convert Cal3D animations to Three.js animation clips that can be played.
  */
 function getAnimationClips(
   calAnimations: CalAnimationWithConfig[]
