@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useCallback } from 'react';
 import { Canvas } from '@react-three/fiber';
 import {
   GradientTexture,
@@ -12,6 +12,7 @@ import * as THREE from 'three';
 import { useAtomValue } from 'jotai';
 import { actorsState } from './actors-state';
 import { Actor } from './Actor';
+import { CameraReset, CameraResetListener } from './CameraReset';
 import './ActorsScene.css';
 
 export function ActorsScene(): React.JSX.Element {
@@ -23,6 +24,18 @@ export function ActorsScene(): React.JSX.Element {
   const autoRotate = useAtomValue(actorsState.autoRotate);
   const animationType = useAtomValue(actorsState.animationType);
 
+  const onActorTypeChange: CameraResetListener = useCallback(
+    (camera, orbitControls, center) => {
+      camera.position.set(
+        0,
+        center.y + 1.1, // Slightly above actor's center so we're looking down on it.
+        4 // A reasonable distance away for most actor meshes...
+      );
+      orbitControls.target.set(0, center.y, 0); // Orbit actor's vertical center.
+    },
+    []
+  );
+
   return (
     <Canvas
       className="ActorsScene flex-grow-1"
@@ -30,7 +43,7 @@ export function ActorsScene(): React.JSX.Element {
       linear
       shadows
     >
-      <PerspectiveCamera makeDefault fov={45} near={0.001} far={5000}>
+      <PerspectiveCamera fov={45} near={0.001} far={5000} makeDefault>
         {/* Shine a light from the camera. */}
         <pointLight intensity={1.5} distance={0} decay={0} />
       </PerspectiveCamera>
@@ -74,14 +87,19 @@ export function ActorsScene(): React.JSX.Element {
         minDistance={1}
         maxDistance={20}
         autoRotate={autoRotate}
+        makeDefault
       />
+      <CameraReset
+        key={actorType} // Reset camera whenever actor type changes.
+        onReset={onActorTypeChange}
+      >
+        <Actor
+          actorType={actorType}
+          skinType={skinType}
+          showSkeleton={showSkeleton}
+        />
+      </CameraReset>
       {showStats && <Stats className="Stats m-3" />}
-      <Actor
-        key={actorType} // Remount whenever actor type changes.
-        actorType={actorType}
-        skinType={skinType}
-        showSkeleton={showSkeleton}
-      />
     </Canvas>
   );
 }
