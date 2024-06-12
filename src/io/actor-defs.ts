@@ -21,7 +21,7 @@ export interface ActorDef {
   skeletonScale: number;
   ghost: boolean;
   animations: {
-    type: string;
+    name: string;
     path: string;
     kind: number;
     duration: number;
@@ -260,11 +260,11 @@ function parseActor(el: Element): ActorDef {
             if (match?.length !== 3) {
               throw new Error('Bad animation formation encountered.');
             }
-            const type = child.nodeName;
+            const name = child.nodeName;
             const path = match[1].replace(/^\.\//, '');
             const kind = Number(match[2]);
             const duration = Number(child.getAttribute('duration') ?? -1);
-            animations.push({ type, path, kind, duration });
+            animations.push({ name, path, kind, duration });
             break;
           }
           default: {

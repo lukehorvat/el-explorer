@@ -22,7 +22,9 @@ export function ActorsScene(): React.JSX.Element {
   const showEnvironment = useAtomValue(actorsState.showEnvironment);
   const showStats = useAtomValue(actorsState.showStats);
   const autoRotate = useAtomValue(actorsState.autoRotate);
-  const animationType = useAtomValue(actorsState.animationType);
+  const animationName = useAtomValue(actorsState.animationName);
+  const animationLoop = useAtomValue(actorsState.animationLoop);
+  const animationSpeed = useAtomValue(actorsState.animationSpeed);
 
   const onActorTypeChange: CameraResetListener = useCallback(
     (camera, orbitControls, center) => {
@@ -97,6 +99,9 @@ export function ActorsScene(): React.JSX.Element {
           actorType={actorType}
           skinType={skinType}
           showSkeleton={showSkeleton}
+          animationName={animationName}
+          animationLoop={animationLoop}
+          animationSpeed={animationSpeed}
         />
       </CameraReset>
       {showStats && <Stats className="Stats m-3" />}

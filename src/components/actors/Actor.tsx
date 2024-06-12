@@ -1,22 +1,37 @@
-import React, { useRef } from 'react';
+import React, { useMemo, useRef } from 'react';
 import * as THREE from 'three';
 import { assetCache } from '../../lib/asset-cache';
+import { ActorDef } from '../../io/actor-defs';
+import { CalMesh } from '../../io/cal3d-meshes';
+import { CalBone } from '../../io/cal3d-skeletons';
 import { useCalSkeleton } from '../../hooks/useCalSkeleton';
+import {
+  CalAnimationWithConfig,
+  useCalAnimation,
+} from '../../hooks/useCalAnimation';
 
 export function Actor(props: {
   actorType: number;
   skinType?: ActorSkinType;
   showSkeleton?: boolean;
+  animationName?: string | null;
+  animationLoop?: boolean;
+  animationSpeed?: number;
 }): React.JSX.Element {
-  const actorDef = assetCache.actorDefs.get(props.actorType)!;
-  const skin = assetCache.ddsTextures.get(actorDef.skinPath)!;
-  const calMesh = assetCache.calMeshes.get(actorDef.meshPath)!;
-  const calSkeleton = assetCache.calSkeletons.get(actorDef.skeletonPath)!;
+  const { actorDef, skin, calMesh, calSkeleton, calAnimations } =
+    useActorAssets(props.actorType);
   const hasAlpha = skin.format === THREE.RGBA_S3TC_DXT5_Format;
   const hasAlphaTest = hasAlpha && !actorDef.ghost;
   const isTransparent = hasAlpha || actorDef.ghost;
   const meshRef = useRef<THREE.SkinnedMesh>(null!);
   useCalSkeleton(meshRef, calSkeleton, props.showSkeleton);
+  useCalAnimation(
+    meshRef,
+    calAnimations,
+    props.animationName,
+    props.animationLoop,
+    props.animationSpeed
+  );
 
   return (
     <skinnedMesh receiveShadow castShadow ref={meshRef}>
@@ -102,6 +117,28 @@ export function Actor(props: {
       </bufferGeometry>
     </skinnedMesh>
   );
+}
+
+function useActorAssets(actorType: number): {
+  actorDef: ActorDef;
+  skin: THREE.Texture;
+  calMesh: CalMesh;
+  calSkeleton: CalBone[];
+  calAnimations: CalAnimationWithConfig[];
+} {
+  const actorDef = assetCache.actorDefs.get(actorType)!;
+  const skin = assetCache.ddsTextures.get(actorDef.skinPath)!;
+  const calMesh = assetCache.calMeshes.get(actorDef.meshPath)!;
+  const calSkeleton = assetCache.calSkeletons.get(actorDef.skeletonPath)!;
+  const calAnimations = useMemo(() => {
+    return actorDef.animations.map((animation) => ({
+      ...assetCache.calAnimations.get(animation.path)!,
+      name: animation.name,
+      durationOverride: animation.duration / 1000,
+    }));
+  }, [actorDef.animations]);
+
+  return { actorDef, skin, calMesh, calSkeleton, calAnimations };
 }
 
 export enum ActorSkinType {

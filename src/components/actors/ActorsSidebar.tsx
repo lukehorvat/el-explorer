@@ -101,7 +101,7 @@ function AppearanceSection(): React.JSX.Element {
 
 function AnimationSection(): React.JSX.Element {
   const actorType = useAtomValue(actorsState.actorType);
-  const [animationType, setAnimationType] = useAtom(actorsState.animationType);
+  const [animationName, setAnimationName] = useAtom(actorsState.animationName);
   const [animationLoop, setAnimationLoop] = useAtom(actorsState.animationLoop);
   const [animationSpeed, setAnimationSpeed] = useAtom(
     actorsState.animationSpeed
@@ -110,12 +110,12 @@ function AnimationSection(): React.JSX.Element {
   useAnimationFrames();
 
   const actorDef = assetCache.actorDefs.get(actorType)!;
-  const animationTypes = [
+  const animationNames = [
     null,
-    ...actorDef.animations.map((animation) => animation.type),
+    ...actorDef.animations.map((animation) => animation.name),
   ];
   const moveToAnimation = (direction: 'prev' | 'next'): void => {
-    setAnimationType(navigateTo(animationType, animationTypes, direction));
+    setAnimationName(navigateTo(animationName, animationNames, direction));
   };
   const animationSpeeds = [1.5, 1, 0.5, 0.1];
   const moveToSpeed = (direction: 'prev' | 'next'): void => {
@@ -130,18 +130,18 @@ function AnimationSection(): React.JSX.Element {
         </Form.Label>
         <Form.Select
           size="sm"
-          value={animationType ?? ''}
-          onChange={(event) => setAnimationType(event.target.value || null)}
+          value={animationName ?? ''}
+          onChange={(event) => setAnimationName(event.target.value || null)}
         >
-          {animationTypes.map((type) => (
-            <option value={type ?? ''} key={type}>
-              {type?.replace(/^CAL_/, '') ?? 'none'}
+          {animationNames.map((name) => (
+            <option value={name ?? ''} key={name}>
+              {name?.replace(/^CAL_/, '') ?? 'none'}
             </option>
           ))}
         </Form.Select>
         <SidebarNavButtons onNavigate={moveToAnimation} />
       </Stack>
-      {animationType && (
+      {animationName && (
         <>
           <Stack direction="horizontal" gap={2}>
             <Form.Label column="sm">Loop:</Form.Label>

@@ -4,7 +4,7 @@ import * as THREE from 'three';
 import { CalBone } from '../io/cal3d-skeletons';
 
 /**
- * Bind a Cal3D skeleton to a Three.js skinned mesh.
+ * Hook that binds a Cal3D skeleton to a Three.js skinned mesh.
  *
  * Optionally renders a skeleton helper via the `showSkeleton` parameter.
  */
@@ -14,7 +14,7 @@ export function useCalSkeleton(
   showSkeleton?: boolean
 ): void {
   const [skeleton, rootBone] = useMemo(
-    () => composeSkeleton(calSkeleton),
+    () => getSkeleton(calSkeleton),
     [calSkeleton]
   );
 
@@ -32,7 +32,7 @@ export function useCalSkeleton(
 /**
  * Convert a Cal3D skeleton to a Three.js one.
  */
-function composeSkeleton(
+function getSkeleton(
   calSkeleton: CalBone[]
 ): [skeleton: THREE.Skeleton, rootBone: THREE.Bone] {
   const bones = calSkeleton.map((calBone) => {
