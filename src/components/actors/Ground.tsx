@@ -1,31 +1,51 @@
+import React, { useMemo } from 'react';
+import { Plane } from '@react-three/drei';
 import * as THREE from 'three';
 
 /**
- * A custom shader material to use for the ground.
+ * A plane that uses a custom shader material.
  *
  * This is needed because we don't want a point light shining from the camera
  * to affect the lighting of the ground. This material ignores point light.
  *
  * Adapted from: https://www.maya-ndljk.com/blog/threejs-basic-toon-shader
  */
-export class GroundMaterial extends THREE.ShaderMaterial {
-  constructor(parameters: {
-    color: THREE.ColorRepresentation;
-    shadowIntensity: number;
-  }) {
-    super({
-      uniforms: {
-        ...THREE.UniformsLib.lights,
-        uColor: { value: new THREE.Color(parameters.color) },
-        uShadowIntensity: { value: parameters.shadowIntensity },
-      },
-      vertexShader,
-      fragmentShader,
-      lights: true,
-      depthTest: false,
-    });
-  }
+export function Ground({ visible }: { visible?: boolean }): React.JSX.Element {
+  const uniforms = useMemo(
+    () =>
+      getShaderUniforms({
+        color: new THREE.Color().setHSL(0.095, 0.05, 0.77),
+        shadowIntensity: 0.4,
+      }),
+    []
+  );
+
+  return (
+    <Plane
+      args={[10000, 10000]}
+      rotation-x={THREE.MathUtils.degToRad(-90)}
+      receiveShadow
+      visible={visible}
+    >
+      <shaderMaterial
+        uniforms={uniforms}
+        vertexShader={vertexShader}
+        fragmentShader={fragmentShader}
+        lights
+        depthTest={false}
+      />
+    </Plane>
+  );
 }
+
+const getShaderUniforms = (parameters: {
+  color: THREE.ColorRepresentation;
+  shadowIntensity: number;
+}): Record<string, THREE.IUniform> => ({
+  ...THREE.UniformsLib.lights,
+  uColor: { value: new THREE.Color(parameters.color) },
+  uShadowIntensity: { value: parameters.shadowIntensity },
+});
 
 const vertexShader = /* GLSL */ `
   #include <common>

@@ -1,16 +1,11 @@
 import React, { useCallback, useLayoutEffect } from 'react';
 import { Canvas } from '@react-three/fiber';
-import {
-  GradientTexture,
-  OrbitControls,
-  PerspectiveCamera,
-  Plane,
-  Sphere,
-  Stats,
-} from '@react-three/drei';
+import { OrbitControls, PerspectiveCamera, Stats } from '@react-three/drei';
 import * as THREE from 'three';
 import { useAtom, useAtomValue } from 'jotai';
 import { actorsState } from './actors-state';
+import { Sky } from './Sky';
+import { Ground } from './Ground';
 import { Actor } from './Actor';
 import { CameraReset, CameraResetListener } from './CameraReset';
 import './ActorsScene.css';
@@ -63,31 +58,8 @@ export function ActorsScene(): React.JSX.Element {
         castShadow
         shadow-mapSize={[4096, 4096]}
       />
-      <Sphere
-        args={[
-          4000,
-          undefined,
-          undefined,
-          undefined,
-          undefined,
-          undefined,
-          Math.PI / 2, // half-sphere (dome)
-        ]}
-        scale={[1, 0.15, 1]} // ellipsoid
-        visible={showEnvironment}
-      >
-        <meshBasicMaterial side={THREE.BackSide} depthTest={false}>
-          <GradientTexture colors={['#7cbfff', '#fff']} stops={[0, 1]} />
-        </meshBasicMaterial>
-      </Sphere>
-      <Plane
-        args={[10000, 10000]}
-        rotation-x={THREE.MathUtils.degToRad(-90)}
-        receiveShadow
-        visible={showEnvironment}
-      >
-        <meshToonMaterial color="#e5e3e2" depthTest={false} />
-      </Plane>
+      <Sky visible={showEnvironment} />
+      <Ground visible={showEnvironment} />
       <OrbitControls
         autoRotateSpeed={3}
         enableDamping
