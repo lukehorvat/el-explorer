@@ -11,3 +11,7 @@
   left: unset !important;
   bottom: unset !important;
 }
+
+.Stats canvas {
+  position: unset !important;
+}

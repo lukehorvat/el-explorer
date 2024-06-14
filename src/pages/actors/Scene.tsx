@@ -1,6 +1,6 @@
 import React, { useCallback, useLayoutEffect } from 'react';
 import { Canvas } from '@react-three/fiber';
-import { OrbitControls, PerspectiveCamera, Stats } from '@react-three/drei';
+import { OrbitControls, PerspectiveCamera, StatsGl } from '@react-three/drei';
 import * as THREE from 'three';
 import { useAtom, useAtomValue } from 'jotai';
 import { ActorsPageState } from './page-state';
@@ -81,7 +81,9 @@ export function ActorsScene(): React.JSX.Element {
           getAnimationController={setAnimationController}
         />
       </CameraReset>
-      {showStats && <Stats className="Stats m-3" />}
+      {showStats && (
+        <StatsGl className="Stats m-3" horizontal={false} precision={1} />
+      )}
     </Canvas>
   );
 }
