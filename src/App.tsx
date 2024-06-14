@@ -1,33 +1,16 @@
 import React from 'react';
 import { createRoot } from 'react-dom/client';
 import { Stack } from 'react-bootstrap';
-import { useAtomValue } from 'jotai';
-import { appState } from './components/app-state';
 import { Navbar } from './components/shell/Navbar';
+import { Page } from './pages/Page';
 import { Footer } from './components/shell/Footer';
-import { Loading } from './components/home/Loading';
-import { Home } from './components/home/Home';
-import { Actors } from './components/actors/Actors';
 import './App.css';
 
 function App(): React.JSX.Element {
-  const page = useAtomValue(appState.page);
-
   return (
     <Stack className="App" direction="vertical">
       <Navbar />
-      <Stack className="Middle" direction="vertical">
-        {(() => {
-          switch (page) {
-            case 'loading':
-              return <Loading />;
-            case 'home':
-              return <Home />;
-            case 'actors':
-              return <Actors />;
-          }
-        })()}
-      </Stack>
+      <Page />
       <Footer />
     </Stack>
   );
