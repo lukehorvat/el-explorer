@@ -18,7 +18,7 @@ export default {
     },
   },
   entry: {
-    app: path.join(dirname, 'src/index.tsx'),
+    app: path.join(dirname, 'src/App.tsx'),
     'service-worker': path.join(dirname, 'src/service-worker.ts'),
   },
   output: {
@@ -68,7 +68,7 @@ export default {
   },
   plugins: [
     new HtmlWebpackPlugin({
-      template: path.join(dirname, 'src/index.html'),
+      template: path.join(dirname, 'src/template.tsx'),
       excludeChunks: ['service-worker'],
     }),
     new CopyWebpackPlugin({

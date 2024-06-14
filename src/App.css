@@ -3,7 +3,12 @@
 
 html,
 body,
-#root {
+#root,
+.App {
   height: 100%;
   overflow: hidden;
+}
+
+.App .Middle {
+  min-height: 0;
 }
