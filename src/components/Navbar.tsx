@@ -1,11 +1,11 @@
 import React from 'react';
 import { Container, Nav, Navbar as BsNavbar } from 'react-bootstrap';
 import { useAtom } from 'jotai';
-import { appState } from '../app-state';
+import { AppState } from '../app-state';
 import './Navbar.css';
 
 export function Navbar(): React.JSX.Element {
-  const [page, setPage] = useAtom(appState.page);
+  const [page, setPage] = useAtom(AppState.page);
 
   return (
     <BsNavbar className="Navbar py-2">

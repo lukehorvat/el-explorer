@@ -1,15 +1,15 @@
 import React, { useEffect, useMemo, useRef } from 'react';
 import * as THREE from 'three';
-import { assetCache } from '../../lib/asset-cache';
-import { ActorDef } from '../../io/actor-defs';
-import { CalMesh } from '../../io/cal3d-meshes';
-import { CalBone } from '../../io/cal3d-skeletons';
-import { useCalSkeleton } from '../../hooks/useCalSkeleton';
+import { assetCache } from '../lib/asset-cache';
+import { ActorDef } from '../io/actor-defs';
+import { CalMesh } from '../io/cal3d-meshes';
+import { CalBone } from '../io/cal3d-skeletons';
+import { useCalSkeleton } from '../hooks/useCalSkeleton';
 import {
   CalAnimationController,
   CalAnimationWithConfig,
   useCalAnimation,
-} from '../../hooks/useCalAnimation';
+} from '../hooks/useCalAnimation';
 
 export function Actor({
   actorType,

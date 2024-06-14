@@ -3,25 +3,25 @@ import { Canvas } from '@react-three/fiber';
 import { OrbitControls, PerspectiveCamera, Stats } from '@react-three/drei';
 import * as THREE from 'three';
 import { useAtom, useAtomValue } from 'jotai';
-import { actorsState } from './actors-state';
-import { Sky } from './Sky';
-import { Ground } from './Ground';
-import { Actor } from './Actor';
-import { CameraReset, CameraResetListener } from './CameraReset';
-import './ActorsScene.css';
+import { ActorsPageState } from './page-state';
+import { Sky } from '../../components/Sky';
+import { Ground } from '../../components/Ground';
+import { Actor } from '../../components/Actor';
+import { CameraReset, CameraResetListener } from '../../components/CameraReset';
+import './Scene.css';
 
 export function ActorsScene(): React.JSX.Element {
-  const actorType = useAtomValue(actorsState.actorType);
-  const skinType = useAtomValue(actorsState.skinType);
-  const showSkeleton = useAtomValue(actorsState.showSkeleton);
-  const showEnvironment = useAtomValue(actorsState.showEnvironment);
-  const showStats = useAtomValue(actorsState.showStats);
-  const autoRotate = useAtomValue(actorsState.autoRotate);
-  const animationName = useAtomValue(actorsState.animationName);
-  const animationLoop = useAtomValue(actorsState.animationLoop);
-  const animationSpeed = useAtomValue(actorsState.animationSpeed);
+  const actorType = useAtomValue(ActorsPageState.actorType);
+  const skinType = useAtomValue(ActorsPageState.skinType);
+  const showSkeleton = useAtomValue(ActorsPageState.showSkeleton);
+  const showEnvironment = useAtomValue(ActorsPageState.showEnvironment);
+  const showStats = useAtomValue(ActorsPageState.showStats);
+  const autoRotate = useAtomValue(ActorsPageState.autoRotate);
+  const animationName = useAtomValue(ActorsPageState.animationName);
+  const animationLoop = useAtomValue(ActorsPageState.animationLoop);
+  const animationSpeed = useAtomValue(ActorsPageState.animationSpeed);
   const [animationController, setAnimationController] = useAtom(
-    actorsState.animationController
+    ActorsPageState.animationController
   );
 
   useLayoutEffect(() => {

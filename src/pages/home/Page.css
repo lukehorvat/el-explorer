@@ -1,8 +1,8 @@
-.Home {
+.HomePage {
   animation: 2s ease-in-out showHome;
 }
 
-.Home button {
+.HomePage button {
   width: 200px;
 }
 

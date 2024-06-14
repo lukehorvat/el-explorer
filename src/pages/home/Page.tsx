@@ -1,13 +1,13 @@
 import React from 'react';
 import { OverlayTrigger, Stack, Tooltip } from 'react-bootstrap';
 import { ExtractAtomValue, useSetAtom } from 'jotai';
-import { appState } from '../app-state';
-import './Home.css';
+import { AppState } from '../../app-state';
+import './Page.css';
 
-export function Home(): React.JSX.Element {
-  const setPage = useSetAtom(appState.page);
+export function HomePage(): React.JSX.Element {
+  const setPage = useSetAtom(AppState.page);
   const pages: {
-    id: ExtractAtomValue<typeof appState.page>;
+    id: ExtractAtomValue<typeof AppState.page>;
     name: string;
     enabled: boolean;
   }[] = [
@@ -35,7 +35,7 @@ export function Home(): React.JSX.Element {
 
   return (
     <Stack
-      className="Home justify-content-center align-items-center p-5"
+      className="HomePage justify-content-center align-items-center p-5"
       direction="vertical"
       gap={5}
     >

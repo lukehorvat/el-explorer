@@ -1,15 +1,15 @@
 import React, { useEffect, useState } from 'react';
 import { Spinner, Stack } from 'react-bootstrap';
 import { useSetAtom } from 'jotai';
-import { appState } from '../app-state';
+import { AppState } from '../../app-state';
 import { assetCache } from '../../lib/asset-cache';
 
-export function Loading(): React.JSX.Element {
+export function LoadingPage(): React.JSX.Element {
   const [loadingMessage, isError] = useLoadingMessage();
 
   return (
     <Stack
-      className="Loading justify-content-center align-items-center p-5"
+      className="justify-content-center align-items-center p-5"
       direction="vertical"
       gap={4}
     >
@@ -24,7 +24,7 @@ export function Loading(): React.JSX.Element {
 function useLoadingMessage(): [message: string, isError: boolean] {
   const [loadingMessage, setLoadingMessage] = useState('Loading...');
   const [isError, setIsError] = useState(false);
-  const setPage = useSetAtom(appState.page);
+  const setPage = useSetAtom(AppState.page);
 
   useEffect(() => {
     void load();

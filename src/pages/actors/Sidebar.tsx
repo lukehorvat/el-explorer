@@ -1,7 +1,7 @@
 import React from 'react';
 import { Form, Stack } from 'react-bootstrap';
 import { useAtom, useAtomValue } from 'jotai';
-import { actorsState } from './actors-state';
+import { ActorsPageState } from './page-state';
 import { assetCache } from '../../lib/asset-cache';
 import { useAnimationFrames } from '../../hooks/useAnimationFrames';
 import {
@@ -9,8 +9,8 @@ import {
   SidebarNavButtons,
   SidebarSection,
   navigateTo,
-} from '../shell/Sidebar';
-import { ActorSkinType } from './Actor';
+} from '../../components/Sidebar';
+import { ActorSkinType } from '../../components/Actor';
 
 export function ActorsSidebar(): React.JSX.Element {
   return (
@@ -24,7 +24,7 @@ export function ActorsSidebar(): React.JSX.Element {
 }
 
 function ActorSection(): React.JSX.Element {
-  const [actorType, setActorType] = useAtom(actorsState.actorType);
+  const [actorType, setActorType] = useAtom(ActorsPageState.actorType);
   const sortedActorDefs = [...assetCache.actorDefs.values()].sort(
     (def1, def2) => def1.name.localeCompare(def2.name)
   );
@@ -57,8 +57,8 @@ function ActorSection(): React.JSX.Element {
 }
 
 function AppearanceSection(): React.JSX.Element {
-  const [skinType, setSkinType] = useAtom(actorsState.skinType);
-  const [showSkeleton, setShowSkeleton] = useAtom(actorsState.showSkeleton);
+  const [skinType, setSkinType] = useAtom(ActorsPageState.skinType);
+  const [showSkeleton, setShowSkeleton] = useAtom(ActorsPageState.showSkeleton);
   const skinTypes = (Object.values(ActorSkinType) as ActorSkinType[]).filter(
     (value) => !isNaN(Number(value)) // TS enums... 🙈
   );
@@ -100,13 +100,17 @@ function AppearanceSection(): React.JSX.Element {
 }
 
 function AnimationSection(): React.JSX.Element {
-  const actorType = useAtomValue(actorsState.actorType);
-  const [animationName, setAnimationName] = useAtom(actorsState.animationName);
-  const [animationLoop, setAnimationLoop] = useAtom(actorsState.animationLoop);
-  const [animationSpeed, setAnimationSpeed] = useAtom(
-    actorsState.animationSpeed
+  const actorType = useAtomValue(ActorsPageState.actorType);
+  const [animationName, setAnimationName] = useAtom(
+    ActorsPageState.animationName
   );
-  const animationController = useAtomValue(actorsState.animationController);
+  const [animationLoop, setAnimationLoop] = useAtom(
+    ActorsPageState.animationLoop
+  );
+  const [animationSpeed, setAnimationSpeed] = useAtom(
+    ActorsPageState.animationSpeed
+  );
+  const animationController = useAtomValue(ActorsPageState.animationController);
   useAnimationFrames();
 
   const actorDef = assetCache.actorDefs.get(actorType)!;
@@ -195,10 +199,10 @@ function AnimationSection(): React.JSX.Element {
 
 function MiscSection(): React.JSX.Element {
   const [showEnvironment, setShowEnvironment] = useAtom(
-    actorsState.showEnvironment
+    ActorsPageState.showEnvironment
   );
-  const [showStats, setShowStats] = useAtom(actorsState.showStats);
-  const [autoRotate, setAutoRotate] = useAtom(actorsState.autoRotate);
+  const [showStats, setShowStats] = useAtom(ActorsPageState.showStats);
+  const [autoRotate, setAutoRotate] = useAtom(ActorsPageState.autoRotate);
 
   return (
     <SidebarSection title="Miscellaneous" icon="bi-gear-fill">
