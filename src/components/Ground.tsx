@@ -10,7 +10,9 @@ import * as THREE from 'three';
  *
  * Adapted from: https://www.maya-ndljk.com/blog/threejs-basic-toon-shader
  */
-export function Ground({ visible }: { visible?: boolean }): React.JSX.Element {
+export function Ground(
+  props: React.ComponentProps<typeof Plane>
+): React.JSX.Element {
   const uniforms = useMemo(
     () =>
       getShaderUniforms({
@@ -21,12 +23,7 @@ export function Ground({ visible }: { visible?: boolean }): React.JSX.Element {
   );
 
   return (
-    <Plane
-      args={[10000, 10000]}
-      rotation-x={THREE.MathUtils.degToRad(-90)}
-      receiveShadow
-      visible={visible}
-    >
+    <Plane {...props} args={[10000, 10000]} receiveShadow>
       <shaderMaterial
         uniforms={uniforms}
         vertexShader={vertexShader}

@@ -1,4 +1,5 @@
 import React, { useEffect, useMemo, useRef } from 'react';
+import { ThreeElements } from '@react-three/fiber';
 import * as THREE from 'three';
 import { assetCache } from '../lib/asset-cache';
 import { ActorDef } from '../io/actor-defs';
@@ -19,6 +20,7 @@ export function Actor({
   skinType,
   showSkeleton,
   getAnimationController,
+  ...meshProps
 }: {
   actorType: number;
   skinType?: ActorSkinType;
@@ -26,7 +28,7 @@ export function Actor({
   getAnimationController?: (
     animationController: CalAnimationController
   ) => void;
-}): React.JSX.Element {
+} & ThreeElements['skinnedMesh']): React.JSX.Element {
   const { actorDef, skin, calMesh, calSkeleton, calAnimations } =
     useActorAssets(actorType);
   const hasAlpha = skin.format === THREE.RGBA_S3TC_DXT5_Format;
@@ -41,7 +43,7 @@ export function Actor({
   }, [getAnimationController, animationController]);
 
   return (
-    <skinnedMesh receiveShadow castShadow ref={meshRef}>
+    <skinnedMesh {...meshProps} receiveShadow castShadow ref={meshRef}>
       {(() => {
         switch (skinType) {
           case ActorSkinType.NONE:

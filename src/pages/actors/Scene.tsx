@@ -1,5 +1,6 @@
 import React, { useCallback, useLayoutEffect } from 'react';
 import { OrbitControls, PerspectiveCamera } from '@react-three/drei';
+import * as THREE from 'three';
 import { useAtom, useAtomValue } from 'jotai';
 import { ActorsPageState } from './page-state';
 import { Scene } from '../../components/Scene';
@@ -53,7 +54,10 @@ export function ActorsScene(): React.JSX.Element {
         shadow-mapSize={[4096, 4096]}
       />
       <Sky visible={showEnvironment} />
-      <Ground visible={showEnvironment} />
+      <Ground
+        visible={showEnvironment}
+        rotation-x={THREE.MathUtils.degToRad(-90)}
+      />
       <OrbitControls
         autoRotateSpeed={3}
         enableDamping

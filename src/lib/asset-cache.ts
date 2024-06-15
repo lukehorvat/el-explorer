@@ -91,10 +91,8 @@ class AssetCache {
 
     yield ['Loading 2D object textures...'];
     try {
-      for (const [object2dDefPath, object2dDef] of this.object2dDefs) {
-        // Texture path is relative to the 2D object def's path.
-        const dir = object2dDefPath.slice(0, object2dDefPath.lastIndexOf('/'));
-        await this.loadDDSTexture(`${dir}/${object2dDef.texturePath}`);
+      for (const object2dDef of this.object2dDefs.values()) {
+        await this.loadDDSTexture(object2dDef.texturePath);
       }
     } catch (error) {
       yield ['Failed to load 2D object textures.', error];
@@ -139,6 +137,8 @@ class AssetCache {
 
     const data = await this.stringLoader.loadAsync(`data/${filePath}`);
     const object2dDef = readObject2dDef(data as string);
+    const dir = filePath.slice(0, filePath.lastIndexOf('/'));
+    object2dDef.texturePath = `${dir}/${object2dDef.texturePath}`; // Make texture path absolute.
     this.object2dDefs.set(filePath, object2dDef);
   }
 

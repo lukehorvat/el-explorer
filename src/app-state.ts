@@ -28,7 +28,7 @@ export const pages = {
   },
   object2ds: {
     name: '2D Objects',
-    enabled: process.env.NODE_ENV !== 'production',
+    enabled: true,
     Component: Object2dsPage,
   },
 };

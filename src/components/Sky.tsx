@@ -5,9 +5,12 @@ import * as THREE from 'three';
 /**
  * A sky dome with color gradient.
  */
-export function Sky({ visible }: { visible?: boolean }): React.JSX.Element {
+export function Sky(
+  props: React.ComponentProps<typeof Sphere>
+): React.JSX.Element {
   return (
     <Sphere
+      {...props}
       args={[
         4000,
         undefined,
@@ -18,7 +21,6 @@ export function Sky({ visible }: { visible?: boolean }): React.JSX.Element {
         Math.PI / 2, // half-sphere (dome)
       ]}
       scale={[1, 0.15, 1]} // ellipsoid
-      visible={visible}
     >
       <meshBasicMaterial side={THREE.BackSide} depthTest={false}>
         <GradientTexture colors={['#7cbfff', '#fff']} stops={[0, 1]} />

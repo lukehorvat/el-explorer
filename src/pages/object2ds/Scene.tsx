@@ -1,9 +1,11 @@
-import React from 'react';
+import React, { useCallback } from 'react';
 import { OrbitControls, PerspectiveCamera } from '@react-three/drei';
+import * as THREE from 'three';
 import { useAtomValue } from 'jotai';
 import { Object2dsPageState } from './page-state';
 import { Scene } from '../../components/Scene';
 import { Object2d } from '../../components/Object2d';
+import { CameraReset, CameraResetListener } from '../../components/CameraReset';
 import './Scene.css';
 
 export function Object2dsScene(): React.JSX.Element {
@@ -11,19 +13,21 @@ export function Object2dsScene(): React.JSX.Element {
   const showStats = useAtomValue(Object2dsPageState.showStats);
   const autoRotate = useAtomValue(Object2dsPageState.autoRotate);
 
+  const onoOject2dDefPathChange: CameraResetListener = useCallback(
+    (camera, orbitControls, center) => {
+      camera.position.set(
+        0,
+        center.y + 2.2, // Slightly above object's center so we're looking down on it.
+        3 // A reasonable distance away for most objects...
+      );
+      orbitControls.target.set(0, center.y, 0); // Orbit object's vertical center.
+    },
+    []
+  );
+
   return (
     <Scene className="Object2dsScene" showStats={showStats}>
-      <PerspectiveCamera fov={45} near={0.001} far={5000} makeDefault>
-        {/* Shine a light from the camera. */}
-        <pointLight intensity={1.5} distance={0} decay={0} />
-      </PerspectiveCamera>
-      <ambientLight intensity={0.5} />
-      <directionalLight
-        intensity={1}
-        position={[10, 10, -5]}
-        castShadow
-        shadow-mapSize={[4096, 4096]}
-      />
+      <PerspectiveCamera fov={45} near={0.001} far={100} makeDefault />
       <OrbitControls
         autoRotateSpeed={3}
         enableDamping
@@ -34,7 +38,15 @@ export function Object2dsScene(): React.JSX.Element {
         autoRotate={autoRotate}
         makeDefault
       />
-      <Object2d key={object2dDefPath} defPath={object2dDefPath} />
+      <CameraReset
+        key={object2dDefPath} // Reset camera whenever object def path changes.
+        onReset={onoOject2dDefPathChange}
+      >
+        <Object2d
+          defPath={object2dDefPath}
+          rotation-x={THREE.MathUtils.degToRad(-90)}
+        />
+      </CameraReset>
     </Scene>
   );
 }
