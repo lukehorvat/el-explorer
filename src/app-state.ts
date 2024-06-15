@@ -34,7 +34,7 @@ export const pages = {
 };
 
 const page = atom<keyof typeof pages>(
-  process.env.NODE_ENV === 'production' ? 'home' : 'object2ds'
+  process.env.NODE_ENV === 'production' ? 'home' : 'object3ds'
 );
 
 export const AppState = {

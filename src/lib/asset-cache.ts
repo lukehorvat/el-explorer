@@ -1,6 +1,7 @@
 import * as THREE from 'three';
 import { DDSLoader } from 'three/addons/loaders/DDSLoader.js';
 import { expandXmlEntityRefs, parseXmlEntityDecls } from '../io/xml-entities';
+import { Object3dDef, readObject3dDef } from '../io/object3d-defs';
 import { Object2dDef, readObject2dDef } from '../io/object2d-defs';
 import { ActorDef, readActorDefs } from '../io/actor-defs';
 import { CalMesh, readCalMesh } from '../io/cal3d-meshes';
@@ -8,6 +9,7 @@ import { CalBone, readCalSkeleton } from '../io/cal3d-skeletons';
 import { CalAnimation, readCalAnimation } from '../io/cal3d-animations';
 
 class AssetCache {
+  readonly object3dDefs: Map<string, Object3dDef>;
   readonly object2dDefs: Map<string, Object2dDef>;
   readonly actorDefs: Map<number, ActorDef>;
   readonly ddsTextures: Map<string, THREE.Texture>;
@@ -20,6 +22,7 @@ class AssetCache {
   private readonly ddsTextureLoader: DDSLoader;
 
   constructor() {
+    this.object3dDefs = new Map();
     this.object2dDefs = new Map();
     this.actorDefs = new Map();
     this.ddsTextures = new Map();
@@ -81,6 +84,15 @@ class AssetCache {
     }
   }
 
+  async *loadObject3ds(): AsyncGenerator<[message: string, error?: unknown]> {
+    yield ['Loading 3D object definitions...'];
+    try {
+      await this.loadObject3dDefs();
+    } catch (error) {
+      yield ['Failed to load 3D object definitions.', error];
+    }
+  }
+
   async *loadObject2ds(): AsyncGenerator<[message: string, error?: unknown]> {
     yield ['Loading 2D object definitions...'];
     try {
@@ -96,6 +108,16 @@ class AssetCache {
       }
     } catch (error) {
       yield ['Failed to load 2D object textures.', error];
+    }
+  }
+
+  private async loadObject3dDefs(): Promise<void> {
+    const object3dDefPaths: string[] = JSON.parse(
+      (await this.stringLoader.loadAsync('3dobjects.json')) as string
+    );
+
+    for (const object3dDefPath of object3dDefPaths) {
+      await this.loadObject3dDef(`3dobjects/${object3dDefPath}`);
     }
   }
 
@@ -130,6 +152,14 @@ class AssetCache {
     for (const actorDef of actorDefs) {
       this.actorDefs.set(actorDef.type, actorDef);
     }
+  }
+
+  private async loadObject3dDef(filePath: string): Promise<void> {
+    if (this.object3dDefs.has(filePath)) return;
+
+    const buffer = await this.bufferLoader.loadAsync(`data/${filePath}`);
+    const object3dDef = readObject3dDef(buffer as ArrayBuffer);
+    this.object3dDefs.set(filePath, object3dDef);
   }
 
   private async loadObject2dDef(filePath: string): Promise<void> {
