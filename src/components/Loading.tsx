@@ -4,21 +4,21 @@ import { Spinner, Stack } from 'react-bootstrap';
 /**
  * A loading screen.
  *
- * Iteratively calls the specified `load` generator function until there's
+ * Iteratively calls the specified `loader` generator function until there's
  * nothing left to load, at which point it calls the `onLoaded` callback.
  */
 export function Loading({
-  load,
+  loader,
   onLoaded,
 }: {
-  load: () => AsyncGenerator<[message: string, error?: unknown]>;
+  loader: () => AsyncGenerator<[message: string, error?: unknown]>;
   onLoaded: () => void;
 }): React.JSX.Element {
-  const [loadingMessage, isError] = useLoadingMessage(load, onLoaded);
+  const [loadingMessage, isError] = useLoadingMessage(loader, onLoaded);
 
   return (
     <Stack
-      className="justify-content-center align-items-center p-5"
+      className="Loading justify-content-center align-items-center p-5"
       direction="vertical"
       gap={4}
     >
@@ -31,7 +31,7 @@ export function Loading({
 }
 
 function useLoadingMessage(
-  load: () => AsyncGenerator<[message: string, error?: unknown]>,
+  loader: () => AsyncGenerator<[message: string, error?: unknown]>,
   onLoaded: () => void
 ): [message: string, isError: boolean] {
   const [loadingMessage, setLoadingMessage] = useState('Loading...');
@@ -39,7 +39,7 @@ function useLoadingMessage(
 
   useEffect(() => {
     void (async () => {
-      for await (const [message, error] of load()) {
+      for await (const [message, error] of loader()) {
         setLoadingMessage(message);
 
         if (error) {
@@ -50,7 +50,7 @@ function useLoadingMessage(
 
       onLoaded();
     })();
-  }, [load, onLoaded]);
+  }, [loader, onLoaded]);
 
   return [loadingMessage, isError];
 }

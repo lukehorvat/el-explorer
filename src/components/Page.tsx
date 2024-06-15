@@ -1,24 +1,19 @@
-import React, { ReactNode } from 'react';
+import React, { ReactNode, useState } from 'react';
 import { Stack } from 'react-bootstrap';
 import { Provider as StateProvider } from 'jotai';
-// import { Loading } from './Loading';
+import { Loading } from './Loading';
 import './Page.css';
 
 export function Page({
-  sidebar,
   children,
+  sidebar,
+  loader,
 }: {
-  sidebar?: React.JSX.Element;
   children?: ReactNode;
+  sidebar?: React.JSX.Element;
+  loader?: () => AsyncGenerator<[message: string, error?: unknown]>;
 }): React.JSX.Element {
-  // if (!isLoaded) {
-  //   return (
-  //     <Loading
-  //       load={() => assetCache.loadAssets()}
-  //       onLoaded={() => setIsLoaded(true)}
-  //     />
-  //   );
-  // }
+  const [isLoaded, setIsLoaded] = useState(!loader);
 
   return (
     <StateProvider>
@@ -26,9 +21,13 @@ export function Page({
         className="Page flex-grow-1 align-items-stretch"
         direction="horizontal"
       >
-        {sidebar}
+        {isLoaded && sidebar}
         <Stack className="PageContent" direction="vertical">
-          {children}
+          {isLoaded ? (
+            children
+          ) : (
+            <Loading loader={loader!} onLoaded={() => setIsLoaded(true)} />
+          )}
         </Stack>
       </Stack>
     </StateProvider>
