@@ -3,6 +3,9 @@ import { Spinner, Stack } from 'react-bootstrap';
 
 /**
  * A loading screen.
+ *
+ * Iteratively calls the specified `load` generator function until there's
+ * nothing left to load, at which point it calls the `onLoaded` callback.
  */
 export function Loading({
   load,

@@ -1,4 +1,4 @@
-import { Vector2, Vector3, leftZUpToRightYUp } from './utils';
+import { Vector2, Vector3, leftZUpToRightYUp } from './io-utils';
 
 export interface CalMesh {
   positions: Float32Array;

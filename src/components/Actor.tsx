@@ -11,6 +11,9 @@ import {
   useCalAnimation,
 } from '../hooks/useCalAnimation';
 
+/**
+ * An EL actor as a Three.js skinned mesh!
+ */
 export function Actor({
   actorType,
   skinType,

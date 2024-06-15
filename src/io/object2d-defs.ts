@@ -1,4 +1,4 @@
-import { Vector2 } from './utils';
+import { Vector2 } from './io-utils';
 
 /**
  * An EL 2D object definition.

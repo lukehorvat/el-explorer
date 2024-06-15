@@ -1,4 +1,4 @@
-import { Quaternion, Vector3, leftZUpToRightYUp } from './utils';
+import { Quaternion, Vector3, leftZUpToRightYUp } from './io-utils';
 
 export interface CalBone {
   name: string;
