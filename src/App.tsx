@@ -5,7 +5,6 @@ import { useAtomValue } from 'jotai';
 import { AppState } from './app-state';
 import { Navbar } from './components/Navbar';
 import { Footer } from './components/Footer';
-import { LoadingPage } from './pages/loading/Page';
 import { HomePage } from './pages/home/Page';
 import { ActorsPage } from './pages/actors/Page';
 import './App.css';
@@ -19,8 +18,6 @@ function App(): React.JSX.Element {
       <Stack className="PageContainer" direction="vertical">
         {(() => {
           switch (page) {
-            case 'loading':
-              return <LoadingPage />;
             case 'home':
               return <HomePage />;
             case 'actors':

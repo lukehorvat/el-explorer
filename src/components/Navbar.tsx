@@ -13,7 +13,7 @@ export function Navbar(): React.JSX.Element {
         <BsNavbar.Brand href="#" onClick={() => setPage('home')}>
           Eternal Lands Explorer
         </BsNavbar.Brand>
-        {page !== 'loading' && page !== 'home' && (
+        {page !== 'home' && (
           <BsNavbar.Text className="me-auto fs-5">
             <i className="bi-arrow-right me-3 fs-6" />
             Actors

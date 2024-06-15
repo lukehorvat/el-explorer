@@ -1,11 +1,17 @@
 import React, { useEffect, useState } from 'react';
 import { Spinner, Stack } from 'react-bootstrap';
-import { useSetAtom } from 'jotai';
-import { AppState } from '../../app-state';
-import { assetCache } from '../../lib/asset-cache';
 
-export function LoadingPage(): React.JSX.Element {
-  const [loadingMessage, isError] = useLoadingMessage();
+/**
+ * A loading screen.
+ */
+export function Loading({
+  load,
+  onLoaded,
+}: {
+  load: () => AsyncGenerator<[message: string, error?: unknown]>;
+  onLoaded: () => void;
+}): React.JSX.Element {
+  const [loadingMessage, isError] = useLoadingMessage(load, onLoaded);
 
   return (
     <Stack
@@ -21,27 +27,27 @@ export function LoadingPage(): React.JSX.Element {
   );
 }
 
-function useLoadingMessage(): [message: string, isError: boolean] {
+function useLoadingMessage(
+  load: () => AsyncGenerator<[message: string, error?: unknown]>,
+  onLoaded: () => void
+): [message: string, isError: boolean] {
   const [loadingMessage, setLoadingMessage] = useState('Loading...');
   const [isError, setIsError] = useState(false);
-  const setPage = useSetAtom(AppState.page);
 
   useEffect(() => {
-    void load();
-
-    async function load(): Promise<void> {
-      for await (const [message, error] of assetCache.loadAssets()) {
+    void (async () => {
+      for await (const [message, error] of load()) {
         setLoadingMessage(message);
 
         if (error) {
           setIsError(true);
-          throw error;
+          throw error; // eslint-disable-line @typescript-eslint/no-throw-literal
         }
       }
 
-      setPage(process.env.NODE_ENV === 'production' ? 'home' : 'actors');
-    }
-  }, []);
+      onLoaded();
+    })();
+  }, [load, onLoaded]);
 
   return [loadingMessage, isError];
 }
