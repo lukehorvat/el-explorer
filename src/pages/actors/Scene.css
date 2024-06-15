@@ -1,18 +1,3 @@
 .ActorsScene {
-  min-width: 0;
-  min-height: 0;
   cursor: move;
-  background: var(--bs-dark-bg-subtle);
-  -webkit-tap-highlight-color: transparent; /* Prevent Chrome's blue highlight when tapping on mobile. */
-}
-
-.Stats {
-  top: 56px !important; /* Height of the top bar. */
-  right: 0px !important;
-  left: unset !important;
-  bottom: unset !important;
-}
-
-.Stats canvas {
-  position: unset !important;
 }

@@ -5,20 +5,22 @@ import { Loading } from './Loading';
 import './Page.css';
 
 export function Page({
-  children,
+  className,
   sidebar,
   loader,
+  children,
 }: {
-  children?: ReactNode;
+  className?: string;
   sidebar?: React.JSX.Element;
   loader?: () => AsyncGenerator<[message: string, error?: unknown]>;
+  children?: ReactNode;
 }): React.JSX.Element {
   const [isLoaded, setIsLoaded] = useState(!loader);
 
   return (
     <StateProvider>
       <Stack
-        className="Page flex-grow-1 align-items-stretch"
+        className={`Page ${className ?? ''} flex-grow-1 align-items-stretch`}
         direction="horizontal"
       >
         {isLoaded && sidebar}

@@ -1,9 +1,8 @@
 import React, { useCallback, useLayoutEffect } from 'react';
-import { Canvas } from '@react-three/fiber';
-import { OrbitControls, PerspectiveCamera, StatsGl } from '@react-three/drei';
-import * as THREE from 'three';
+import { OrbitControls, PerspectiveCamera } from '@react-three/drei';
 import { useAtom, useAtomValue } from 'jotai';
 import { ActorsPageState } from './page-state';
+import { Scene } from '../../components/Scene';
 import { Sky } from '../../components/Sky';
 import { Ground } from '../../components/Ground';
 import { Actor } from '../../components/Actor';
@@ -41,12 +40,7 @@ export function ActorsScene(): React.JSX.Element {
   );
 
   return (
-    <Canvas
-      className="ActorsScene"
-      gl={{ toneMapping: THREE.NoToneMapping }}
-      linear
-      shadows
-    >
+    <Scene className="ActorsScene" showStats={showStats}>
       <PerspectiveCamera fov={45} near={0.001} far={5000} makeDefault>
         {/* Shine a light from the camera. */}
         <pointLight intensity={1.5} distance={0} decay={0} />
@@ -81,9 +75,6 @@ export function ActorsScene(): React.JSX.Element {
           getAnimationController={setAnimationController}
         />
       </CameraReset>
-      {showStats && (
-        <StatsGl className="Stats m-3" horizontal={false} precision={1} />
-      )}
-    </Canvas>
+    </Scene>
   );
 }

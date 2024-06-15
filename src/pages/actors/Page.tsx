@@ -6,7 +6,11 @@ import { ActorsScene } from './Scene';
 
 export function ActorsPage(): React.JSX.Element {
   return (
-    <Page sidebar={<ActorsSidebar />} loader={() => assetCache.loadAssets()}>
+    <Page
+      className="ActorsPage"
+      sidebar={<ActorsSidebar />}
+      loader={() => assetCache.loadAssets()}
+    >
       <ActorsScene />
     </Page>
   );

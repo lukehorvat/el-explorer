@@ -35,9 +35,9 @@ export function HomePage(): React.JSX.Element {
   ];
 
   return (
-    <Page>
+    <Page className="HomePage">
       <Stack
-        className="HomePageButtons justify-content-center align-self-center p-5"
+        className="PageList justify-content-center align-self-center p-5"
         direction="vertical"
         gap={5}
       >
