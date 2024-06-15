@@ -77,6 +77,16 @@ export function Actor({
                 flatShading
               />
             );
+          case ActorSkinType.GLOSSY:
+            return (
+              <meshStandardMaterial
+                key={skinType}
+                map={skin}
+                emissive="#ff8834"
+                emissiveIntensity={0.1}
+                roughness={0}
+              />
+            );
           case ActorSkinType.SILHOUETTE:
             return <meshBasicMaterial key={skinType} color="#a2a4a5" />;
           case ActorSkinType.TEXTURE:
@@ -148,5 +158,6 @@ export enum ActorSkinType {
   VECTORS,
   METAL,
   CRYSTAL,
+  GLOSSY,
   SILHOUETTE,
 }

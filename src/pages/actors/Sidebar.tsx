@@ -60,7 +60,7 @@ function AppearanceSection(): React.JSX.Element {
   const [skinType, setSkinType] = useAtom(ActorsPageState.skinType);
   const [showSkeleton, setShowSkeleton] = useAtom(ActorsPageState.showSkeleton);
   const skinTypes = (Object.values(ActorSkinType) as ActorSkinType[]).filter(
-    (value) => !isNaN(Number(value)) // TS enums... 🙈
+    (type) => !isNaN(Number(type)) // TS enums... 🙈
   );
   const moveToSkin = (direction: 'prev' | 'next'): void => {
     setSkinType(navigateTo(skinType, skinTypes, direction));
@@ -76,7 +76,7 @@ function AppearanceSection(): React.JSX.Element {
           size="sm"
           value={skinType}
           onChange={(event) => {
-            setSkinType(event.target.value as unknown as ActorSkinType);
+            setSkinType(Number(event.target.value));
           }}
         >
           {skinTypes.map((type) => (
