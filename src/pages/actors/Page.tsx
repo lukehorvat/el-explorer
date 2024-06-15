@@ -1,12 +1,11 @@
 import React from 'react';
-import { Stack } from 'react-bootstrap';
-import { Provider as StateProvider, useAtom } from 'jotai';
+import { useAtom } from 'jotai';
 import { assetCache } from '../../lib/asset-cache';
-import { ActorsPageState } from './page-state';
+import { Page } from '../../components/Page';
+import { Loading } from '../../components/Loading';
 import { ActorsSidebar } from './Sidebar';
 import { ActorsScene } from './Scene';
-import { Loading } from '../../components/Loading';
-import './Page.css';
+import { ActorsPageState } from './page-state';
 
 export function ActorsPage(): React.JSX.Element {
   const [isLoaded, setIsLoaded] = useAtom(ActorsPageState.isLoaded);
@@ -21,14 +20,8 @@ export function ActorsPage(): React.JSX.Element {
   }
 
   return (
-    <StateProvider>
-      <Stack
-        className="ActorsPage flex-grow-1 align-items-stretch"
-        direction="horizontal"
-      >
-        <ActorsSidebar />
-        <ActorsScene />
-      </Stack>
-    </StateProvider>
+    <Page sidebar={<ActorsSidebar />}>
+      <ActorsScene />
+    </Page>
   );
 }

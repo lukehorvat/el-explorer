@@ -1,0 +1,7 @@
+.Page {
+  overflow-y: auto; /* Show scrollbar on short screens. */
+}
+
+.Page .PageContent {
+  min-width: 0;
+}

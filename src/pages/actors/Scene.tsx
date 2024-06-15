@@ -42,7 +42,7 @@ export function ActorsScene(): React.JSX.Element {
 
   return (
     <Canvas
-      className="ActorsScene flex-grow-1"
+      className="ActorsScene"
       gl={{ toneMapping: THREE.NoToneMapping }}
       linear
       shadows

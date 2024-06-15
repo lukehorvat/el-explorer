@@ -1,5 +1,6 @@
 .ActorsScene {
   min-width: 0;
+  min-height: 0;
   cursor: move;
   background: var(--bs-dark-bg-subtle);
   -webkit-tap-highlight-color: transparent; /* Prevent Chrome's blue highlight when tapping on mobile. */

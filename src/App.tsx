@@ -15,16 +15,14 @@ function App(): React.JSX.Element {
   return (
     <Stack className="App" direction="vertical">
       <Navbar />
-      <Stack className="PageContainer" direction="vertical">
-        {(() => {
-          switch (page) {
-            case 'home':
-              return <HomePage />;
-            case 'actors':
-              return <ActorsPage />;
-          }
-        })()}
-      </Stack>
+      {(() => {
+        switch (page) {
+          case 'home':
+            return <HomePage />;
+          case 'actors':
+            return <ActorsPage />;
+        }
+      })()}
       <Footer />
     </Stack>
   );

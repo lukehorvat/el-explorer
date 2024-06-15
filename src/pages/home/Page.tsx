@@ -2,6 +2,7 @@ import React from 'react';
 import { OverlayTrigger, Stack, Tooltip } from 'react-bootstrap';
 import { ExtractAtomValue, useSetAtom } from 'jotai';
 import { AppState } from '../../app-state';
+import { Page } from '../../components/Page';
 import './Page.css';
 
 export function HomePage(): React.JSX.Element {
@@ -34,35 +35,37 @@ export function HomePage(): React.JSX.Element {
   ];
 
   return (
-    <Stack
-      className="HomePage justify-content-center align-items-center p-5"
-      direction="vertical"
-      gap={5}
-    >
-      {pages
-        .map<[page: (typeof pages)[0], button: React.JSX.Element]>((page) => [
-          page,
-          <button // See: https://github.com/pmndrs/drei/issues/1193
-            className="btn btn-primary btn-lg"
-            onClick={() => page.enabled && setPage(page.id)}
-            key={page.id}
-          >
-            {page.name}
-          </button>,
-        ])
-        .map(([page, button]) =>
-          page.enabled ? (
-            button
-          ) : (
-            <OverlayTrigger
-              overlay={<Tooltip>Coming soon!</Tooltip>}
-              placement="right"
+    <Page>
+      <Stack
+        className="HomePageButtons justify-content-center align-self-center p-5"
+        direction="vertical"
+        gap={5}
+      >
+        {pages
+          .map<[page: (typeof pages)[0], button: React.JSX.Element]>((page) => [
+            page,
+            <button // See: https://github.com/pmndrs/drei/issues/1193
+              className="btn btn-primary btn-lg"
+              onClick={() => page.enabled && setPage(page.id)}
               key={page.id}
             >
-              {button}
-            </OverlayTrigger>
-          )
-        )}
-    </Stack>
+              {page.name}
+            </button>,
+          ])
+          .map(([page, button]) =>
+            page.enabled ? (
+              button
+            ) : (
+              <OverlayTrigger
+                overlay={<Tooltip>Coming soon!</Tooltip>}
+                placement="right"
+                key={page.id}
+              >
+                {button}
+              </OverlayTrigger>
+            )
+          )}
+      </Stack>
+    </Page>
   );
 }
