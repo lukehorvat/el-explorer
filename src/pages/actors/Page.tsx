@@ -9,7 +9,7 @@ export function ActorsPage(): React.JSX.Element {
     <Page
       className="ActorsPage"
       sidebar={<ActorsSidebar />}
-      loader={() => assetCache.loadAssets()}
+      loader={() => assetCache.loadActors()}
     >
       <ActorsScene />
     </Page>

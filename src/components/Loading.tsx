@@ -11,7 +11,7 @@ export function Loading({
   loader,
   onLoaded,
 }: {
-  loader: () => AsyncGenerator<[message: string, error?: unknown]>;
+  loader: IterativeLoader;
   onLoaded: () => void;
 }): React.JSX.Element {
   const [loadingMessage, isError] = useLoadingMessage(loader, onLoaded);
@@ -31,7 +31,7 @@ export function Loading({
 }
 
 function useLoadingMessage(
-  loader: () => AsyncGenerator<[message: string, error?: unknown]>,
+  loader: IterativeLoader,
   onLoaded: () => void
 ): [message: string, isError: boolean] {
   const [loadingMessage, setLoadingMessage] = useState('Loading...');
@@ -54,3 +54,7 @@ function useLoadingMessage(
 
   return [loadingMessage, isError];
 }
+
+type IterativeLoader = () =>
+  | Generator<[message: string, error?: unknown]>
+  | AsyncGenerator<[message: string, error?: unknown]>;

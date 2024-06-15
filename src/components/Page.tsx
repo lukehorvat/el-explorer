@@ -12,7 +12,7 @@ export function Page({
 }: {
   className?: string;
   sidebar?: React.JSX.Element;
-  loader?: () => AsyncGenerator<[message: string, error?: unknown]>;
+  loader?: Parameters<typeof Loading>[0]['loader'];
   children?: ReactNode;
 }): React.JSX.Element {
   const [isLoaded, setIsLoaded] = useState(!loader);

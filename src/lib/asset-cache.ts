@@ -1,5 +1,4 @@
 import * as THREE from 'three';
-import WebGL from 'three/addons/capabilities/WebGL.js';
 import { DDSLoader } from 'three/addons/loaders/DDSLoader.js';
 import { expandXmlEntityRefs, parseXmlEntityDecls } from '../io/xml-entities';
 import { Object2dDef, readObject2dDef } from '../io/object2d-defs';
@@ -35,32 +34,7 @@ class AssetCache {
     this.ddsTextureLoader = new DDSLoader();
   }
 
-  async *loadAssets(): AsyncGenerator<[message: string, error?: unknown]> {
-    if (!WebGL.isWebGLAvailable()) {
-      yield [
-        'Your browser does not support WebGL.',
-        new Error('WebGL not supported.'),
-      ];
-    }
-
-    yield ['Loading 2D object definitions...'];
-    try {
-      await this.loadObject2dDefs();
-    } catch (error) {
-      yield ['Failed to load 2D object definitions.', error];
-    }
-
-    yield ['Loading 2D object textures...'];
-    try {
-      for (const [object2dDefPath, object2dDef] of this.object2dDefs) {
-        // Texture path is relative to the 2D object def's path.
-        const dir = object2dDefPath.slice(0, object2dDefPath.lastIndexOf('/'));
-        await this.loadDDSTexture(`${dir}/${object2dDef.texturePath}`);
-      }
-    } catch (error) {
-      yield ['Failed to load 2D object textures.', error];
-    }
-
+  async *loadActors(): AsyncGenerator<[message: string, error?: unknown]> {
     yield ['Loading actor definitions...'];
     try {
       await this.loadActorDefs();
@@ -104,6 +78,26 @@ class AssetCache {
       }
     } catch (error) {
       yield ['Failed to load actor animations.', error];
+    }
+  }
+
+  async *loadObject2ds(): AsyncGenerator<[message: string, error?: unknown]> {
+    yield ['Loading 2D object definitions...'];
+    try {
+      await this.loadObject2dDefs();
+    } catch (error) {
+      yield ['Failed to load 2D object definitions.', error];
+    }
+
+    yield ['Loading 2D object textures...'];
+    try {
+      for (const [object2dDefPath, object2dDef] of this.object2dDefs) {
+        // Texture path is relative to the 2D object def's path.
+        const dir = object2dDefPath.slice(0, object2dDefPath.lastIndexOf('/'));
+        await this.loadDDSTexture(`${dir}/${object2dDef.texturePath}`);
+      }
+    } catch (error) {
+      yield ['Failed to load 2D object textures.', error];
     }
   }
 

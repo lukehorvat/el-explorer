@@ -1,6 +1,7 @@
 import React from 'react';
 import { OverlayTrigger, Stack, Tooltip } from 'react-bootstrap';
 import { useSetAtom } from 'jotai';
+import WebGL from 'three/addons/capabilities/WebGL.js';
 import { AppState, pages } from '../../app-state';
 import { Page } from '../../components/Page';
 import './Page.css';
@@ -9,7 +10,7 @@ export function HomePage(): React.JSX.Element {
   const setPage = useSetAtom(AppState.page);
 
   return (
-    <Page className="HomePage">
+    <Page className="HomePage" loader={checkWebGLSupport}>
       <Stack
         className="PageList justify-content-center align-self-center p-5"
         direction="vertical"
@@ -45,4 +46,13 @@ export function HomePage(): React.JSX.Element {
       </Stack>
     </Page>
   );
+}
+
+function* checkWebGLSupport(): Generator<[message: string, error?: unknown]> {
+  if (!WebGL.isWebGLAvailable()) {
+    yield [
+      'Your browser does not support WebGL.',
+      new Error('WebGL not supported.'),
+    ];
+  }
 }

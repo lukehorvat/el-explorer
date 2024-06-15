@@ -9,7 +9,7 @@ export function Object2dsPage(): React.JSX.Element {
     <Page
       className="Object2dsPage"
       sidebar={<Object2dsSidebar />}
-      loader={() => assetCache.loadAssets()}
+      loader={() => assetCache.loadObject2ds()}
     >
       <Object2dsScene />
     </Page>
