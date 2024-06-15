@@ -17,7 +17,7 @@ export function SidebarSection(props: {
 }): React.JSX.Element {
   return (
     <Stack className="SidebarSection flex-grow-0" direction="vertical" gap={1}>
-      <Stack direction="horizontal" gap={2}>
+      <Stack className="SidebarSectionTitle" direction="horizontal" gap={2}>
         <i className={props.icon} />
         <span className="flex-grow-1 fw-bold">{props.title}</span>
       </Stack>

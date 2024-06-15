@@ -7,3 +7,13 @@
   padding-top: var(--bs-navbar-brand-padding-y);
   padding-bottom: var(--bs-navbar-brand-padding-y);
 }
+
+.Navbar,
+.Navbar .navbar-brand,
+.Navbar .navbar-text {
+  /**
+   * When clicking on the canvas and then dragging over the navbar, text in the
+   * navbar gets selected. Let's prevent that.
+   */
+  user-select: none;
+}

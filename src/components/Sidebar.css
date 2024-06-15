@@ -12,3 +12,13 @@
   padding-left: var(--sidebar-nav-button-padding-x);
   padding-right: var(--sidebar-nav-button-padding-x);
 }
+
+.Sidebar,
+.Sidebar .SidebarSectionTitle,
+.Sidebar .form-label {
+  /**
+   * When clicking on the canvas and then dragging over the sidebar, text in the
+   * sidebar gets selected. Let's prevent that.
+   */
+  user-select: none;
+}
