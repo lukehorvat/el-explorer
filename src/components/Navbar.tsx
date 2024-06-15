@@ -1,7 +1,7 @@
 import React from 'react';
 import { Container, Nav, Navbar as BsNavbar } from 'react-bootstrap';
 import { useAtom } from 'jotai';
-import { AppState } from '../app-state';
+import { AppState, pages } from '../app-state';
 import './Navbar.css';
 
 export function Navbar(): React.JSX.Element {
@@ -16,7 +16,7 @@ export function Navbar(): React.JSX.Element {
         {page !== 'home' && (
           <BsNavbar.Text className="me-auto fs-5">
             <i className="bi-arrow-right me-3 fs-6" />
-            Actors
+            {pages[page].name}
           </BsNavbar.Text>
         )}
         <Nav.Link
