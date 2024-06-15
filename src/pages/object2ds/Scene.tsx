@@ -7,7 +7,7 @@ import { Object2d } from '../../components/Object2d';
 import './Scene.css';
 
 export function Object2dsScene(): React.JSX.Element {
-  const object2dType = useAtomValue(Object2dsPageState.object2dType);
+  const object2dDefPath = useAtomValue(Object2dsPageState.object2dDefPath);
   const showStats = useAtomValue(Object2dsPageState.showStats);
   const autoRotate = useAtomValue(Object2dsPageState.autoRotate);
 
@@ -34,7 +34,7 @@ export function Object2dsScene(): React.JSX.Element {
         autoRotate={autoRotate}
         makeDefault
       />
-      <Object2d key={object2dType} object2dType={object2dType} />
+      <Object2d key={object2dDefPath} defPath={object2dDefPath} />
     </Scene>
   );
 }

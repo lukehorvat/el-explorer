@@ -20,31 +20,34 @@ export function Object2dsSidebar(): React.JSX.Element {
 }
 
 function Object2dSection(): React.JSX.Element {
-  const [object2dType, setObject2dType] = useAtom(
-    Object2dsPageState.object2dType
+  const [object2dDefPath, setObject2dDefPath] = useAtom(
+    Object2dsPageState.object2dDefPath
   );
-  const sortedObject2dDefs = [...assetCache.actorDefs.values()].sort(
-    (def1, def2) => def1.name.localeCompare(def2.name)
+  const sortedObject2dDefPaths = [...assetCache.object2dDefs.keys()].sort(
+    (defPath1, defPath2) => defPath1.localeCompare(defPath2)
   );
   const moveToObject2d = (direction: 'prev' | 'next'): void => {
-    const object2dTypes = sortedObject2dDefs.map((def) => def.type);
-    setObject2dType(navigateTo(object2dType, object2dTypes, direction));
+    setObject2dDefPath(
+      navigateTo(object2dDefPath, sortedObject2dDefPaths, direction)
+    );
   };
 
   return (
-    <SidebarSection title="2D Object" icon="bi-person-fill">
+    <SidebarSection title="2D Object" icon="bi-image-fill">
       <Stack direction="horizontal" gap={2}>
         <Form.Label column="sm" className="flex-grow-0">
           Type:
         </Form.Label>
         <Form.Select
           size="sm"
-          value={object2dType}
-          onChange={(event) => setObject2dType(Number(event.target.value))}
+          value={object2dDefPath}
+          onChange={(event) => setObject2dDefPath(event.target.value)}
         >
-          {sortedObject2dDefs.map((object2dDef) => (
-            <option value={object2dDef.type} key={object2dDef.type}>
-              {object2dDef.name}
+          {sortedObject2dDefPaths.map((defPath) => (
+            <option value={defPath} key={defPath}>
+              {defPath
+                .replace(/^2dobjects\/ground\//, '') // Every 2D object is in `ground` dir so this is fine... 🤷‍♂️
+                .replace(/\.2d0$/, '')}
             </option>
           ))}
         </Form.Select>

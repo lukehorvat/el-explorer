@@ -5,10 +5,6 @@ import { assetCache } from '../lib/asset-cache';
 /**
  * An EL 2D object as a Three.js mesh!
  */
-export function Object2d({
-  object2dType,
-}: {
-  object2dType: number;
-}): React.JSX.Element {
+export function Object2d({ defPath }: { defPath: string }): React.JSX.Element {
   return <mesh />;
 }
