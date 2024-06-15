@@ -2,27 +2,19 @@ import React from 'react';
 import { createRoot } from 'react-dom/client';
 import { Stack } from 'react-bootstrap';
 import { useAtomValue } from 'jotai';
-import { AppState } from './app-state';
+import { AppState, pages } from './app-state';
 import { Navbar } from './components/Navbar';
 import { Footer } from './components/Footer';
-import { HomePage } from './pages/home/Page';
-import { ActorsPage } from './pages/actors/Page';
 import './App.css';
 
 function App(): React.JSX.Element {
   const page = useAtomValue(AppState.page);
+  const PageComponent = pages[page].Component;
 
   return (
-    <Stack className="App" direction="vertical">
+    <Stack className="App justify-content-between" direction="vertical">
       <Navbar />
-      {(() => {
-        switch (page) {
-          case 'home':
-            return <HomePage />;
-          case 'actors':
-            return <ActorsPage />;
-        }
-      })()}
+      <PageComponent />
       <Footer />
     </Stack>
   );
