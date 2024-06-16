@@ -43,7 +43,7 @@ export function Object3d({
       >
         <bufferAttribute
           attach="attributes-position"
-          args={[object3dDef.vertices, 3]}
+          args={[object3dDef.positions, 3]}
         />
         {object3dDef.normals && (
           <bufferAttribute

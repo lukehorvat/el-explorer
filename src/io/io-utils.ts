@@ -13,6 +13,13 @@ export interface Quaternion extends Vector3 {
 
 type Vector = Vector2 | Vector3 | Quaternion;
 
+export interface Color {
+  r: number;
+  g: number;
+  b: number;
+  a: number;
+}
+
 /**
  * Convert a vector from a left-handed Z-up coordinate system to a right-handed
  * Y-up coordinate system.

@@ -1,4 +1,4 @@
-import { SizeOf, Vector3 } from './io-utils';
+import { Color, SizeOf, Vector2, Vector3 } from './io-utils';
 import { halfToFloat } from './half-lut';
 
 /**
@@ -11,7 +11,7 @@ import { halfToFloat } from './half-lut';
  * reused as needed by actual 3D object instances in-game.
  */
 export interface Object3dDef {
-  vertices: Float32Array;
+  positions: Float32Array;
   normals?: Float32Array | null;
   uvs: Float32Array;
   colors?: Uint8Array | null;
@@ -33,10 +33,11 @@ export interface Object3dDef {
  */
 export function readObject3dDef(buffer: ArrayBuffer): Object3dDef {
   const header = readHeader(buffer);
-  const { vertices, normals, uvs, colors } = readVertices(
+  const { positions, normals, uvs, colors } = readVertices(
     buffer,
     header.vertexOffset,
     header.vertexCount,
+    header.vertexSize,
     header.vertexFormat,
     header.vertexOptions
   );
@@ -54,7 +55,7 @@ export function readObject3dDef(buffer: ArrayBuffer): Object3dDef {
   );
 
   return {
-    vertices,
+    positions,
     normals,
     uvs,
     colors,
@@ -163,103 +164,111 @@ function readVertices(
   buffer: ArrayBuffer,
   vertexOffset: number,
   vertexCount: number,
+  vertexSize: number,
   vertexFormat: number,
   vertexOptions: number
 ): {
-  vertices: Object3dDef['vertices'];
+  positions: Object3dDef['positions'];
   normals: Object3dDef['normals'];
   uvs: Object3dDef['uvs'];
   colors: Object3dDef['colors'];
 } {
   const view = new DataView(buffer);
-  const vertices: number[] = [];
-  const normals: number[] | null =
+  const positions: Vector3[] = [];
+  const normals: Vector3[] | null =
     vertexOptions & VertexOption.HAS_NORMAL ? [] : null;
-  const uvs: number[] = [];
-  const colors: number[] | null =
+  const uvs: Vector2[] = [];
+  const colors: Color[] | null =
     vertexOptions & VertexOption.HAS_COLOR ? [] : null;
+  let offset = vertexOffset;
 
   for (let i = 0; i < vertexCount; ++i) {
     if (vertexFormat & VertexFormat.HALF_UV) {
-      uvs.push(halfToFloat(view.getUint16(vertexOffset, true)));
-      vertexOffset += SizeOf.Uint16;
-      uvs.push(halfToFloat(view.getUint16(vertexOffset, true)));
-      vertexOffset += SizeOf.Uint16;
+      uvs.push({
+        x: halfToFloat(view.getUint16(offset, true)),
+        y: halfToFloat(view.getUint16(offset + SizeOf.Uint16, true)),
+      });
+      offset += 2 * SizeOf.Uint16;
     } else {
-      uvs.push(view.getFloat32(vertexOffset, true));
-      vertexOffset += SizeOf.Float32;
-      uvs.push(view.getFloat32(vertexOffset, true));
-      vertexOffset += SizeOf.Float32;
+      uvs.push({
+        x: view.getFloat32(offset, true),
+        y: view.getFloat32(offset + SizeOf.Float32, true),
+      });
+      offset += 2 * SizeOf.Float32;
     }
 
     if (vertexOptions & VertexOption.HAS_SECONDARY_TEXTURE_COORDINATE) {
       // Skip secondary texture coordinates.
       if (vertexFormat & VertexFormat.HALF_EXTRA_UV) {
-        vertexOffset += 2 * SizeOf.Uint16;
+        offset += 2 * SizeOf.Uint16;
       } else {
-        vertexOffset += 2 * SizeOf.Float32;
+        offset += 2 * SizeOf.Float32;
       }
     }
 
     if (vertexOptions & VertexOption.HAS_NORMAL) {
       if (vertexFormat & VertexFormat.COMPRESSED_NORMAL) {
-        const normal = uncompressNormal(view.getUint16(vertexOffset, true));
-        normals!.push(normal.x);
-        normals!.push(normal.y);
-        normals!.push(normal.z);
-        vertexOffset += SizeOf.Uint16;
+        normals!.push(uncompressNormal(view.getUint16(offset, true)));
+        offset += SizeOf.Uint16;
       } else {
-        normals!.push(view.getFloat32(vertexOffset, true));
-        vertexOffset += SizeOf.Float32;
-        normals!.push(view.getFloat32(vertexOffset, true));
-        vertexOffset += SizeOf.Float32;
-        normals!.push(view.getFloat32(vertexOffset, true));
-        vertexOffset += SizeOf.Float32;
+        normals!.push({
+          x: view.getFloat32(offset, true),
+          y: view.getFloat32(offset + SizeOf.Float32, true),
+          z: view.getFloat32(offset + 2 * SizeOf.Float32, true),
+        });
+        offset += 3 * SizeOf.Float32;
       }
     }
 
     if (vertexOptions & VertexOption.HAS_TANGENT) {
       // Skip tangents.
       if (vertexFormat & VertexFormat.COMPRESSED_NORMAL) {
-        vertexOffset += SizeOf.Uint16;
+        offset += SizeOf.Uint16;
       } else {
-        vertexOffset += 3 * SizeOf.Float32;
+        offset += 3 * SizeOf.Float32;
       }
     }
 
     if (vertexFormat & VertexFormat.HALF_POSITION) {
-      vertices.push(halfToFloat(view.getUint16(vertexOffset, true)));
-      vertexOffset += SizeOf.Uint16;
-      vertices.push(halfToFloat(view.getUint16(vertexOffset, true)));
-      vertexOffset += SizeOf.Uint16;
-      vertices.push(halfToFloat(view.getUint16(vertexOffset, true)));
-      vertexOffset += SizeOf.Uint16;
+      positions.push({
+        x: halfToFloat(view.getUint16(offset, true)),
+        y: halfToFloat(view.getUint16(offset + SizeOf.Uint16, true)),
+        z: halfToFloat(view.getUint16(offset + 2 * SizeOf.Uint16, true)),
+      });
+      offset += 3 * SizeOf.Uint16;
     } else {
-      vertices.push(view.getFloat32(vertexOffset, true));
-      vertexOffset += SizeOf.Float32;
-      vertices.push(view.getFloat32(vertexOffset, true));
-      vertexOffset += SizeOf.Float32;
-      vertices.push(view.getFloat32(vertexOffset, true));
-      vertexOffset += SizeOf.Float32;
+      positions.push({
+        x: view.getFloat32(offset, true),
+        y: view.getFloat32(offset + SizeOf.Float32, true),
+        z: view.getFloat32(offset + 2 * SizeOf.Float32, true),
+      });
+      offset += 3 * SizeOf.Float32;
     }
 
     if (vertexOptions & VertexOption.HAS_COLOR) {
-      colors!.push(view.getUint8(vertexOffset));
-      vertexOffset += SizeOf.Uint8;
-      colors!.push(view.getUint8(vertexOffset));
-      vertexOffset += SizeOf.Uint8;
-      colors!.push(view.getUint8(vertexOffset));
-      vertexOffset += SizeOf.Uint8;
-      colors!.push(view.getUint8(vertexOffset));
-      vertexOffset += SizeOf.Uint8;
+      colors!.push({
+        r: view.getUint8(offset),
+        g: view.getUint8(offset + SizeOf.Uint8),
+        b: view.getUint8(offset + 2 * SizeOf.Uint8),
+        a: view.getUint8(offset + 3 * SizeOf.Uint8),
+      });
+      offset += 4 * SizeOf.Uint8;
     }
   }
 
+  if (offset - vertexOffset !== vertexCount * vertexSize) {
+    throw new Error('Failed to read 3D object vertices.');
+  }
+
   return {
-    vertices: new Float32Array(vertices),
-    normals: normals ? new Float32Array(normals) : null,
-    uvs: new Float32Array(uvs),
-    colors: colors ? new Uint8Array(colors) : null,
+    positions: new Float32Array(positions.map((p) => [p.x, p.y, p.z]).flat()),
+    normals: normals
+      ? new Float32Array(normals.map((n) => [n.x, n.y, n.z]).flat())
+      : null,
+    uvs: new Float32Array(uvs.map((uv) => [uv.x, uv.y]).flat()),
+    colors: colors
+      ? new Uint8Array(colors.map((c) => [c.r, c.g, c.b, c.a]).flat())
+      : null,
   };
 }
 
@@ -271,14 +280,19 @@ function readIndices(
 ): Object3dDef['indices'] {
   const view = new DataView(buffer);
   const indices: number[] = [];
+  let offset = indexOffset;
 
   for (let i = 0; i < indexCount; i++) {
     indices.push(
       indexSize === SizeOf.Uint16
-        ? view.getUint16(indexOffset, true)
-        : view.getUint32(indexOffset, true)
+        ? view.getUint16(offset, true)
+        : view.getUint32(offset, true)
     );
-    indexOffset += indexSize;
+    offset += indexSize;
+  }
+
+  if (offset - indexOffset !== indexCount * indexSize) {
+    throw new Error('Failed to read 3D object indices.');
   }
 
   return new (indexSize === SizeOf.Uint16 ? Uint16Array : Uint32Array)(indices);
