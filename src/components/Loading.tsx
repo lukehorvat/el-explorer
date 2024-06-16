@@ -44,7 +44,7 @@ function useLoadingMessage(
 
         if (error) {
           setIsError(true);
-          throw error; // eslint-disable-line @typescript-eslint/no-throw-literal
+          throw error; // eslint-disable-line @typescript-eslint/only-throw-error
         }
       }
 

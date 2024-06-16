@@ -33,6 +33,10 @@ module.exports = {
       'warn',
       { ignoreArrowShorthand: true },
     ],
+    '@typescript-eslint/restrict-template-expressions': [
+      'error',
+      { allowNumber: true },
+    ],
     'react/no-unknown-property': 'off', // Doesn't seem to work with react-three-fiber.
   },
 };

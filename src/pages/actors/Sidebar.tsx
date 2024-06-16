@@ -167,7 +167,7 @@ function AnimationSection(): React.JSX.Element {
               }
             >
               {animationSpeeds.map((speed) => (
-                <option value={`${speed}`} key={speed}>
+                <option value={speed} key={speed}>
                   {Math.round(speed * 100)}%
                 </option>
               ))}
