@@ -1,4 +1,4 @@
-import { Color, SizeOf, Vector2, Vector3 } from './io-utils';
+import { Color, SizeOf, Vector2, Vector3, leftZUpToRightYUp } from './io-utils';
 import { halfToFloat } from './half-lut';
 
 /**
@@ -261,9 +261,19 @@ function readVertices(
   }
 
   return {
-    positions: new Float32Array(positions.map((p) => [p.x, p.y, p.z]).flat()),
+    positions: new Float32Array(
+      positions
+        .map<Vector3>(leftZUpToRightYUp)
+        .map((p) => [p.x, p.y, p.z])
+        .flat()
+    ),
     normals: normals
-      ? new Float32Array(normals.map((n) => [n.x, n.y, n.z]).flat())
+      ? new Float32Array(
+          normals
+            .map<Vector3>(leftZUpToRightYUp)
+            .map((n) => [n.x, n.y, n.z])
+            .flat()
+        )
       : null,
     uvs: new Float32Array(uvs.map((uv) => [uv.x, uv.y]).flat()),
     colors: colors
@@ -318,6 +328,7 @@ function readMaterials(
       .replace(/\0*$/, '');
     offset += MATERIAL_TEXTURE_NAME_SIZE;
 
+    // TODO: Should you use leftZUpToRightYUp for min and max?
     const min: Vector3 = {
       x: view.getFloat32(offset, true),
       y: view.getFloat32(offset + SizeOf.Float32, true),

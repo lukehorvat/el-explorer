@@ -70,22 +70,18 @@ export function readCalMesh(buffer: ArrayBuffer): CalMesh[] {
     const springs: CalMesh['springs'] = [];
 
     for (let j = 0; j < vertexCount; j++) {
-      positions.push(
-        leftZUpToRightYUp({
-          x: view.getFloat32(offset, true),
-          y: view.getFloat32(offset + SizeOf.Float32, true),
-          z: view.getFloat32(offset + 2 * SizeOf.Float32, true),
-        })
-      );
+      positions.push({
+        x: view.getFloat32(offset, true),
+        y: view.getFloat32(offset + SizeOf.Float32, true),
+        z: view.getFloat32(offset + 2 * SizeOf.Float32, true),
+      });
       offset += 3 * SizeOf.Float32;
 
-      normals.push(
-        leftZUpToRightYUp({
-          x: view.getFloat32(offset, true),
-          y: view.getFloat32(offset + SizeOf.Float32, true),
-          z: view.getFloat32(offset + 2 * SizeOf.Float32, true),
-        })
-      );
+      normals.push({
+        x: view.getFloat32(offset, true),
+        y: view.getFloat32(offset + SizeOf.Float32, true),
+        z: view.getFloat32(offset + 2 * SizeOf.Float32, true),
+      });
       offset += 3 * SizeOf.Float32;
 
       vertexCollapseIds.push(view.getInt32(offset, true));
@@ -94,12 +90,10 @@ export function readCalMesh(buffer: ArrayBuffer): CalMesh[] {
       offset += SizeOf.Int32;
 
       for (let k = 0; k < mapCount; k++) {
-        uvs.push(
-          leftZUpToRightYUp({
-            x: view.getFloat32(offset, true),
-            y: view.getFloat32(offset + SizeOf.Float32, true),
-          })
-        );
+        uvs.push({
+          x: view.getFloat32(offset, true),
+          y: view.getFloat32(offset + SizeOf.Float32, true),
+        });
         offset += 2 * SizeOf.Float32;
       }
 
@@ -165,9 +159,24 @@ export function readCalMesh(buffer: ArrayBuffer): CalMesh[] {
     }
 
     subMeshes.push({
-      positions: new Float32Array(positions.map((p) => [p.x, p.y, p.z]).flat()),
-      normals: new Float32Array(normals.map((n) => [n.x, n.y, n.z]).flat()),
-      uvs: new Float32Array(uvs.map((uv) => [uv.x, uv.y]).flat()),
+      positions: new Float32Array(
+        positions
+          .map<Vector3>(leftZUpToRightYUp)
+          .map((p) => [p.x, p.y, p.z])
+          .flat()
+      ),
+      normals: new Float32Array(
+        normals
+          .map<Vector3>(leftZUpToRightYUp)
+          .map((n) => [n.x, n.y, n.z])
+          .flat()
+      ),
+      uvs: new Float32Array(
+        uvs
+          .map<Vector2>(leftZUpToRightYUp)
+          .map((uv) => [uv.x, uv.y])
+          .flat()
+      ),
       indices: new Uint32Array(faces.map((f) => [f.x, f.y, f.z]).flat()),
       skinIndices: new Uint16Array(skinIndices),
       skinWeights: new Float32Array(skinWeights),

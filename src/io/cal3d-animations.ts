@@ -49,25 +49,25 @@ export function readCalAnimation(buffer: ArrayBuffer): CalAnimation {
       const time = view.getFloat32(offset, true);
       offset += SizeOf.Float32;
 
-      const translation = leftZUpToRightYUp({
+      const translation: Vector3 = {
         x: view.getFloat32(offset, true),
         y: view.getFloat32(offset + SizeOf.Float32, true),
         z: view.getFloat32(offset + 2 * SizeOf.Float32, true),
-      });
+      };
       offset += 3 * SizeOf.Float32;
 
-      const rotation = leftZUpToRightYUp({
+      const rotation: Quaternion = {
         x: view.getFloat32(offset, true),
         y: view.getFloat32(offset + SizeOf.Float32, true),
         z: view.getFloat32(offset + 2 * SizeOf.Float32, true),
         w: view.getFloat32(offset + 3 * SizeOf.Float32, true),
-      });
+      };
       offset += 4 * SizeOf.Float32;
 
       keyframes.push({
         time,
-        translation,
-        rotation,
+        translation: leftZUpToRightYUp(translation),
+        rotation: leftZUpToRightYUp(rotation),
       });
     }
 

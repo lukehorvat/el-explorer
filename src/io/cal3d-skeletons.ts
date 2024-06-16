@@ -41,34 +41,34 @@ export function readCalSkeleton(buffer: ArrayBuffer): CalBone[] {
     const name = textDecoder.decode(new Uint8Array(buffer, offset, nameLength));
     offset += nameLength;
 
-    const translation = leftZUpToRightYUp({
+    const translation: Vector3 = {
       x: view.getFloat32(offset, true),
       y: view.getFloat32(offset + SizeOf.Float32, true),
       z: view.getFloat32(offset + 2 * SizeOf.Float32, true),
-    });
+    };
     offset += 3 * SizeOf.Float32;
 
-    const rotation = leftZUpToRightYUp({
+    const rotation: Quaternion = {
       x: view.getFloat32(offset, true),
       y: view.getFloat32(offset + SizeOf.Float32, true),
       z: view.getFloat32(offset + 2 * SizeOf.Float32, true),
       w: view.getFloat32(offset + 3 * SizeOf.Float32, true),
-    });
+    };
     offset += 4 * SizeOf.Float32;
 
-    const localTranslation = leftZUpToRightYUp({
+    const localTranslation: Vector3 = {
       x: view.getFloat32(offset, true),
       y: view.getFloat32(offset + SizeOf.Float32, true),
       z: view.getFloat32(offset + 2 * SizeOf.Float32, true),
-    });
+    };
     offset += 3 * SizeOf.Float32;
 
-    const localRotation = leftZUpToRightYUp({
+    const localRotation: Quaternion = {
       x: view.getFloat32(offset, true),
       y: view.getFloat32(offset + SizeOf.Float32, true),
       z: view.getFloat32(offset + 2 * SizeOf.Float32, true),
       w: view.getFloat32(offset + 3 * SizeOf.Float32, true),
-    });
+    };
     offset += 4 * SizeOf.Float32;
 
     const parentId = view.getInt32(offset, true);
@@ -84,10 +84,10 @@ export function readCalSkeleton(buffer: ArrayBuffer): CalBone[] {
 
     skeleton.push({
       name,
-      translation,
-      rotation,
-      localTranslation,
-      localRotation,
+      translation: leftZUpToRightYUp(translation),
+      rotation: leftZUpToRightYUp(rotation),
+      localTranslation: leftZUpToRightYUp(localTranslation),
+      localRotation: leftZUpToRightYUp(localRotation),
       parentId,
       childIds,
     });

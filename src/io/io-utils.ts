@@ -25,7 +25,7 @@ export interface Color {
  * Y-up coordinate system.
  *
  * Necessary because many 3D dev tools (e.g. Three.js) are right-handed Y-up and
- * EL's Cal3D files appear to be left-handed Z-up.
+ * EL's mesh files appear to be left-handed Z-up.
  */
 export function leftZUpToRightYUp(v: Quaternion): Quaternion;
 export function leftZUpToRightYUp(v: Vector3): Vector3;
