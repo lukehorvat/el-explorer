@@ -1,4 +1,4 @@
-import { Vector2, Vector3, leftZUpToRightYUp } from './io-utils';
+import { SizeOf, Vector2, Vector3, leftZUpToRightYUp } from './io-utils';
 
 export interface CalMesh {
   positions: Float32Array;
@@ -27,41 +27,36 @@ export interface CalMesh {
  */
 export function readCalMesh(buffer: ArrayBuffer): CalMesh[] {
   const view = new DataView(buffer);
+  const textDecoder = new TextDecoder('utf-8');
   let offset = 0;
 
-  const magicToken = String.fromCharCode(
-    view.getUint8(offset),
-    view.getUint8(offset + 1),
-    view.getUint8(offset + 2),
-    view.getUint8(offset + 3)
+  const magicToken = textDecoder.decode(
+    new Uint8Array(buffer, offset, 4 * SizeOf.Uint8)
   );
-  offset += 8;
+  offset += 4 * SizeOf.Uint8;
   if (magicToken !== 'CMF\0') {
     throw new Error('Not a valid Cal3D mesh file.');
   }
 
+  const version = view.getInt32(offset, true); // eslint-disable-line @typescript-eslint/no-unused-vars
+  offset += SizeOf.Int32;
   const subMeshCount = view.getInt32(offset, true);
-  offset += 4;
+  offset += SizeOf.Int32;
 
   const subMeshes: CalMesh[] = [];
   for (let i = 0; i < subMeshCount; i++) {
     const materialId = view.getInt32(offset, true);
-    offset += 4;
-
+    offset += SizeOf.Int32;
     const vertexCount = view.getInt32(offset, true);
-    offset += 4;
-
+    offset += SizeOf.Int32;
     const faceCount = view.getInt32(offset, true);
-    offset += 4;
-
+    offset += SizeOf.Int32;
     const lodSteps = view.getInt32(offset, true);
-    offset += 4;
-
+    offset += SizeOf.Int32;
     const springCount = view.getInt32(offset, true);
-    offset += 4;
-
+    offset += SizeOf.Int32;
     const mapCount = view.getInt32(offset, true);
-    offset += 4;
+    offset += SizeOf.Int32;
 
     const positions: Vector3[] = [];
     const normals: Vector3[] = [];
@@ -78,47 +73,46 @@ export function readCalMesh(buffer: ArrayBuffer): CalMesh[] {
       positions.push(
         leftZUpToRightYUp({
           x: view.getFloat32(offset, true),
-          y: view.getFloat32(offset + 4, true),
-          z: view.getFloat32(offset + 8, true),
+          y: view.getFloat32(offset + SizeOf.Float32, true),
+          z: view.getFloat32(offset + 2 * SizeOf.Float32, true),
         })
       );
-      offset += 12;
+      offset += 3 * SizeOf.Float32;
 
       normals.push(
         leftZUpToRightYUp({
           x: view.getFloat32(offset, true),
-          y: view.getFloat32(offset + 4, true),
-          z: view.getFloat32(offset + 8, true),
+          y: view.getFloat32(offset + SizeOf.Float32, true),
+          z: view.getFloat32(offset + 2 * SizeOf.Float32, true),
         })
       );
-      offset += 12;
+      offset += 3 * SizeOf.Float32;
 
       vertexCollapseIds.push(view.getInt32(offset, true));
-      offset += 4;
-
+      offset += SizeOf.Int32;
       vertexFaceCollapses.push(view.getInt32(offset, true));
-      offset += 4;
+      offset += SizeOf.Int32;
 
       for (let k = 0; k < mapCount; k++) {
         uvs.push(
           leftZUpToRightYUp({
             x: view.getFloat32(offset, true),
-            y: view.getFloat32(offset + 4, true),
+            y: view.getFloat32(offset + SizeOf.Float32, true),
           })
         );
-        offset += 8;
+        offset += 2 * SizeOf.Float32;
       }
 
       const boneInfluenceCount = view.getInt32(offset, true);
-      offset += 4;
+      offset += SizeOf.Int32;
 
       const boneInfluences: { boneId: number; weight: number }[] = [];
       for (let k = 0; k < boneInfluenceCount; k++) {
         boneInfluences.push({
           boneId: view.getInt32(offset, true),
-          weight: view.getFloat32(offset + 4, true),
+          weight: view.getFloat32(offset + SizeOf.Int32, true),
         });
-        offset += 8;
+        offset += SizeOf.Int32 + SizeOf.Float32;
       }
 
       // Each vertex can be influenced by up to 4 bones. If a vertex has more
@@ -137,7 +131,7 @@ export function readCalMesh(buffer: ArrayBuffer): CalMesh[] {
 
       if (springCount > 0) {
         vertexWeights.push(view.getFloat32(offset, true));
-        offset += 4;
+        offset += SizeOf.Float32;
       } else {
         vertexWeights.push(null);
       }
@@ -145,16 +139,13 @@ export function readCalMesh(buffer: ArrayBuffer): CalMesh[] {
 
     for (let j = 0; j < springCount; j++) {
       const vertexId1 = view.getInt32(offset, true);
-      offset += 4;
-
+      offset += SizeOf.Int32;
       const vertexId2 = view.getInt32(offset, true);
-      offset += 4;
-
+      offset += SizeOf.Int32;
       const springCoefficient = view.getFloat32(offset, true);
-      offset += 4;
-
+      offset += SizeOf.Float32;
       const idleLength = view.getFloat32(offset, true);
-      offset += 4;
+      offset += SizeOf.Float32;
 
       springs.push({
         vertexId1,
@@ -167,10 +158,10 @@ export function readCalMesh(buffer: ArrayBuffer): CalMesh[] {
     for (let j = 0; j < faceCount; j++) {
       faces.push({
         x: view.getInt32(offset, true),
-        y: view.getInt32(offset + 4, true),
-        z: view.getInt32(offset + 8, true),
+        y: view.getInt32(offset + SizeOf.Int32, true),
+        z: view.getInt32(offset + 2 * SizeOf.Int32, true),
       });
-      offset += 12;
+      offset += 3 * SizeOf.Int32;
     }
 
     subMeshes.push({
