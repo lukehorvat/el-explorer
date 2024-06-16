@@ -1,0 +1,2 @@
+# Don't let data files confuse GitHub's language stats.
+data/** linguist-vendored
