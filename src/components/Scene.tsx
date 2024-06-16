@@ -21,9 +21,11 @@ export function Scene({
       shadows
     >
       {children}
-      {showStats && (
-        <StatsGl className="SceneStats m-3" horizontal={false} precision={1} />
-      )}
+      <StatsGl
+        className={`SceneStats m-3 ${showStats ? '' : 'Hidden'}`}
+        horizontal={false}
+        precision={1}
+      />
     </Canvas>
   );
 }
