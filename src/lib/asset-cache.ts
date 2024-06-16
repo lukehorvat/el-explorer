@@ -91,6 +91,17 @@ class AssetCache {
     } catch (error) {
       yield ['Failed to load 3D object definitions.', error];
     }
+
+    yield ['Loading 3D object textures...'];
+    try {
+      for (const object3dDef of this.object3dDefs.values()) {
+        for (const material of object3dDef.materials) {
+          await this.loadDDSTexture(material.texturePath);
+        }
+      }
+    } catch (error) {
+      yield ['Failed to load 3D object textures.', error];
+    }
   }
 
   async *loadObject2ds(): AsyncGenerator<[message: string, error?: unknown]> {
@@ -116,7 +127,9 @@ class AssetCache {
       (await this.stringLoader.loadAsync('3dobjects.json')) as string
     );
 
-    for (const object3dDefPath of object3dDefPaths) {
+    for (const object3dDefPath of object3dDefPaths.filter(
+      (defPath) => !ignoredObject3dDefs.has(defPath)
+    )) {
       await this.loadObject3dDef(`3dobjects/${object3dDefPath}`);
     }
   }
@@ -159,6 +172,10 @@ class AssetCache {
 
     const buffer = await this.bufferLoader.loadAsync(`data/${filePath}`);
     const object3dDef = readObject3dDef(buffer as ArrayBuffer);
+    const dir = filePath.slice(0, filePath.lastIndexOf('/'));
+    for (const material of object3dDef.materials) {
+      material.texturePath = `${dir}/${material.texturePath}`; // Make texture path absolute.
+    }
     this.object3dDefs.set(filePath, object3dDef);
   }
 
@@ -223,5 +240,10 @@ const ignoredActorDefs = new Set([
   'draegoni female',
   'target',
 ]);
+
+/**
+ * Don't load the following 3D object defs, since their texture files are missing(?).
+ */
+const ignoredObject3dDefs = new Set(['sled1.e3d']);
 
 export const assetCache = new AssetCache(); // singleton

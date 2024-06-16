@@ -19,8 +19,8 @@ export interface Object3dDef {
   materials: {
     isTransparent: boolean;
     texturePath: string;
-    min: { x: number; y: number; z: number };
-    max: { x: number; y: number; z: number };
+    min: Vector3;
+    max: Vector3;
     minVerticesIndex: number;
     maxVerticesIndex: number;
     index: number;
@@ -171,6 +171,7 @@ function readVertices(
     }
 
     if (vertexOptions & VertexOption.HAS_SECONDARY_TEXTURE_COORDINATE) {
+      // Skip secondary texture coordinates.
       if (vertexFormat & VertexFormat.HALF_EXTRA_UV) {
         vertexOffset += 4;
       } else {
@@ -194,6 +195,7 @@ function readVertices(
     }
 
     if (vertexOptions & VertexOption.HAS_TANGENT) {
+      // Skip tangents.
       if (vertexFormat & VertexFormat.COMPRESSED_NORMAL) {
         vertexOffset += 2;
       } else {
@@ -268,7 +270,7 @@ function readMaterials(
         new Uint8Array(buffer, materialOffset + 4, MATERIAL_TEXTURE_NAME_SIZE)
       )
       .replace(/\0*$/, '');
-    const min = {
+    const min: Vector3 = {
       x: view.getFloat32(materialOffset + MATERIAL_TEXTURE_NAME_SIZE + 4, true),
       y: view.getFloat32(materialOffset + MATERIAL_TEXTURE_NAME_SIZE + 8, true),
       z: view.getFloat32(
@@ -276,7 +278,7 @@ function readMaterials(
         true
       ),
     };
-    const max = {
+    const max: Vector3 = {
       x: view.getFloat32(
         materialOffset + MATERIAL_TEXTURE_NAME_SIZE + 16,
         true

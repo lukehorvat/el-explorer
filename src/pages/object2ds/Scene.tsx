@@ -13,7 +13,7 @@ export function Object2dsScene(): React.JSX.Element {
   const showStats = useAtomValue(Object2dsPageState.showStats);
   const autoRotate = useAtomValue(Object2dsPageState.autoRotate);
 
-  const onoOject2dDefPathChange: CameraResetListener = useCallback(
+  const onObject2dDefPathChange: CameraResetListener = useCallback(
     (camera, orbitControls, center) => {
       camera.position.set(
         0,
@@ -40,7 +40,7 @@ export function Object2dsScene(): React.JSX.Element {
       />
       <CameraReset
         key={object2dDefPath} // Reset camera whenever object def path changes.
-        onReset={onoOject2dDefPathChange}
+        onReset={onObject2dDefPathChange}
       >
         <Object2d
           defPath={object2dDefPath}
