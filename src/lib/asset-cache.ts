@@ -2,7 +2,11 @@ import * as THREE from 'three';
 import { DDSLoader } from 'three/addons/loaders/DDSLoader.js';
 import { expandXmlEntityRefs, parseXmlEntityDecls } from '../io/xml-entities';
 import { Object3dDef, readObject3dDef } from '../io/object3d-defs';
-import { Object2dDef, readObject2dDef } from '../io/object2d-defs';
+import {
+  Object2dDef,
+  Object2dType,
+  readObject2dDef,
+} from '../io/object2d-defs';
 import { ActorDef, readActorDefs } from '../io/actor-defs';
 import { CalMesh, readCalMesh } from '../io/cal3d-meshes';
 import { CalBone, readCalSkeleton } from '../io/cal3d-skeletons';
@@ -184,6 +188,10 @@ class AssetCache {
 
     const data = await this.stringLoader.loadAsync(`data/${filePath}`);
     const object2dDef = readObject2dDef(data as string);
+    if (object2dDef.type !== Object2dType.GROUND) {
+      // It's not clear how to handle non-ground 2D objects. They aren't used anymore anyway...
+      throw new Error('Unsupported 2D object type encountered.');
+    }
     const dir = filePath.slice(0, filePath.lastIndexOf('/'));
     object2dDef.texturePath = `${dir}/${object2dDef.texturePath}`; // Make texture path absolute.
     this.object2dDefs.set(filePath, object2dDef);
