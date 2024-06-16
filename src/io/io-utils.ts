@@ -30,3 +30,13 @@ export function leftZUpToRightYUp(v: Vector): Vector {
     ? { x: v.x, y: v.z, z: -v.y }
     : { x: v.x, y: -v.y };
 }
+
+export enum SizeOf {
+  Int8 = Int8Array.BYTES_PER_ELEMENT,
+  Uint8 = Uint8Array.BYTES_PER_ELEMENT,
+  Int16 = Int16Array.BYTES_PER_ELEMENT,
+  Uint16 = Uint16Array.BYTES_PER_ELEMENT,
+  Int32 = Int32Array.BYTES_PER_ELEMENT,
+  Uint32 = Uint32Array.BYTES_PER_ELEMENT,
+  Float32 = Float32Array.BYTES_PER_ELEMENT,
+}

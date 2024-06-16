@@ -1,4 +1,4 @@
-import { Vector3 } from './io-utils';
+import { SizeOf, Vector3 } from './io-utils';
 import { halfToFloat } from './half-lut';
 
 /**
@@ -78,30 +78,50 @@ function readHeader(buffer: ArrayBuffer): {
 } {
   const view = new DataView(buffer);
   const textDecoder = new TextDecoder('utf-8');
+  let offset = 0;
 
-  const magicToken = textDecoder.decode(new Uint8Array(buffer, 0, 4));
+  const magicToken = textDecoder.decode(
+    new Uint8Array(buffer, offset, 4 * SizeOf.Uint8)
+  );
+  offset += 4 * SizeOf.Uint8;
   if (magicToken !== 'e3dx') {
     throw new Error('Not a valid 3D object definition file.');
   }
 
   const version = view.getUint32(4, true);
+  offset += SizeOf.Uint32;
   if (!(version in SupportedVersion)) {
     throw new Error('Not a supported 3D object definition file version.');
   }
 
-  const md5Hash = textDecoder.decode(new Uint8Array(buffer, 8, 16)); // TODO: check hash is correct
-  const offset = view.getUint32(24, true);
+  // TODO: check that hash is correct
+  const md5Hash = textDecoder.decode(
+    new Uint8Array(buffer, offset, 16 * SizeOf.Uint8)
+  );
+  offset += 16 * SizeOf.Uint8;
+  offset = view.getUint32(offset, true);
   const vertexCount = view.getUint32(offset, true);
-  const vertexSize = view.getUint32(offset + 4, true);
-  const vertexOffset = view.getUint32(offset + 8, true);
-  const indexCount = view.getUint32(offset + 12, true);
-  const indexSize = view.getUint32(offset + 16, true);
-  const indexOffset = view.getUint32(offset + 20, true);
-  const materialCount = view.getUint32(offset + 24, true);
-  const materialSize = view.getUint32(offset + 28, true);
-  const materialOffset = view.getUint32(offset + 32, true);
-  let vertexOptions = view.getUint8(offset + 36);
-  let vertexFormat = view.getUint8(offset + 37);
+  offset += SizeOf.Uint32;
+  const vertexSize = view.getUint32(offset, true);
+  offset += SizeOf.Uint32;
+  const vertexOffset = view.getUint32(offset, true);
+  offset += SizeOf.Uint32;
+  const indexCount = view.getUint32(offset, true);
+  offset += SizeOf.Uint32;
+  const indexSize = view.getUint32(offset, true);
+  offset += SizeOf.Uint32;
+  const indexOffset = view.getUint32(offset, true);
+  offset += SizeOf.Uint32;
+  const materialCount = view.getUint32(offset, true);
+  offset += SizeOf.Uint32;
+  const materialSize = view.getUint32(offset, true);
+  offset += SizeOf.Uint32;
+  const materialOffset = view.getUint32(offset, true);
+  offset += SizeOf.Uint32;
+  let vertexOptions = view.getUint8(offset);
+  offset += SizeOf.Uint8;
+  let vertexFormat = view.getUint8(offset);
+  offset += SizeOf.Uint8;
 
   if ((version as SupportedVersion) === SupportedVersion.VERSION_1_1) {
     vertexOptions &= VertexOption.OPTION_1_1_MASK;
@@ -162,20 +182,22 @@ function readVertices(
   for (let i = 0; i < vertexCount; ++i) {
     if (vertexFormat & VertexFormat.HALF_UV) {
       uvs.push(halfToFloat(view.getUint16(vertexOffset, true)));
-      uvs.push(halfToFloat(view.getUint16(vertexOffset + 2, true)));
-      vertexOffset += 4;
+      vertexOffset += SizeOf.Uint16;
+      uvs.push(halfToFloat(view.getUint16(vertexOffset, true)));
+      vertexOffset += SizeOf.Uint16;
     } else {
       uvs.push(view.getFloat32(vertexOffset, true));
-      uvs.push(view.getFloat32(vertexOffset + 4, true));
-      vertexOffset += 8;
+      vertexOffset += SizeOf.Float32;
+      uvs.push(view.getFloat32(vertexOffset, true));
+      vertexOffset += SizeOf.Float32;
     }
 
     if (vertexOptions & VertexOption.HAS_SECONDARY_TEXTURE_COORDINATE) {
       // Skip secondary texture coordinates.
       if (vertexFormat & VertexFormat.HALF_EXTRA_UV) {
-        vertexOffset += 4;
+        vertexOffset += 2 * SizeOf.Uint16;
       } else {
-        vertexOffset += 8;
+        vertexOffset += 2 * SizeOf.Float32;
       }
     }
 
@@ -185,42 +207,51 @@ function readVertices(
         normals!.push(normal.x);
         normals!.push(normal.y);
         normals!.push(normal.z);
-        vertexOffset += 2;
+        vertexOffset += SizeOf.Uint16;
       } else {
         normals!.push(view.getFloat32(vertexOffset, true));
-        normals!.push(view.getFloat32(vertexOffset + 4, true));
-        normals!.push(view.getFloat32(vertexOffset + 8, true));
-        vertexOffset += 12;
+        vertexOffset += SizeOf.Float32;
+        normals!.push(view.getFloat32(vertexOffset, true));
+        vertexOffset += SizeOf.Float32;
+        normals!.push(view.getFloat32(vertexOffset, true));
+        vertexOffset += SizeOf.Float32;
       }
     }
 
     if (vertexOptions & VertexOption.HAS_TANGENT) {
       // Skip tangents.
       if (vertexFormat & VertexFormat.COMPRESSED_NORMAL) {
-        vertexOffset += 2;
+        vertexOffset += SizeOf.Uint16;
       } else {
-        vertexOffset += 12;
+        vertexOffset += 3 * SizeOf.Float32;
       }
     }
 
     if (vertexFormat & VertexFormat.HALF_POSITION) {
       vertices.push(halfToFloat(view.getUint16(vertexOffset, true)));
-      vertices.push(halfToFloat(view.getUint16(vertexOffset + 2, true)));
-      vertices.push(halfToFloat(view.getUint16(vertexOffset + 4, true)));
-      vertexOffset += 6;
+      vertexOffset += SizeOf.Uint16;
+      vertices.push(halfToFloat(view.getUint16(vertexOffset, true)));
+      vertexOffset += SizeOf.Uint16;
+      vertices.push(halfToFloat(view.getUint16(vertexOffset, true)));
+      vertexOffset += SizeOf.Uint16;
     } else {
       vertices.push(view.getFloat32(vertexOffset, true));
-      vertices.push(view.getFloat32(vertexOffset + 4, true));
-      vertices.push(view.getFloat32(vertexOffset + 8, true));
-      vertexOffset += 12;
+      vertexOffset += SizeOf.Float32;
+      vertices.push(view.getFloat32(vertexOffset, true));
+      vertexOffset += SizeOf.Float32;
+      vertices.push(view.getFloat32(vertexOffset, true));
+      vertexOffset += SizeOf.Float32;
     }
 
     if (vertexOptions & VertexOption.HAS_COLOR) {
       colors!.push(view.getUint8(vertexOffset));
-      colors!.push(view.getUint8(vertexOffset + 1));
-      colors!.push(view.getUint8(vertexOffset + 2));
-      colors!.push(view.getUint8(vertexOffset + 3));
-      vertexOffset += 4;
+      vertexOffset += SizeOf.Uint8;
+      colors!.push(view.getUint8(vertexOffset));
+      vertexOffset += SizeOf.Uint8;
+      colors!.push(view.getUint8(vertexOffset));
+      vertexOffset += SizeOf.Uint8;
+      colors!.push(view.getUint8(vertexOffset));
+      vertexOffset += SizeOf.Uint8;
     }
   }
 
@@ -243,14 +274,14 @@ function readIndices(
 
   for (let i = 0; i < indexCount; i++) {
     indices.push(
-      indexSize === 2
+      indexSize === SizeOf.Uint16
         ? view.getUint16(indexOffset, true)
         : view.getUint32(indexOffset, true)
     );
     indexOffset += indexSize;
   }
 
-  return new (indexSize === 2 ? Uint16Array : Uint32Array)(indices);
+  return new (indexSize === SizeOf.Uint16 ? Uint16Array : Uint32Array)(indices);
 }
 
 function readMaterials(
@@ -262,52 +293,39 @@ function readMaterials(
   const view = new DataView(buffer);
   const textDecoder = new TextDecoder('utf-8');
   const materials = [];
+  let offset = materialOffset;
 
   for (let i = 0; i < materialCount; i++) {
-    const isTransparent = view.getUint32(materialOffset, true) !== 0;
+    const isTransparent = view.getUint32(offset, true) !== 0;
+    offset += SizeOf.Uint32;
+
     const texturePath = textDecoder
-      .decode(
-        new Uint8Array(buffer, materialOffset + 4, MATERIAL_TEXTURE_NAME_SIZE)
-      )
+      .decode(new Uint8Array(buffer, offset, MATERIAL_TEXTURE_NAME_SIZE))
       .replace(/\0*$/, '');
+    offset += MATERIAL_TEXTURE_NAME_SIZE;
+
     const min: Vector3 = {
-      x: view.getFloat32(materialOffset + MATERIAL_TEXTURE_NAME_SIZE + 4, true),
-      y: view.getFloat32(materialOffset + MATERIAL_TEXTURE_NAME_SIZE + 8, true),
-      z: view.getFloat32(
-        materialOffset + MATERIAL_TEXTURE_NAME_SIZE + 12,
-        true
-      ),
+      x: view.getFloat32(offset, true),
+      y: view.getFloat32(offset + SizeOf.Float32, true),
+      z: view.getFloat32(offset + 2 * SizeOf.Float32, true),
     };
+    offset += 3 * SizeOf.Float32;
+
     const max: Vector3 = {
-      x: view.getFloat32(
-        materialOffset + MATERIAL_TEXTURE_NAME_SIZE + 16,
-        true
-      ),
-      y: view.getFloat32(
-        materialOffset + MATERIAL_TEXTURE_NAME_SIZE + 20,
-        true
-      ),
-      z: view.getFloat32(
-        materialOffset + MATERIAL_TEXTURE_NAME_SIZE + 24,
-        true
-      ),
+      x: view.getFloat32(offset, true),
+      y: view.getFloat32(offset + SizeOf.Float32, true),
+      z: view.getFloat32(offset + 2 * SizeOf.Float32, true),
     };
-    const minVerticesIndex = view.getUint32(
-      materialOffset + MATERIAL_TEXTURE_NAME_SIZE + 28,
-      true
-    );
-    const maxVerticesIndex = view.getUint32(
-      materialOffset + MATERIAL_TEXTURE_NAME_SIZE + 32,
-      true
-    );
-    const index = view.getUint32(
-      materialOffset + MATERIAL_TEXTURE_NAME_SIZE + 36,
-      true
-    );
-    const materialCount = view.getUint32(
-      materialOffset + MATERIAL_TEXTURE_NAME_SIZE + 40,
-      true
-    );
+    offset += 3 * SizeOf.Float32;
+
+    const minVerticesIndex = view.getUint32(offset, true);
+    offset += SizeOf.Uint32;
+    const maxVerticesIndex = view.getUint32(offset, true);
+    offset += SizeOf.Uint32;
+    const index = view.getUint32(offset, true);
+    offset += SizeOf.Uint32;
+    const materialCount = view.getUint32(offset, true);
+    offset += SizeOf.Uint32;
 
     materials.push({
       isTransparent,
@@ -319,7 +337,10 @@ function readMaterials(
       index,
       materialCount,
     });
-    materialOffset += materialSize;
+  }
+
+  if (offset - materialOffset !== materialCount * materialSize) {
+    throw new Error('Failed to read 3D object materials.');
   }
 
   return materials;
@@ -332,50 +353,52 @@ function calculateVertexSize(
   let size = 0;
 
   if (vertexFormat & VertexFormat.HALF_POSITION) {
-    size += 6;
+    size += 3 * SizeOf.Uint16;
   } else {
-    size += 12;
+    size += 3 * SizeOf.Float32;
   }
 
   if (vertexFormat & VertexFormat.HALF_UV) {
-    size += 4;
+    size += 2 * SizeOf.Uint16;
   } else {
-    size += 8;
+    size += 2 * SizeOf.Float32;
   }
 
   if (vertexOptions & VertexOption.HAS_NORMAL) {
     if (vertexFormat & VertexFormat.COMPRESSED_NORMAL) {
-      size += 2;
+      size += SizeOf.Uint16;
     } else {
-      size += 12;
+      size += 3 * SizeOf.Float32;
     }
   }
 
   if (vertexOptions & VertexOption.HAS_TANGENT) {
     if (vertexFormat & VertexFormat.COMPRESSED_NORMAL) {
-      size += 2;
+      size += SizeOf.Uint16;
     } else {
-      size += 12;
+      size += 3 * SizeOf.Float32;
     }
   }
 
   if (vertexOptions & VertexOption.HAS_SECONDARY_TEXTURE_COORDINATE) {
     if (vertexFormat & VertexFormat.HALF_EXTRA_UV) {
-      size += 4;
+      size += 2 * SizeOf.Uint16;
     } else {
-      size += 8;
+      size += 2 * SizeOf.Float32;
     }
   }
 
   if (vertexOptions & VertexOption.HAS_COLOR) {
-    size += 4;
+    size += 4 * SizeOf.Uint8;
   }
 
   return size;
 }
 
 function calculateIndexSize(vertexFormat: number): number {
-  return vertexFormat & VertexFormat.SHORT_INDEX ? 2 : 4;
+  return vertexFormat & VertexFormat.SHORT_INDEX
+    ? SizeOf.Uint16
+    : SizeOf.Uint32;
 }
 
 function calculateMaterialSize(vertexOptions: number): number {
