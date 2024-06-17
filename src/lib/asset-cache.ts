@@ -1,21 +1,23 @@
 import * as THREE from 'three';
 import { DDSLoader } from 'three/addons/loaders/DDSLoader.js';
-import { expandXmlEntityRefs, parseXmlEntityDecls } from '../io/xml-entities';
+import { ActorDef, readActorDefs } from '../io/actor-defs';
+import { MapDef, readMapDef } from '../io/map-defs';
 import { Object3dDef, readObject3dDef } from '../io/object3d-defs';
 import {
   Object2dDef,
   Object2dType,
   readObject2dDef,
 } from '../io/object2d-defs';
-import { ActorDef, readActorDefs } from '../io/actor-defs';
 import { CalMesh, readCalMesh } from '../io/cal3d-meshes';
 import { CalBone, readCalSkeleton } from '../io/cal3d-skeletons';
 import { CalAnimation, readCalAnimation } from '../io/cal3d-animations';
+import { expandXmlEntityRefs, parseXmlEntityDecls } from '../io/xml-entities';
 
 class AssetCache {
+  readonly actorDefs: Map<number, ActorDef>;
+  readonly mapDefs: Map<string, MapDef>;
   readonly object3dDefs: Map<string, Object3dDef>;
   readonly object2dDefs: Map<string, Object2dDef>;
-  readonly actorDefs: Map<number, ActorDef>;
   readonly ddsTextures: Map<string, THREE.Texture>;
   readonly calMeshes: Map<string, CalMesh>;
   readonly calSkeletons: Map<string, CalBone[]>;
@@ -26,9 +28,10 @@ class AssetCache {
   private readonly ddsTextureLoader: DDSLoader;
 
   constructor() {
+    this.actorDefs = new Map();
+    this.mapDefs = new Map();
     this.object3dDefs = new Map();
     this.object2dDefs = new Map();
-    this.actorDefs = new Map();
     this.ddsTextures = new Map();
     this.calMeshes = new Map();
     this.calSkeletons = new Map();
@@ -88,6 +91,15 @@ class AssetCache {
     }
   }
 
+  async *loadMaps(): AsyncGenerator<[message: string, error?: unknown]> {
+    yield ['Loading map definitions...'];
+    try {
+      await this.loadMapDefs();
+    } catch (error) {
+      yield ['Failed to load map definitions.', error];
+    }
+  }
+
   async *loadObject3ds(): AsyncGenerator<[message: string, error?: unknown]> {
     yield ['Loading 3D object definitions...'];
     try {
@@ -126,6 +138,39 @@ class AssetCache {
     }
   }
 
+  private async loadActorDefs(): Promise<void> {
+    const xml = (await this.stringLoader.loadAsync(
+      'data/actor_defs/actor_defs.xml'
+    )) as string;
+    const entityXmls = new Map<string, string>();
+
+    for (const [entityName, entityUri] of parseXmlEntityDecls(xml)) {
+      const entityXml = (await this.stringLoader.loadAsync(
+        `data/actor_defs/${entityUri}`
+      )) as string;
+      entityXmls.set(entityName, entityXml);
+    }
+
+    const expandedXml = expandXmlEntityRefs(xml, entityXmls);
+    const actorDefs = readActorDefs(expandedXml).filter(
+      (def) => !ignoredActorDefs.has(def.name)
+    );
+
+    for (const actorDef of actorDefs) {
+      this.actorDefs.set(actorDef.type, actorDef);
+    }
+  }
+
+  private async loadMapDefs(): Promise<void> {
+    const mapDefPaths: string[] = JSON.parse(
+      (await this.stringLoader.loadAsync('maps.json')) as string
+    );
+
+    for (const mapDefPath of mapDefPaths) {
+      await this.loadMapDef(`maps/${mapDefPath}`);
+    }
+  }
+
   private async loadObject3dDefs(): Promise<void> {
     const object3dDefPaths: string[] = JSON.parse(
       (await this.stringLoader.loadAsync('3dobjects.json')) as string
@@ -148,27 +193,12 @@ class AssetCache {
     }
   }
 
-  private async loadActorDefs(): Promise<void> {
-    const xml = (await this.stringLoader.loadAsync(
-      'data/actor_defs/actor_defs.xml'
-    )) as string;
-    const entityXmls = new Map<string, string>();
+  private async loadMapDef(filePath: string): Promise<void> {
+    if (this.mapDefs.has(filePath)) return;
 
-    for (const [entityName, entityUri] of parseXmlEntityDecls(xml)) {
-      const entityXml = (await this.stringLoader.loadAsync(
-        `data/actor_defs/${entityUri}`
-      )) as string;
-      entityXmls.set(entityName, entityXml);
-    }
-
-    const expandedXml = expandXmlEntityRefs(xml, entityXmls);
-    const actorDefs = readActorDefs(expandedXml).filter(
-      (def) => !ignoredActorDefs.has(def.name)
-    );
-
-    for (const actorDef of actorDefs) {
-      this.actorDefs.set(actorDef.type, actorDef);
-    }
+    const buffer = await this.bufferLoader.loadAsync(`data/${filePath}`);
+    const mapDef = readMapDef(buffer as ArrayBuffer);
+    this.mapDefs.set(filePath, mapDef);
   }
 
   private async loadObject3dDef(filePath: string): Promise<void> {
