@@ -8,8 +8,12 @@ import { assetCache } from '../lib/asset-cache';
  */
 export function Object3d({
   defPath,
+  skinType,
   ...meshProps
-}: { defPath: string } & ThreeElements['mesh']): React.JSX.Element {
+}: {
+  defPath: string;
+  skinType?: Object3dSkinType;
+} & ThreeElements['mesh']): React.JSX.Element {
   const object3dDef = assetCache.object3dDefs.get(defPath)!;
   const textures = object3dDef.materials.map((material) => {
     return assetCache.ddsTextures.get(material.texturePath)!;
@@ -18,22 +22,44 @@ export function Object3d({
 
   return (
     <mesh {...meshProps} receiveShadow castShadow>
-      {object3dDef.materials.map((material, i) => (
-        <meshBasicMaterial
-          key={i}
-          attach={`material-${i}`}
-          map={textures[i]}
-          side={material.isTransparent ? THREE.DoubleSide : THREE.FrontSide}
-          alphaTest={
-            material.isTransparent ? (isGround ? 0.23 : 0.3) : undefined
-          }
-          blending={material.isTransparent ? THREE.CustomBlending : undefined}
-          blendSrc={material.isTransparent ? THREE.SrcAlphaFactor : undefined}
-          blendDst={
-            material.isTransparent ? THREE.OneMinusSrcAlphaFactor : undefined
-          }
-        />
-      ))}
+      {(() => {
+        switch (skinType) {
+          case Object3dSkinType.WIREFRAME:
+            return (
+              <meshBasicMaterial key={skinType} color="#d75a45" wireframe />
+            );
+          case Object3dSkinType.NORMALS:
+            return <meshNormalMaterial key={skinType} />;
+          case Object3dSkinType.COLOR:
+            return <meshBasicMaterial key={skinType} color="#a2a4a5" />;
+          case Object3dSkinType.TEXTURE:
+          default:
+            return object3dDef.materials.map((material, i) => (
+              <meshBasicMaterial
+                key={`${Object3dSkinType.TEXTURE}-${i}`} // Remount whenever skin type changes.
+                attach={`material-${i}`}
+                map={textures[i]}
+                side={
+                  material.isTransparent ? THREE.DoubleSide : THREE.FrontSide
+                }
+                alphaTest={
+                  material.isTransparent ? (isGround ? 0.23 : 0.3) : undefined
+                }
+                blending={
+                  material.isTransparent ? THREE.CustomBlending : undefined
+                }
+                blendSrc={
+                  material.isTransparent ? THREE.SrcAlphaFactor : undefined
+                }
+                blendDst={
+                  material.isTransparent
+                    ? THREE.OneMinusSrcAlphaFactor
+                    : undefined
+                }
+              />
+            ));
+        }
+      })()}
       <bufferGeometry
         groups={object3dDef.materials.map((material, i) => ({
           start: material.index,
@@ -56,4 +82,11 @@ export function Object3d({
       </bufferGeometry>
     </mesh>
   );
+}
+
+export enum Object3dSkinType {
+  TEXTURE,
+  WIREFRAME,
+  NORMALS,
+  COLOR,
 }

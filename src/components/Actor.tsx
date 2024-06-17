@@ -52,47 +52,9 @@ export function Actor({
             return (
               <meshBasicMaterial key={skinType} color="#d75a45" wireframe />
             );
-          case ActorSkinType.VECTORS:
+          case ActorSkinType.NORMALS:
             return <meshNormalMaterial key={skinType} />;
-          case ActorSkinType.METAL:
-            return (
-              <meshPhysicalMaterial
-                key={skinType}
-                color="#fffcef"
-                emissive="#808080"
-                emissiveIntensity={0.8}
-                roughness={0.5}
-                metalness={1}
-              />
-            );
-          case ActorSkinType.CRYSTAL:
-            return (
-              <meshPhysicalMaterial
-                key={skinType}
-                color="#fff"
-                emissive="#f653a6"
-                sheenColor="#8ab9f1"
-                emissiveIntensity={0.5}
-                sheen={3}
-                roughness={0.3}
-                thickness={2}
-                transmission={1}
-                ior={5}
-                anisotropy={1}
-                flatShading
-              />
-            );
-          case ActorSkinType.GLOSSY:
-            return (
-              <meshStandardMaterial
-                key={skinType}
-                map={skin}
-                emissive="#ff8834"
-                emissiveIntensity={0.1}
-                roughness={0}
-              />
-            );
-          case ActorSkinType.SILHOUETTE:
+          case ActorSkinType.COLOR:
             return <meshBasicMaterial key={skinType} color="#a2a4a5" />;
           case ActorSkinType.TEXTURE:
           default:
@@ -160,9 +122,6 @@ export enum ActorSkinType {
   NONE,
   TEXTURE,
   WIREFRAME,
-  VECTORS,
-  METAL,
-  CRYSTAL,
-  GLOSSY,
-  SILHOUETTE,
+  NORMALS,
+  COLOR,
 }

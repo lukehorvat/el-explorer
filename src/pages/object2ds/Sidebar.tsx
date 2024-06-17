@@ -1,8 +1,8 @@
 import React from 'react';
 import { Form, Stack } from 'react-bootstrap';
 import { useAtom } from 'jotai';
-import { Object2dsPageState } from './page-state';
 import { assetCache } from '../../lib/asset-cache';
+import { Object2dsPageState } from './page-state';
 import {
   Sidebar,
   SidebarNavButtons,

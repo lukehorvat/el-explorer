@@ -23,7 +23,7 @@ export const pages = {
   },
   object3ds: {
     name: '3D Objects',
-    enabled: process.env.NODE_ENV !== 'production',
+    enabled: true,
     Component: Object3dsPage,
   },
   object2ds: {

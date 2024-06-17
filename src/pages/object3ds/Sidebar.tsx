@@ -1,19 +1,21 @@
 import React from 'react';
 import { Form, Stack } from 'react-bootstrap';
 import { useAtom } from 'jotai';
-import { Object3dsPageState } from './page-state';
 import { assetCache } from '../../lib/asset-cache';
+import { Object3dsPageState } from './page-state';
 import {
   Sidebar,
   SidebarNavButtons,
   SidebarSection,
   navigateTo,
 } from '../../components/Sidebar';
+import { Object3dSkinType } from '../../components/Object3d';
 
 export function Object3dsSidebar(): React.JSX.Element {
   return (
     <Sidebar>
       <Object3dSection />
+      <AppearanceSection />
       <MiscSection />
     </Sidebar>
   );
@@ -50,6 +52,53 @@ function Object3dSection(): React.JSX.Element {
           ))}
         </Form.Select>
         <SidebarNavButtons onNavigate={moveToObject3d} />
+      </Stack>
+    </SidebarSection>
+  );
+}
+
+function AppearanceSection(): React.JSX.Element {
+  const [skinType, setSkinType] = useAtom(Object3dsPageState.skinType);
+  const skinTypes = (
+    Object.values(Object3dSkinType) as Object3dSkinType[]
+  ).filter(
+    (type) => !isNaN(Number(type)) // TS enums... 🙈
+  );
+  const moveToSkin = (direction: 'prev' | 'next'): void => {
+    setSkinType(navigateTo(skinType, skinTypes, direction));
+  };
+  const [showEnvironment, setShowEnvironment] = useAtom(
+    Object3dsPageState.showEnvironment
+  );
+
+  return (
+    <SidebarSection title="Appearance" icon="bi-palette-fill">
+      <Stack className="mb-1" direction="horizontal" gap={2}>
+        <Form.Label column="sm" className="flex-grow-0">
+          Skin:
+        </Form.Label>
+        <Form.Select
+          size="sm"
+          value={skinType}
+          onChange={(event) => {
+            setSkinType(Number(event.target.value));
+          }}
+        >
+          {skinTypes.map((type) => (
+            <option value={type} key={type}>
+              {Object3dSkinType[type].toLowerCase()}
+            </option>
+          ))}
+        </Form.Select>
+        <SidebarNavButtons onNavigate={moveToSkin} />
+      </Stack>
+      <Stack direction="horizontal" gap={2}>
+        <Form.Label column="sm">Environment:</Form.Label>
+        <Form.Check
+          type="checkbox"
+          checked={showEnvironment}
+          onChange={(event) => setShowEnvironment(event.target.checked)}
+        />
       </Stack>
     </SidebarSection>
   );

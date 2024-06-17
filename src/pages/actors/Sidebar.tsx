@@ -1,8 +1,8 @@
 import React from 'react';
 import { Form, Stack } from 'react-bootstrap';
 import { useAtom, useAtomValue } from 'jotai';
-import { ActorsPageState } from './page-state';
 import { assetCache } from '../../lib/asset-cache';
+import { ActorsPageState } from './page-state';
 import { useAnimationFrames } from '../../hooks/useAnimationFrames';
 import {
   Sidebar,
@@ -65,10 +65,13 @@ function AppearanceSection(): React.JSX.Element {
   const moveToSkin = (direction: 'prev' | 'next'): void => {
     setSkinType(navigateTo(skinType, skinTypes, direction));
   };
+  const [showEnvironment, setShowEnvironment] = useAtom(
+    ActorsPageState.showEnvironment
+  );
 
   return (
     <SidebarSection title="Appearance" icon="bi-palette-fill">
-      <Stack direction="horizontal" gap={2}>
+      <Stack className="mb-1" direction="horizontal" gap={2}>
         <Form.Label column="sm" className="flex-grow-0">
           Skin:
         </Form.Label>
@@ -93,6 +96,14 @@ function AppearanceSection(): React.JSX.Element {
           type="checkbox"
           checked={showSkeleton}
           onChange={(event) => setShowSkeleton(event.target.checked)}
+        />
+      </Stack>
+      <Stack direction="horizontal" gap={2}>
+        <Form.Label column="sm">Environment:</Form.Label>
+        <Form.Check
+          type="checkbox"
+          checked={showEnvironment}
+          onChange={(event) => setShowEnvironment(event.target.checked)}
         />
       </Stack>
     </SidebarSection>
@@ -198,22 +209,11 @@ function AnimationSection(): React.JSX.Element {
 }
 
 function MiscSection(): React.JSX.Element {
-  const [showEnvironment, setShowEnvironment] = useAtom(
-    ActorsPageState.showEnvironment
-  );
   const [showStats, setShowStats] = useAtom(ActorsPageState.showStats);
   const [autoRotate, setAutoRotate] = useAtom(ActorsPageState.autoRotate);
 
   return (
     <SidebarSection title="Miscellaneous" icon="bi-gear-fill">
-      <Stack direction="horizontal" gap={2}>
-        <Form.Label column="sm">Environment:</Form.Label>
-        <Form.Check
-          type="checkbox"
-          checked={showEnvironment}
-          onChange={(event) => setShowEnvironment(event.target.checked)}
-        />
-      </Stack>
       <Stack direction="horizontal" gap={2}>
         <Form.Label column="sm">Auto rotate:</Form.Label>
         <Form.Check
