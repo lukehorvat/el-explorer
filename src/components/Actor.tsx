@@ -29,11 +29,7 @@ export function Actor({
     animationController: CalAnimationController
   ) => void;
 } & ThreeElements['skinnedMesh']): React.JSX.Element {
-  const { actorDef, skin, calMesh, calSkeleton, calAnimations } =
-    useActorAssets(actorType);
-  const hasAlpha = skin.format === THREE.RGBA_S3TC_DXT5_Format;
-  const hasAlphaTest = hasAlpha && !actorDef.ghost;
-  const isTransparent = hasAlpha || actorDef.ghost;
+  const { calSkeleton, calAnimations } = useActorAssets(actorType);
   const meshRef = useRef<THREE.SkinnedMesh>(null!);
   useCalSkeleton(meshRef, calSkeleton, showSkeleton);
   const animationController = useCalAnimation(meshRef, calAnimations);
@@ -44,56 +40,77 @@ export function Actor({
 
   return (
     <skinnedMesh {...meshProps} receiveShadow castShadow ref={meshRef}>
-      {(() => {
-        switch (skinType) {
-          case ActorSkinType.NONE:
-            return <meshBasicMaterial key={skinType} visible={false} />;
-          case ActorSkinType.WIREFRAME:
-            return (
-              <meshBasicMaterial key={skinType} color="#d75a45" wireframe />
-            );
-          case ActorSkinType.NORMALS:
-            return <meshNormalMaterial key={skinType} />;
-          case ActorSkinType.COLOR:
-            return <meshBasicMaterial key={skinType} color="#a2a4a5" />;
-          case ActorSkinType.TEXTURE:
-          default:
-            return (
-              <meshBasicMaterial
-                key={skinType} // Remount whenever skin type changes.
-                map={skin}
-                alphaTest={hasAlphaTest ? 0.06 : undefined}
-                blending={isTransparent ? THREE.CustomBlending : undefined}
-                blendSrc={isTransparent ? THREE.SrcAlphaFactor : undefined}
-                blendDst={
-                  isTransparent ? THREE.OneMinusSrcAlphaFactor : undefined
-                }
-              />
-            );
-        }
-      })()}
-      <bufferGeometry>
-        <bufferAttribute
-          attach="attributes-position"
-          args={[calMesh.positions, 3]}
-        />
-        <bufferAttribute
-          attach="attributes-normal"
-          args={[calMesh.normals, 3]}
-        />
-        <bufferAttribute attach="attributes-uv" args={[calMesh.uvs, 2]} />
-        <bufferAttribute attach="index" args={[calMesh.indices, 1]} />
-        <bufferAttribute
-          attach="attributes-skinIndex"
-          args={[calMesh.skinIndices, 4]}
-        />
-        <bufferAttribute
-          attach="attributes-skinWeight"
-          args={[calMesh.skinWeights, 4]}
-        />
-      </bufferGeometry>
+      <ActorGeometry actorType={actorType} />
+      <ActorMaterial
+        key={skinType} // Remount whenever skin type changes.
+        actorType={actorType}
+        skinType={skinType}
+      />
     </skinnedMesh>
   );
+}
+
+export function ActorGeometry({
+  actorType,
+}: {
+  actorType: number;
+}): React.JSX.Element {
+  const { calMesh } = useActorAssets(actorType);
+
+  return (
+    <bufferGeometry>
+      <bufferAttribute
+        attach="attributes-position"
+        args={[calMesh.positions, 3]}
+      />
+      <bufferAttribute attach="attributes-normal" args={[calMesh.normals, 3]} />
+      <bufferAttribute attach="attributes-uv" args={[calMesh.uvs, 2]} />
+      <bufferAttribute attach="index" args={[calMesh.indices, 1]} />
+      <bufferAttribute
+        attach="attributes-skinIndex"
+        args={[calMesh.skinIndices, 4]}
+      />
+      <bufferAttribute
+        attach="attributes-skinWeight"
+        args={[calMesh.skinWeights, 4]}
+      />
+    </bufferGeometry>
+  );
+}
+
+export function ActorMaterial({
+  actorType,
+  skinType,
+}: {
+  actorType: number;
+  skinType?: ActorSkinType;
+}): React.JSX.Element {
+  const { actorDef, skin } = useActorAssets(actorType);
+  const hasAlpha = skin.format === THREE.RGBA_S3TC_DXT5_Format;
+  const hasAlphaTest = hasAlpha && !actorDef.ghost;
+  const isTransparent = hasAlpha || actorDef.ghost;
+
+  switch (skinType) {
+    case ActorSkinType.NONE:
+      return <meshBasicMaterial visible={false} />;
+    case ActorSkinType.WIREFRAME:
+      return <meshBasicMaterial color="#d75a45" wireframe />;
+    case ActorSkinType.NORMALS:
+      return <meshNormalMaterial />;
+    case ActorSkinType.COLOR:
+      return <meshBasicMaterial color="#a2a4a5" />;
+    case ActorSkinType.TEXTURE:
+    default:
+      return (
+        <meshBasicMaterial
+          map={skin}
+          alphaTest={hasAlphaTest ? 0.06 : undefined}
+          blending={isTransparent ? THREE.CustomBlending : undefined}
+          blendSrc={isTransparent ? THREE.SrcAlphaFactor : undefined}
+          blendDst={isTransparent ? THREE.OneMinusSrcAlphaFactor : undefined}
+        />
+      );
+  }
 }
 
 function useActorAssets(actorType: number): {
