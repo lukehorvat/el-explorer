@@ -6,12 +6,11 @@ import { MapsScene } from './Scene';
 
 export function MapsPage(): React.JSX.Element {
   return (
-    <Page
-      className="MapsPage"
-      sidebar={<MapsSidebar />}
-      loader={() => assetCache.loadMaps()}
-    >
+    <Page className="MapsPage" sidebar={<MapsSidebar />} loader={loader}>
       <MapsScene />
     </Page>
   );
 }
+
+const loader = (): Promise<void> =>
+  assetCache.runCacheTask(assetCache.tasks.cacheAllMapDefs());

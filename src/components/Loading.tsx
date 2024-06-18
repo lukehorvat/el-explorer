@@ -2,19 +2,34 @@ import React, { useEffect, useState } from 'react';
 import { Spinner, Stack } from 'react-bootstrap';
 
 /**
- * A loading screen.
- *
- * Iteratively calls the specified `loader` generator function until there's
- * nothing left to load, at which point it calls the `onLoaded` callback.
+ * A loading screen component.
  */
 export function Loading({
   loader,
   onLoaded,
 }: {
-  loader: IterativeLoader;
+  loader: () => Promise<void>;
   onLoaded: () => void;
 }): React.JSX.Element {
-  const [loadingMessage, isError] = useLoadingMessage(loader, onLoaded);
+  const [isError, setIsError] = useState(false);
+
+  useEffect(() => {
+    let isMounted = true;
+
+    void loader()
+      .then(() => {
+        if (isMounted) onLoaded();
+      })
+      .catch((error: unknown) => {
+        if (isMounted) setIsError(true);
+        throw error;
+      });
+
+    return () => {
+      // In case the component is unmounted while load is still in progress...
+      isMounted = false;
+    };
+  }, [loader, onLoaded]);
 
   return (
     <Stack
@@ -24,37 +39,8 @@ export function Loading({
     >
       {!isError && <Spinner animation="border" />}
       <span className={isError ? 'text-danger-emphasis' : 'fst-italic'}>
-        {loadingMessage}
+        {isError ? 'Loading failed!' : 'Loading...'}
       </span>
     </Stack>
   );
 }
-
-function useLoadingMessage(
-  loader: IterativeLoader,
-  onLoaded: () => void
-): [message: string, isError: boolean] {
-  const [loadingMessage, setLoadingMessage] = useState('Loading...');
-  const [isError, setIsError] = useState(false);
-
-  useEffect(() => {
-    void (async () => {
-      for await (const [message, error] of loader()) {
-        setLoadingMessage(message);
-
-        if (error) {
-          setIsError(true);
-          throw error; // eslint-disable-line @typescript-eslint/only-throw-error
-        }
-      }
-
-      onLoaded();
-    })();
-  }, [loader, onLoaded]);
-
-  return [loadingMessage, isError];
-}
-
-type IterativeLoader = () =>
-  | Generator<[message: string, error?: unknown]>
-  | AsyncGenerator<[message: string, error?: unknown]>;

@@ -9,9 +9,12 @@ export function Object3dsPage(): React.JSX.Element {
     <Page
       className="Object3dsPage"
       sidebar={<Object3dsSidebar />}
-      loader={() => assetCache.loadObject3ds()}
+      loader={loader}
     >
       <Object3dsScene />
     </Page>
   );
 }
+
+const loader = (): Promise<void> =>
+  assetCache.runCacheTask(assetCache.tasks.cacheAllObject3dDefs());
