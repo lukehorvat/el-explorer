@@ -1,5 +1,6 @@
 import * as THREE from 'three';
 import { DDSLoader } from 'three/addons/loaders/DDSLoader.js';
+import Pako from 'pako';
 import { ActorDef, readActorDefs } from '../io/actor-defs';
 import { MapDef, readMapDef } from '../io/map-defs';
 import { Object3dDef, readObject3dDef } from '../io/object3d-defs';
@@ -197,7 +198,7 @@ class AssetCache {
     if (this.mapDefs.has(filePath)) return;
 
     const buffer = await this.bufferLoader.loadAsync(`data/${filePath}`);
-    const mapDef = readMapDef(buffer as ArrayBuffer);
+    const mapDef = readMapDef(Pako.inflate(buffer as ArrayBuffer));
     this.mapDefs.set(filePath, mapDef);
   }
 
