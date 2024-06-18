@@ -126,7 +126,7 @@ function readHeader(buffer: ArrayBuffer): {
   lightsCount: number;
   lightsOffset: number;
   isDungeon: boolean;
-  ambientColor: { r: number; g: number; b: number };
+  ambientColor: Color;
   particleSize: number;
   particlesCount: number;
   particlesOffset: number;

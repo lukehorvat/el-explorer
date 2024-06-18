@@ -1,6 +1,7 @@
 import React from 'react';
 import { ThreeElements } from '@react-three/fiber';
 import { assetCache } from '../lib/asset-cache';
+import { InstancedObject3d, groupObject3dsByDef } from './InstancedObject3d';
 
 /**
  * An EL map as a Three.js group!
@@ -26,7 +27,17 @@ export function GameMap({
 
   return (
     <group {...groupProps}>
-      <group visible={showObject3ds}></group>
+      <group visible={showObject3ds}>
+        {[...groupObject3dsByDef(mapDef.object3ds)].map(
+          ([defPath, object3ds]) => (
+            <InstancedObject3d
+              key={defPath}
+              defPath={defPath}
+              object3ds={object3ds}
+            />
+          )
+        )}
+      </group>
       <group visible={showObject2ds}></group>
       <group visible={showTiles}></group>
       <group visible={showTileExtensions}></group>
