@@ -89,7 +89,7 @@ function readHeader(buffer: ArrayBuffer): {
     throw new Error('Not a valid 3D object definition file.');
   }
 
-  const version = view.getUint32(4, true);
+  const version = view.getUint32(offset, true);
   offset += SizeOf.Uint32;
   if (!(version in SupportedVersion)) {
     throw new Error('Not a supported 3D object definition file version.');
@@ -277,7 +277,7 @@ function readVertices(
       : null,
     uvs: new Float32Array(uvs.map((uv) => [uv.x, uv.y]).flat()),
     colors: colors
-      ? new Uint8Array(colors.map((c) => [c.r, c.g, c.b, c.a]).flat())
+      ? new Uint8Array(colors.map((c) => [c.r, c.g, c.b, c.a!]).flat())
       : null,
   };
 }
@@ -324,9 +324,9 @@ function readMaterials(
     offset += SizeOf.Uint32;
 
     const texturePath = textDecoder
-      .decode(new Uint8Array(buffer, offset, MATERIAL_TEXTURE_NAME_SIZE))
+      .decode(new Uint8Array(buffer, offset, MATERIAL_TEXTURE_PATH_SIZE))
       .replace(/\0*$/, '');
-    offset += MATERIAL_TEXTURE_NAME_SIZE;
+    offset += MATERIAL_TEXTURE_PATH_SIZE;
 
     // TODO: Should you use leftZUpToRightYUp for min and max?
     const min: Vector3 = {
@@ -509,6 +509,6 @@ enum VertexFormat {
 const MATERIAL_DATA_SIZE = 172;
 
 /**
- * The maximum length of a texture filename in a 3D object definition file.
+ * The max reserved length of a texture path in a 3D object definition file.
  */
-const MATERIAL_TEXTURE_NAME_SIZE = 128;
+const MATERIAL_TEXTURE_PATH_SIZE = 128;

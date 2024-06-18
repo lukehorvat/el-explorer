@@ -198,7 +198,7 @@ class AssetCache {
     if (this.mapDefs.has(filePath)) return;
 
     const buffer = await this.bufferLoader.loadAsync(`data/${filePath}`);
-    const mapDef = readMapDef(Pako.inflate(buffer as ArrayBuffer));
+    const mapDef = readMapDef(Pako.inflate(buffer as ArrayBuffer).buffer);
     this.mapDefs.set(filePath, mapDef);
   }
 
