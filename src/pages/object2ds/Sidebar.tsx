@@ -1,7 +1,7 @@
 import React from 'react';
 import { Form, Stack } from 'react-bootstrap';
 import { useAtom } from 'jotai';
-import { assetCache } from '../../lib/asset-cache';
+import { AssetCache } from '../../lib/asset-cache';
 import { Object2dsPageState } from './page-state';
 import {
   Sidebar,
@@ -23,7 +23,7 @@ function Object2dSection(): React.JSX.Element {
   const [object2dDefPath, setObject2dDefPath] = useAtom(
     Object2dsPageState.object2dDefPath
   );
-  const sortedObject2dDefPaths = [...assetCache.object2dDefs.keys()].sort(
+  const sortedObject2dDefPaths = [...AssetCache.object2dDefs.keys()].sort(
     (defPath1, defPath2) => defPath1.localeCompare(defPath2)
   );
   const moveToObject2d = (direction: 'prev' | 'next'): void => {

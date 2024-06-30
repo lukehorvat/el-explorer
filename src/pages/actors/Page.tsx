@@ -1,5 +1,5 @@
 import React from 'react';
-import { assetCache } from '../../lib/asset-cache';
+import { AssetCache } from '../../lib/asset-cache';
 import { Page } from '../../components/Page';
 import { ActorsSidebar } from './Sidebar';
 import { ActorsScene } from './Scene';
@@ -13,4 +13,4 @@ export function ActorsPage(): React.JSX.Element {
 }
 
 const loader = (): Promise<void> =>
-  assetCache.runCacheTask(assetCache.tasks.cacheAllActorDefs());
+  AssetCache.runCacheTask(AssetCache.tasks.cacheAllActorDefs());

@@ -286,7 +286,7 @@ async function allPromisesDone(promises: Promise<void>[]): Promise<void> {
   await Promise.all(promises); // Use the rejection value of the first failure.
 }
 
-export const assetCache = {
+export const AssetCache = {
   actorDefs,
   mapDefs,
   object3dDefs,

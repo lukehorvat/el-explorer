@@ -1,5 +1,5 @@
 import React from 'react';
-import { assetCache } from '../../lib/asset-cache';
+import { AssetCache } from '../../lib/asset-cache';
 import { Page } from '../../components/Page';
 import { Object3dsSidebar } from './Sidebar';
 import { Object3dsScene } from './Scene';
@@ -17,4 +17,4 @@ export function Object3dsPage(): React.JSX.Element {
 }
 
 const loader = (): Promise<void> =>
-  assetCache.runCacheTask(assetCache.tasks.cacheAllObject3dDefs());
+  AssetCache.runCacheTask(AssetCache.tasks.cacheAllObject3dDefs());

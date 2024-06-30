@@ -1,7 +1,7 @@
 import React from 'react';
 import { Form, Stack } from 'react-bootstrap';
 import { useAtom } from 'jotai';
-import { assetCache } from '../../lib/asset-cache';
+import { AssetCache } from '../../lib/asset-cache';
 import { MapsPageState } from './page-state';
 import {
   Sidebar,
@@ -22,7 +22,7 @@ export function MapsSidebar(): React.JSX.Element {
 
 function MapSection(): React.JSX.Element {
   const [mapDefPath, setMapDefPath] = useAtom(MapsPageState.mapDefPath);
-  const sortedMapDefPaths = [...assetCache.mapDefs.keys()].sort(
+  const sortedMapDefPaths = [...AssetCache.mapDefs.keys()].sort(
     (defPath1, defPath2) => defPath1.localeCompare(defPath2)
   );
   const moveToMap = (direction: 'prev' | 'next'): void => {

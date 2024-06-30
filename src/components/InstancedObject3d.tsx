@@ -1,7 +1,7 @@
 import React from 'react';
 import { ThreeElements } from '@react-three/fiber';
 import * as THREE from 'three';
-import { assetCache } from '../lib/asset-cache';
+import { AssetCache } from '../lib/asset-cache';
 import { MapDef } from '../io/map-defs';
 import { Object3dGeometry, Object3dMaterial } from './Object3d';
 

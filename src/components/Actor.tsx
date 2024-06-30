@@ -1,7 +1,7 @@
 import React, { useEffect, useMemo, useRef } from 'react';
 import { ThreeElements } from '@react-three/fiber';
 import * as THREE from 'three';
-import { assetCache } from '../lib/asset-cache';
+import { AssetCache } from '../lib/asset-cache';
 import { ActorDef } from '../io/actor-defs';
 import { CalMesh } from '../io/cal3d-meshes';
 import { CalBone } from '../io/cal3d-skeletons';
@@ -120,13 +120,13 @@ function useActorAssets(actorType: number): {
   calSkeleton: CalBone[];
   calAnimations: CalAnimationWithConfig[];
 } {
-  const actorDef = assetCache.actorDefs.get(actorType)!;
-  const skin = assetCache.ddsTextures.get(actorDef.skinPath)!;
-  const calMesh = assetCache.calMeshes.get(actorDef.meshPath)!;
-  const calSkeleton = assetCache.calSkeletons.get(actorDef.skeletonPath)!;
+  const actorDef = AssetCache.actorDefs.get(actorType)!;
+  const skin = AssetCache.ddsTextures.get(actorDef.skinPath)!;
+  const calMesh = AssetCache.calMeshes.get(actorDef.meshPath)!;
+  const calSkeleton = AssetCache.calSkeletons.get(actorDef.skeletonPath)!;
   const calAnimations = useMemo(() => {
     return actorDef.animations.map((animation) => ({
-      ...assetCache.calAnimations.get(animation.path)!,
+      ...AssetCache.calAnimations.get(animation.path)!,
       name: animation.name,
       durationOverride: animation.duration / 1000,
     }));

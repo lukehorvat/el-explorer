@@ -1,5 +1,5 @@
 import { atom } from 'jotai';
-import { assetCache } from '../../lib/asset-cache';
+import { AssetCache } from '../../lib/asset-cache';
 import { ActorSkinType } from '../../components/Actor';
 import { CalAnimationController } from '../../hooks/useCalAnimation';
 
@@ -10,7 +10,7 @@ const actorTypeWithEffects = atom(
     set(actorType, newActorType);
 
     // Clear the animation if the new actor doesn't have the current one.
-    const actorDef = assetCache.actorDefs.get(newActorType)!;
+    const actorDef = AssetCache.actorDefs.get(newActorType)!;
     const hasAnimation = actorDef.animations.find(
       (animation) => animation.name === get(animationName)
     );

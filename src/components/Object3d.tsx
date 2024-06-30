@@ -1,7 +1,7 @@
 import React from 'react';
 import { ThreeElements } from '@react-three/fiber';
 import * as THREE from 'three';
-import { assetCache } from '../lib/asset-cache';
+import { AssetCache } from '../lib/asset-cache';
 
 /**
  * An EL 3D object as a Three.js mesh!
@@ -31,7 +31,7 @@ export function Object3dGeometry({
 }: {
   defPath: string;
 }): React.JSX.Element {
-  const object3dDef = assetCache.object3dDefs.get(defPath)!;
+  const object3dDef = AssetCache.object3dDefs.get(defPath)!;
 
   return (
     <bufferGeometry
@@ -64,9 +64,9 @@ export function Object3dMaterial({
   defPath: string;
   skinType?: Object3dSkinType;
 }): React.JSX.Element {
-  const object3dDef = assetCache.object3dDefs.get(defPath)!;
+  const object3dDef = AssetCache.object3dDefs.get(defPath)!;
   const textures = object3dDef.materials.map((material) => {
-    return assetCache.ddsTextures.get(material.texturePath)!;
+    return AssetCache.ddsTextures.get(material.texturePath)!;
   });
   const isGround = !object3dDef.normals?.length;
 

@@ -1,7 +1,7 @@
 import React from 'react';
 import { Form, Stack } from 'react-bootstrap';
 import { useAtom } from 'jotai';
-import { assetCache } from '../../lib/asset-cache';
+import { AssetCache } from '../../lib/asset-cache';
 import { Object3dsPageState } from './page-state';
 import {
   Sidebar,
@@ -25,7 +25,7 @@ function Object3dSection(): React.JSX.Element {
   const [object3dDefPath, setObject3dDefPath] = useAtom(
     Object3dsPageState.object3dDefPath
   );
-  const sortedObject3dDefPaths = [...assetCache.object3dDefs.keys()].sort(
+  const sortedObject3dDefPaths = [...AssetCache.object3dDefs.keys()].sort(
     (defPath1, defPath2) => defPath1.localeCompare(defPath2)
   );
   const moveToObject3d = (direction: 'prev' | 'next'): void => {

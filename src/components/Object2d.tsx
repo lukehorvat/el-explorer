@@ -1,7 +1,7 @@
 import React from 'react';
 import { ThreeElements } from '@react-three/fiber';
 import * as THREE from 'three';
-import { assetCache } from '../lib/asset-cache';
+import { AssetCache } from '../lib/asset-cache';
 
 /**
  * An EL 2D object as a Three.js mesh!
@@ -23,7 +23,7 @@ export function Object2dGeometry({
 }: {
   defPath: string;
 }): React.JSX.Element {
-  const object2dDef = assetCache.object2dDefs.get(defPath)!;
+  const object2dDef = AssetCache.object2dDefs.get(defPath)!;
 
   return (
     <planeGeometry args={[object2dDef.width, object2dDef.height]}>
@@ -39,8 +39,8 @@ export function Object2dMaterial({
 }: {
   defPath: string;
 }): React.JSX.Element {
-  const object2dDef = assetCache.object2dDefs.get(defPath)!;
-  const texture = assetCache.ddsTextures.get(object2dDef.texturePath)!;
+  const object2dDef = AssetCache.object2dDefs.get(defPath)!;
+  const texture = AssetCache.ddsTextures.get(object2dDef.texturePath)!;
 
   return (
     <meshBasicMaterial

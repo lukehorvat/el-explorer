@@ -1,6 +1,6 @@
 import React from 'react';
 import { ThreeElements } from '@react-three/fiber';
-import { assetCache } from '../lib/asset-cache';
+import { AssetCache } from '../lib/asset-cache';
 import { InstancedObject3d, groupObject3dsByDef } from './InstancedObject3d';
 
 /**
@@ -22,7 +22,7 @@ export function GameMap({
   showTileExtensions?: boolean;
   showSkybox?: boolean;
 } & ThreeElements['group']): React.JSX.Element {
-  const mapDef = assetCache.mapDefs.get(defPath)!;
+  const mapDef = AssetCache.mapDefs.get(defPath)!;
   console.log('!mapDef', mapDef);
 
   return (

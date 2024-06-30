@@ -1,7 +1,7 @@
 import React from 'react';
 import { Form, Stack } from 'react-bootstrap';
 import { useAtom, useAtomValue } from 'jotai';
-import { assetCache } from '../../lib/asset-cache';
+import { AssetCache } from '../../lib/asset-cache';
 import { ActorsPageState } from './page-state';
 import { useAnimationFrames } from '../../hooks/useAnimationFrames';
 import {
@@ -25,7 +25,7 @@ export function ActorsSidebar(): React.JSX.Element {
 
 function ActorSection(): React.JSX.Element {
   const [actorType, setActorType] = useAtom(ActorsPageState.actorType);
-  const sortedActorDefs = [...assetCache.actorDefs.values()].sort(
+  const sortedActorDefs = [...AssetCache.actorDefs.values()].sort(
     (def1, def2) => def1.name.localeCompare(def2.name)
   );
   const moveToActor = (direction: 'prev' | 'next'): void => {
@@ -124,7 +124,7 @@ function AnimationSection(): React.JSX.Element {
   const animationController = useAtomValue(ActorsPageState.animationController);
   useAnimationFrames();
 
-  const actorDef = assetCache.actorDefs.get(actorType)!;
+  const actorDef = AssetCache.actorDefs.get(actorType)!;
   const animationNames = [
     null,
     ...actorDef.animations.map((animation) => animation.name),
