@@ -37,6 +37,7 @@ module.exports = {
       'error',
       { allowNumber: true },
     ],
+    '@typescript-eslint/consistent-type-definitions': 'off',
     'react/no-unknown-property': 'off', // Doesn't seem to work with react-three-fiber.
   },
 };

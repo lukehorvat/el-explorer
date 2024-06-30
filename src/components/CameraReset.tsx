@@ -48,6 +48,4 @@ export type CameraResetListener = (
   center: THREE.Vector3
 ) => void;
 
-interface OrbitControls {
-  target: THREE.Vector3;
-}
+type OrbitControls = { target: THREE.Vector3 };

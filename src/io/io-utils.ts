@@ -1,24 +1,12 @@
-export interface Vector2 {
-  x: number;
-  y: number;
-}
+export type Vector2 = { x: number; y: number };
 
-export interface Vector3 extends Vector2 {
-  z: number;
-}
+export type Vector3 = Vector2 & { z: number };
 
-export interface Quaternion extends Vector3 {
-  w: number;
-}
+export type Quaternion = Vector3 & { w: number };
 
 type Vector = Vector2 | Vector3 | Quaternion;
 
-export interface Color {
-  r: number;
-  g: number;
-  b: number;
-  a?: number;
-}
+export type Color = { r: number; g: number; b: number; a?: number };
 
 /**
  * Convert a vector from a left-handed Z-up coordinate system to a right-handed
