@@ -112,12 +112,23 @@ function cacheActorDef(actorDef: ActorDef): CacheTask {
 }
 
 function cacheAllMapDefs(): CacheTask {
+  // Don't load the following map defs, since they reference missing(?) assets.
+  const ignoredMapDefs = new Set([
+    'guildmap_ozu.elm.gz',
+    'guildmap_boc.elm.gz',
+    'guildmap_riva.elm.gz',
+    'guildmap_pigs.elm.gz',
+    'guildmap_nu.elm.gz',
+  ]);
+
   return {
     id: 'cacheAllMapDefs',
     run: async () => {
       const defPaths = (await loadJSON('../maps.json')) as string[];
       await allPromisesDone(
-        defPaths.map((defPath) => runCacheTask(cacheMapDef(`maps/${defPath}`)))
+        defPaths
+          .filter((defPath) => !ignoredMapDefs.has(defPath))
+          .map((defPath) => runCacheTask(cacheMapDef(`maps/${defPath}`)))
       );
     },
   };
@@ -130,6 +141,15 @@ function cacheMapDef(defPath: string): CacheTask {
       const buffer = await loadBuffer(defPath);
       const mapDef = readMapDef(Pako.inflate(buffer).buffer);
       mapDefs.set(defPath, mapDef);
+
+      await allPromisesDone([
+        ...mapDef.object3ds.map((object3d) =>
+          runCacheTask(cacheObject3dDef(object3d.defPath))
+        ),
+        ...mapDef.object2ds.map((object2d) =>
+          runCacheTask(cacheObject2dDef(object2d.defPath))
+        ),
+      ]);
     },
   };
 }
