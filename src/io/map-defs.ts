@@ -1,4 +1,4 @@
-import { Color, SizeOf, Vector3 } from './io-utils';
+import { Color, SizeOf, Vector3, leftZUpToRightYUp } from './io-utils';
 
 /**
  * An EL map definition.
@@ -270,18 +270,18 @@ function readObject3ds(
       .replace(/\0*$/, '');
     offset += DEF_PATH_SIZE;
 
-    const position: Vector3 = {
+    const position: Vector3 = leftZUpToRightYUp({
       x: view.getFloat32(offset, true),
       y: view.getFloat32(offset + SizeOf.Float32, true),
       z: view.getFloat32(offset + 2 * SizeOf.Float32, true),
-    };
+    });
     offset += 3 * SizeOf.Float32;
 
-    const rotation: Vector3 = {
+    const rotation: Vector3 = leftZUpToRightYUp({
       x: view.getFloat32(offset, true),
       y: view.getFloat32(offset + SizeOf.Float32, true),
       z: view.getFloat32(offset + 2 * SizeOf.Float32, true),
-    };
+    });
     offset += 3 * SizeOf.Float32;
 
     const selfLit = view.getUint8(offset);
