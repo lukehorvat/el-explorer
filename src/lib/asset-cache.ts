@@ -5,11 +5,7 @@ import PQueue from 'p-queue';
 import { ActorDef, readActorDefs } from '../io/actor-defs';
 import { MapDef, readMapDef } from '../io/map-defs';
 import { Object3dDef, readObject3dDef } from '../io/object3d-defs';
-import {
-  Object2dDef,
-  Object2dType,
-  readObject2dDef,
-} from '../io/object2d-defs';
+import { Object2dDef, readObject2dDef } from '../io/object2d-defs';
 import { CalMesh, readCalMesh } from '../io/cal3d-meshes';
 import { CalBone, readCalSkeleton } from '../io/cal3d-skeletons';
 import { CalAnimation, readCalAnimation } from '../io/cal3d-animations';
@@ -215,13 +211,8 @@ function cacheObject2dDef(defPath: string): CacheTask {
     run: async () => {
       const data = await loadString(defPath);
       const object2dDef = readObject2dDef(data);
-
-      if (object2dDef.type !== Object2dType.GROUND) {
-        // It's not clear how to handle non-ground 2D objects. They aren't used anymore anyway...
-        throw new Error('Unsupported 2D object type encountered.');
-      }
-
       object2dDefs.set(defPath, object2dDef);
+
       const dir = defPath.slice(0, defPath.lastIndexOf('/'));
       object2dDef.texturePath = `${dir}/${object2dDef.texturePath}`; // Make texture path absolute.
       await runCacheTask(cacheDDSTexture(object2dDef.texturePath));

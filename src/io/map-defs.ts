@@ -344,18 +344,18 @@ function readObject2ds(
       .replace(/\0*$/, '');
     offset += DEF_PATH_SIZE;
 
-    const position: Vector3 = {
+    const position: Vector3 = leftZUpToRightYUp({
       x: view.getFloat32(offset, true),
       y: view.getFloat32(offset + SizeOf.Float32, true),
       z: view.getFloat32(offset + 2 * SizeOf.Float32, true),
-    };
+    });
     offset += 3 * SizeOf.Float32;
 
-    const rotation: Vector3 = {
+    const rotation: Vector3 = leftZUpToRightYUp({
       x: view.getFloat32(offset, true),
       y: view.getFloat32(offset + SizeOf.Float32, true),
       z: view.getFloat32(offset + 2 * SizeOf.Float32, true),
-    };
+    });
     offset += 3 * SizeOf.Float32;
     offset += 24; // Bytes reserved for future expansions.
 
@@ -386,11 +386,11 @@ function readLights(
 
   for (let i = 0; i < lightsCount; i++) {
     const id = i;
-    const position: Vector3 = {
+    const position: Vector3 = leftZUpToRightYUp({
       x: view.getFloat32(offset, true),
       y: view.getFloat32(offset + SizeOf.Float32, true),
       z: view.getFloat32(offset + 2 * SizeOf.Float32, true),
-    };
+    });
     offset += 3 * SizeOf.Float32;
 
     const color: Color = {
@@ -438,11 +438,11 @@ function readParticles(
       .replace(/\0*$/, '');
     offset += DEF_PATH_SIZE;
 
-    const position: Vector3 = {
+    const position: Vector3 = leftZUpToRightYUp({
       x: view.getFloat32(offset, true),
       y: view.getFloat32(offset + SizeOf.Float32, true),
       z: view.getFloat32(offset + 2 * SizeOf.Float32, true),
-    };
+    });
     offset += 3 * SizeOf.Float32;
     offset += 12; // Bytes reserved for future expansions.
 

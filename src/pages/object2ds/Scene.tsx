@@ -1,6 +1,5 @@
 import React, { useCallback } from 'react';
 import { OrbitControls, PerspectiveCamera } from '@react-three/drei';
-import * as THREE from 'three';
 import { useAtomValue } from 'jotai';
 import { Object2dsPageState } from './page-state';
 import { Scene } from '../../components/Scene';
@@ -42,10 +41,7 @@ export function Object2dsScene(): React.JSX.Element {
         key={object2dDefPath} // Reset camera whenever object def path changes.
         onReset={onObject2dDefPathChange}
       >
-        <Object2d
-          defPath={object2dDefPath}
-          rotation-x={THREE.MathUtils.degToRad(-90)}
-        />
+        <Object2d defPath={object2dDefPath} />
       </CameraReset>
     </Scene>
   );
