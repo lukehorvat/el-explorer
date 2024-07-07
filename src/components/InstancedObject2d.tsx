@@ -45,15 +45,15 @@ export function InstancedObject2d({
 }
 
 /**
- * Helper function to group 2D object defs by path. Can be used for instancing.
+ * Instancing helper function to group an EL map's 2D objects by def.
  */
-export function groupObject2dsByDef(
+export function groupMapObject2ds(
   object2ds: MapDef['object2ds']
 ): Map<string, MapDef['object2ds']> {
-  return object2ds.reduce((map, object2d) => {
-    let object2ds = map.get(object2d.defPath);
-    if (!object2ds) map.set(object2d.defPath, (object2ds = []));
+  return object2ds.reduce((groups, object2d) => {
+    let object2ds = groups.get(object2d.defPath);
+    if (!object2ds) groups.set(object2d.defPath, (object2ds = []));
     object2ds.push(object2d);
-    return map;
+    return groups;
   }, new Map<string, MapDef['object2ds']>());
 }

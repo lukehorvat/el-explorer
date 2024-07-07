@@ -3,7 +3,7 @@ import { DDSLoader } from 'three/addons/loaders/DDSLoader.js';
 import Pako from 'pako';
 import PQueue from 'p-queue';
 import { ActorDef, readActorDefs } from '../io/actor-defs';
-import { MapDef, readMapDef } from '../io/map-defs';
+import { MapDef, isInvalidTile, readMapDef } from '../io/map-defs';
 import { Object3dDef, readObject3dDef } from '../io/object3d-defs';
 import { Object2dDef, readObject2dDef } from '../io/object2d-defs';
 import { CalMesh, readCalMesh } from '../io/cal3d-meshes';
@@ -145,6 +145,9 @@ function cacheMapDef(defPath: string): CacheTask {
         ...mapDef.object2ds.map((object2d) =>
           runCacheTask(cacheObject2dDef(object2d.defPath))
         ),
+        ...[...new Set(mapDef.tileMap.tiles)].map((tileId) =>
+          runCacheTask(cacheTile(tileId))
+        ),
       ]);
     },
   };
@@ -216,6 +219,16 @@ function cacheObject2dDef(defPath: string): CacheTask {
       const dir = defPath.slice(0, defPath.lastIndexOf('/'));
       object2dDef.texturePath = `${dir}/${object2dDef.texturePath}`; // Make texture path absolute.
       await runCacheTask(cacheDDSTexture(object2dDef.texturePath));
+    },
+  };
+}
+
+function cacheTile(tileId: number): CacheTask {
+  return {
+    id: `cacheTile-${tileId}`,
+    run: async () => {
+      if (isInvalidTile(tileId)) return;
+      await runCacheTask(cacheDDSTexture(`3dobjects/tile${tileId}.dds`));
     },
   };
 }

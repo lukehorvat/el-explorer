@@ -46,15 +46,15 @@ export function InstancedObject3d({
 }
 
 /**
- * Helper function to group 3D object defs by path. Can be used for instancing.
+ * Instancing helper function to group an EL map's 3D objects by def.
  */
-export function groupObject3dsByDef(
+export function groupMapObject3ds(
   object3ds: MapDef['object3ds']
 ): Map<string, MapDef['object3ds']> {
-  return object3ds.reduce((map, object3d) => {
-    let object3ds = map.get(object3d.defPath);
-    if (!object3ds) map.set(object3d.defPath, (object3ds = []));
+  return object3ds.reduce((groups, object3d) => {
+    let object3ds = groups.get(object3d.defPath);
+    if (!object3ds) groups.set(object3d.defPath, (object3ds = []));
     object3ds.push(object3d);
-    return map;
+    return groups;
   }, new Map<string, MapDef['object3ds']>());
 }
