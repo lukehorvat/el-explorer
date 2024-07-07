@@ -3,7 +3,7 @@ import { ThreeElements } from '@react-three/fiber';
 import * as THREE from 'three';
 import {
   MapDef,
-  isInvalidTile,
+  isValidTile,
   isWaterTile,
   TILE_SIZE,
   DEFAULT_TILE_ELEVATION,
@@ -63,7 +63,49 @@ export function groupMapTiles(
   for (let x = 0; x < tileMap.width; x++) {
     for (let y = 0; y < tileMap.height; y++) {
       const tileId = tileMap.tiles[y * tileMap.width + x];
-      if (isInvalidTile(tileId)) continue;
+      if (!isValidTile(tileId)) continue;
+
+      let tilePositions = groups.get(tileId);
+      if (!tilePositions) groups.set(tileId, (tilePositions = []));
+      tilePositions.push({ x, y });
+    }
+  }
+
+  return groups;
+}
+
+/**
+ * Instancing helper function to group an EL map's water tile extensions by ID.
+ */
+export function groupMapTileExtensions(
+  tileMap: MapDef['tileMap'],
+  tileExtensionDistance = 0
+): Map<number, THREE.Vector2Like[]> {
+  const groups = new Map<number, THREE.Vector2Like[]>();
+
+  // Calculate the number of tiles to extend from the edge of the map.
+  const horizontalTilesNeeded = Math.ceil(tileExtensionDistance / TILE_SIZE);
+  const verticalTilesNeeded = Math.ceil(tileExtensionDistance / TILE_SIZE);
+
+  for (
+    let x = -horizontalTilesNeeded;
+    x < tileMap.width + horizontalTilesNeeded;
+    x++
+  ) {
+    for (
+      let y = -verticalTilesNeeded;
+      y < tileMap.height + verticalTilesNeeded;
+      y++
+    ) {
+      // Skip tiles inside the map.
+      if (x >= 0 && x < tileMap.width && y >= 0 && y < tileMap.height) continue;
+
+      // Get the tile on the border of the map which could be extended to this position.
+      const borderX = Math.min(Math.max(x, 0), tileMap.width - 1);
+      const borderY = Math.min(Math.max(y, 0), tileMap.height - 1);
+      const tileId = tileMap.tiles[borderY * tileMap.width + borderX];
+      if (!isWaterTile(tileId)) continue;
+
       let tilePositions = groups.get(tileId);
       if (!tilePositions) groups.set(tileId, (tilePositions = []));
       tilePositions.push({ x, y });

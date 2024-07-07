@@ -3,7 +3,11 @@ import { ThreeElements } from '@react-three/fiber';
 import { AssetCache } from '../lib/asset-cache';
 import { InstancedObject3d, groupMapObject3ds } from './InstancedObject3d';
 import { InstancedObject2d, groupMapObject2ds } from './InstancedObject2d';
-import { InstancedTile, groupMapTiles } from './InstancedTile';
+import {
+  InstancedTile,
+  groupMapTileExtensions,
+  groupMapTiles,
+} from './InstancedTile';
 
 /**
  * An EL map as a Three.js group!
@@ -59,7 +63,17 @@ export function GameMap({
           />
         ))}
       </group>
-      <group visible={showTileExtensions}></group>
+      <group visible={showTileExtensions}>
+        {[...groupMapTileExtensions(mapDef.tileMap, 500)].map(
+          ([tileId, tilePositions]) => (
+            <InstancedTile
+              key={tileId}
+              tileId={tileId}
+              tilePositions={tilePositions}
+            />
+          )
+        )}
+      </group>
       <group visible={showSkybox}></group>
     </group>
   );

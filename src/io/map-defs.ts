@@ -494,8 +494,8 @@ export const DEFAULT_TILE_ELEVATION = -0.001;
 
 export const WATER_TILE_ELEVATION = -0.25;
 
-export function isInvalidTile(tileId: number): boolean {
-  return tileId === 255;
+export function isValidTile(tileId: number): boolean {
+  return tileId >= 0 && tileId < 255;
 }
 
 export function isWaterTile(tileId: number): boolean {

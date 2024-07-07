@@ -3,7 +3,7 @@ import { DDSLoader } from 'three/addons/loaders/DDSLoader.js';
 import Pako from 'pako';
 import PQueue from 'p-queue';
 import { ActorDef, readActorDefs } from '../io/actor-defs';
-import { MapDef, isInvalidTile, readMapDef } from '../io/map-defs';
+import { MapDef, isValidTile, readMapDef } from '../io/map-defs';
 import { Object3dDef, readObject3dDef } from '../io/object3d-defs';
 import { Object2dDef, readObject2dDef } from '../io/object2d-defs';
 import { CalMesh, readCalMesh } from '../io/cal3d-meshes';
@@ -227,7 +227,7 @@ function cacheTile(tileId: number): CacheTask {
   return {
     id: `cacheTile-${tileId}`,
     run: async () => {
-      if (isInvalidTile(tileId)) return;
+      if (!isValidTile(tileId)) return;
       await runCacheTask(cacheDDSTexture(`3dobjects/tile${tileId}.dds`));
     },
   };
