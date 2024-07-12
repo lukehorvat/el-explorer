@@ -42,7 +42,7 @@ export function ActorsScene(): React.JSX.Element {
 
   return (
     <Scene className="ActorsScene" showStats={showStats}>
-      <PerspectiveCamera fov={45} near={0.001} far={5000} makeDefault>
+      <PerspectiveCamera fov={45} near={0.1} far={5000} makeDefault>
         {/* Shine a light from the camera. */}
         <pointLight intensity={1.5} distance={0} decay={0} />
       </PerspectiveCamera>
@@ -64,7 +64,7 @@ export function ActorsScene(): React.JSX.Element {
         enableZoom
         enablePan={false}
         minDistance={1}
-        maxDistance={20}
+        maxDistance={40}
         autoRotate={autoRotate}
         makeDefault
       />

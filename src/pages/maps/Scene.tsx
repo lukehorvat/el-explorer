@@ -1,5 +1,5 @@
 import React, { useCallback } from 'react';
-import { OrbitControls } from '@react-three/drei';
+import { OrbitControls, PerspectiveCamera } from '@react-three/drei';
 import { useAtomValue } from 'jotai';
 import { MapsPageState } from './page-state';
 import { Scene } from '../../components/Scene';
@@ -24,13 +24,14 @@ export function MapsScene(): React.JSX.Element {
 
   return (
     <Scene className="MapsScene" showStats={showStats}>
+      <PerspectiveCamera fov={45} near={1} far={1000} makeDefault />
       <OrbitControls
         autoRotateSpeed={3}
         enableDamping
         enableZoom
         enablePan={false}
         minDistance={1}
-        maxDistance={20}
+        maxDistance={40}
         autoRotate={false}
         makeDefault
       />

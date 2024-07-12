@@ -26,14 +26,14 @@ export function Object2dsScene(): React.JSX.Element {
 
   return (
     <Scene className="Object2dsScene" showStats={showStats}>
-      <PerspectiveCamera fov={45} near={0.001} far={100} makeDefault />
+      <PerspectiveCamera fov={45} near={0.1} far={100} makeDefault />
       <OrbitControls
         autoRotateSpeed={3}
         enableDamping
         enableZoom
         enablePan={false}
         minDistance={1}
-        maxDistance={20}
+        maxDistance={40}
         autoRotate={autoRotate}
         makeDefault
       />
