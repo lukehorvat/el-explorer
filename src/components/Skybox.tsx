@@ -5,14 +5,17 @@ import * as THREE from 'three';
 /**
  * A sky dome with color gradient.
  */
-export function Sky(
-  props: React.ComponentProps<typeof Sphere>
-): React.JSX.Element {
+export function Skybox({
+  radius,
+  ...sphereProps
+}: {
+  radius: number;
+} & React.ComponentProps<typeof Sphere>): React.JSX.Element {
   return (
     <Sphere
-      {...props}
+      {...sphereProps}
       args={[
-        4000,
+        radius,
         undefined,
         undefined,
         undefined,
@@ -22,7 +25,7 @@ export function Sky(
       ]}
       scale={[1, 0.15, 1]} // ellipsoid
     >
-      <meshBasicMaterial side={THREE.BackSide} depthTest={false}>
+      <meshBasicMaterial side={THREE.BackSide}>
         <GradientTexture colors={['#7cbfff', '#fff']} stops={[0, 1]} />
       </meshBasicMaterial>
     </Sphere>

@@ -8,6 +8,7 @@ import {
   groupMapTileExtensions,
   groupMapTiles,
 } from './InstancedTile';
+import { Skybox } from './Skybox';
 
 /**
  * An EL map as a Three.js group!
@@ -64,7 +65,7 @@ export function GameMap({
         ))}
       </group>
       <group visible={showTileExtensions}>
-        {[...groupMapTileExtensions(mapDef.tileMap, 500)].map(
+        {[...groupMapTileExtensions(mapDef.tileMap, SKYBOX_RADIUS + 100)].map(
           ([tileId, tilePositions]) => (
             <InstancedTile
               key={tileId}
@@ -74,7 +75,9 @@ export function GameMap({
           )
         )}
       </group>
-      <group visible={showSkybox}></group>
+      <Skybox visible={showSkybox} radius={SKYBOX_RADIUS} />
     </group>
   );
 }
+
+const SKYBOX_RADIUS = 500;

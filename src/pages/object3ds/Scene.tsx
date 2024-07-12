@@ -4,7 +4,7 @@ import * as THREE from 'three';
 import { useAtomValue } from 'jotai';
 import { Object3dsPageState } from './page-state';
 import { Scene } from '../../components/Scene';
-import { Sky } from '../../components/Sky';
+import { Skybox } from '../../components/Skybox';
 import { Ground } from '../../components/Ground';
 import { Object3d } from '../../components/Object3d';
 import { CameraReset, CameraResetListener } from '../../components/CameraReset';
@@ -42,7 +42,7 @@ export function Object3dsScene(): React.JSX.Element {
         castShadow
         shadow-mapSize={[4096, 4096]}
       />
-      <Sky visible={showEnvironment} />
+      <Skybox visible={showEnvironment} radius={4000} />
       <Ground
         visible={showEnvironment}
         rotation-x={THREE.MathUtils.degToRad(-90)}
