@@ -1,13 +1,13 @@
 import React, { useCallback } from 'react';
 import { OrbitControls, PerspectiveCamera } from '@react-three/drei';
-import * as THREE from 'three';
 import { useAtomValue } from 'jotai';
 import { Object3dsPageState } from './page-state';
 import { Scene } from '../../components/Scene';
-import { Skybox } from '../../components/Skybox';
-import { Ground } from '../../components/Ground';
+import { GameMap } from '../../components/Map';
 import { Object3d } from '../../components/Object3d';
 import { CameraReset, CameraResetListener } from '../../components/CameraReset';
+import { AssetCache } from '../../lib/asset-cache';
+import { TILE_SIZE } from '../../io/map-defs';
 import './Scene.css';
 
 export function Object3dsScene(): React.JSX.Element {
@@ -16,25 +16,29 @@ export function Object3dsScene(): React.JSX.Element {
   const showEnvironment = useAtomValue(Object3dsPageState.showEnvironment);
   const showStats = useAtomValue(Object3dsPageState.showStats);
   const autoRotate = useAtomValue(Object3dsPageState.autoRotate);
+  const mapDef = AssetCache.mapDefs.get('maps/newcharactermap.elm.gz')!;
+  const tileMapCenterX = (mapDef.tileMap.width * TILE_SIZE) / 2;
+  const tileMapCenterY = (mapDef.tileMap.height * TILE_SIZE) / 2;
 
   const onObject3dDefPathChange: CameraResetListener = useCallback(
     (camera, orbitControls, center) => {
       camera.position.set(
-        0,
+        tileMapCenterX,
         center.y + 1.1, // Slightly above object's center so we're looking down on it.
-        10 // A reasonable distance away for most objects...
+        -tileMapCenterY + 10 // A reasonable distance away for most objects...
       );
-      orbitControls.target.set(0, center.y, 0); // Orbit object's vertical center.
+      orbitControls.target.set(
+        tileMapCenterX,
+        center.y, // Orbit object's vertical center.
+        -tileMapCenterY
+      );
     },
-    []
+    [tileMapCenterX, tileMapCenterY]
   );
 
   return (
     <Scene className="Object3dsScene" showStats={showStats}>
-      <PerspectiveCamera fov={45} near={0.1} far={5000} makeDefault>
-        {/* Shine a light from the camera. */}
-        <pointLight intensity={1.5} distance={0} decay={0} />
-      </PerspectiveCamera>
+      <PerspectiveCamera fov={45} near={0.1} far={1000} makeDefault />
       <ambientLight intensity={0.5} />
       <directionalLight
         intensity={1}
@@ -42,10 +46,14 @@ export function Object3dsScene(): React.JSX.Element {
         castShadow
         shadow-mapSize={[4096, 4096]}
       />
-      <Skybox visible={showEnvironment} radius={4000} />
-      <Ground
+      <GameMap
         visible={showEnvironment}
-        rotation-x={THREE.MathUtils.degToRad(-90)}
+        defPath="maps/newcharactermap.elm.gz"
+        showObject3ds
+        showObject2ds
+        showTiles
+        showTileExtensions
+        showSkybox
       />
       <OrbitControls
         autoRotateSpeed={3}
@@ -60,6 +68,10 @@ export function Object3dsScene(): React.JSX.Element {
       <CameraReset
         key={object3dDefPath} // Reset camera whenever object def path changes.
         onReset={onObject3dDefPathChange}
+        position-x={tileMapCenterX}
+        position-y={0}
+        position-z={-tileMapCenterY}
+        disableY
       >
         <Object3d defPath={object3dDefPath} skinType={skinType} />
       </CameraReset>

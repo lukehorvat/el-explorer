@@ -36,7 +36,6 @@ export function CameraReset({
       {...centerProps}
       onCentered={onCentered}
       visible={isCentered} // Prevent rendering a brief flicker of uncentered children.
-      disableY
     >
       {children}
     </Center>

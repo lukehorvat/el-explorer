@@ -40,6 +40,7 @@ export function Object2dsScene(): React.JSX.Element {
       <CameraReset
         key={object2dDefPath} // Reset camera whenever object def path changes.
         onReset={onObject2dDefPathChange}
+        disableY
       >
         <Object2d defPath={object2dDefPath} />
       </CameraReset>

@@ -58,13 +58,13 @@ export function ActorsScene(): React.JSX.Element {
         shadow-mapSize={[4096, 4096]}
       />
       <GameMap
+        visible={showEnvironment}
         defPath="maps/newcharactermap.elm.gz"
         showObject3ds
         showObject2ds
         showTiles
         showTileExtensions
         showSkybox
-        visible={showEnvironment}
       />
       <OrbitControls
         autoRotateSpeed={3}
