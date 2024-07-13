@@ -26,7 +26,17 @@ export function Skybox({
       scale={[1, 0.15, 1]} // ellipsoid
     >
       <meshBasicMaterial side={THREE.BackSide}>
-        <GradientTexture colors={['#7cbfff', '#fff']} stops={[0, 1]} />
+        <GradientTexture
+          stops={[0.2, 0.4, 0.6, 0.8, 1]}
+          colors={[
+            // TODO: Read colors from skybox_defs.xml
+            'rgb(48,104,170)',
+            'rgb(66,126,197)',
+            'rgb(114,164,204)',
+            'rgb(160,202,223)',
+            'rgb(204,204,204)',
+          ]}
+        />
       </meshBasicMaterial>
     </Sphere>
   );
