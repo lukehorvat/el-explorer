@@ -1,13 +1,13 @@
 import React, { useCallback, useLayoutEffect } from 'react';
 import { OrbitControls, PerspectiveCamera } from '@react-three/drei';
-import * as THREE from 'three';
 import { useAtom, useAtomValue } from 'jotai';
 import { ActorsPageState } from './page-state';
 import { Scene } from '../../components/Scene';
-import { Skybox } from '../../components/Skybox';
-import { Ground } from '../../components/Ground';
+import { GameMap } from '../../components/Map';
 import { Actor } from '../../components/Actor';
 import { CameraReset, CameraResetListener } from '../../components/CameraReset';
+import { AssetCache } from '../../lib/asset-cache';
+import { TILE_SIZE } from '../../io/map-defs';
 import './Scene.css';
 
 export function ActorsScene(): React.JSX.Element {
@@ -23,6 +23,9 @@ export function ActorsScene(): React.JSX.Element {
   const [animationController, setAnimationController] = useAtom(
     ActorsPageState.animationController
   );
+  const mapDef = AssetCache.mapDefs.get('maps/newcharactermap.elm.gz')!;
+  const tileMapCenterX = (mapDef.tileMap.width * TILE_SIZE) / 2;
+  const tileMapCenterY = (mapDef.tileMap.height * TILE_SIZE) / 2;
 
   useLayoutEffect(() => {
     animationController?.play(animationName, animationLoop, animationSpeed);
@@ -31,21 +34,22 @@ export function ActorsScene(): React.JSX.Element {
   const onActorTypeChange: CameraResetListener = useCallback(
     (camera, orbitControls, center) => {
       camera.position.set(
-        0,
+        tileMapCenterX,
         center.y + 1.1, // Slightly above actor's center so we're looking down on it.
-        4 // A reasonable distance away for most actor meshes...
+        -tileMapCenterY + 4 // A reasonable distance away for most actor meshes...
       );
-      orbitControls.target.set(0, center.y, 0); // Orbit actor's vertical center.
+      orbitControls.target.set(
+        tileMapCenterX,
+        center.y, // Orbit actor's vertical center.
+        -tileMapCenterY
+      );
     },
-    []
+    [tileMapCenterX, tileMapCenterY]
   );
 
   return (
     <Scene className="ActorsScene" showStats={showStats}>
-      <PerspectiveCamera fov={45} near={0.1} far={5000} makeDefault>
-        {/* Shine a light from the camera. */}
-        <pointLight intensity={1.5} distance={0} decay={0} />
-      </PerspectiveCamera>
+      <PerspectiveCamera fov={45} near={0.1} far={1000} makeDefault />
       <ambientLight intensity={0.5} />
       <directionalLight
         intensity={1}
@@ -53,10 +57,14 @@ export function ActorsScene(): React.JSX.Element {
         castShadow
         shadow-mapSize={[4096, 4096]}
       />
-      <Skybox visible={showEnvironment} radius={4000} />
-      <Ground
+      <GameMap
+        defPath="maps/newcharactermap.elm.gz"
+        showObject3ds
+        showObject2ds
+        showTiles
+        showTileExtensions
+        showSkybox
         visible={showEnvironment}
-        rotation-x={THREE.MathUtils.degToRad(-90)}
       />
       <OrbitControls
         autoRotateSpeed={3}
@@ -71,6 +79,10 @@ export function ActorsScene(): React.JSX.Element {
       <CameraReset
         key={actorType} // Reset camera whenever actor type changes.
         onReset={onActorTypeChange}
+        position-x={tileMapCenterX}
+        position-y={0}
+        position-z={-tileMapCenterY}
+        disableY
       >
         <Actor
           actorType={actorType}

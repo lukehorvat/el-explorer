@@ -335,5 +335,6 @@ export const AssetCache = {
     cacheAllMapDefs,
     cacheAllObject3dDefs,
     cacheAllObject2dDefs,
+    cacheMapDef,
   },
 };

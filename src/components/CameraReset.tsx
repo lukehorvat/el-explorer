@@ -1,4 +1,4 @@
-import React, { ReactNode, useCallback, useState } from 'react';
+import React, { useCallback, useState } from 'react';
 import { useThree } from '@react-three/fiber';
 import { Center, OnCenterCallbackProps } from '@react-three/drei';
 import * as THREE from 'three';
@@ -13,10 +13,10 @@ import * as THREE from 'three';
 export function CameraReset({
   onReset,
   children,
+  ...centerProps
 }: {
   onReset: CameraResetListener;
-  children: ReactNode;
-}): React.JSX.Element {
+} & React.ComponentProps<typeof Center>): React.JSX.Element {
   const camera = useThree((state) => state.camera);
   const orbitControls = useThree(
     (state) => state.controls
@@ -33,6 +33,7 @@ export function CameraReset({
 
   return (
     <Center
+      {...centerProps}
       onCentered={onCentered}
       visible={isCentered} // Prevent rendering a brief flicker of uncentered children.
       disableY
