@@ -9,6 +9,7 @@ import {
   groupMapTiles,
 } from './InstancedTile';
 import { Skybox } from './Skybox';
+import { TILE_SIZE, WATER_TILE_ELEVATION } from '../io/map-defs';
 
 /**
  * An EL map as a Three.js group!
@@ -30,6 +31,9 @@ export function GameMap({
   showSkybox?: boolean;
 } & ThreeElements['group']): React.JSX.Element {
   const mapDef = AssetCache.mapDefs.get(defPath)!;
+  const tileMapCenterX = (mapDef.tileMap.width * TILE_SIZE) / 2;
+  const tileMapCenterY = (mapDef.tileMap.height * TILE_SIZE) / 2;
+  const skyboxRadius = 500;
 
   return (
     <group {...groupProps}>
@@ -65,7 +69,7 @@ export function GameMap({
         ))}
       </group>
       <group visible={showTileExtensions}>
-        {[...groupMapTileExtensions(mapDef.tileMap, SKYBOX_RADIUS + 100)].map(
+        {[...groupMapTileExtensions(mapDef.tileMap, skyboxRadius + 100)].map(
           ([tileId, tilePositions]) => (
             <InstancedTile
               key={tileId}
@@ -75,9 +79,13 @@ export function GameMap({
           )
         )}
       </group>
-      <Skybox visible={showSkybox} radius={SKYBOX_RADIUS} />
+      <Skybox
+        visible={showSkybox}
+        position-x={tileMapCenterX}
+        position-y={WATER_TILE_ELEVATION}
+        position-z={-tileMapCenterY}
+        radius={skyboxRadius}
+      />
     </group>
   );
 }
-
-const SKYBOX_RADIUS = 500;
