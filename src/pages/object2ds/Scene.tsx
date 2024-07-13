@@ -26,7 +26,7 @@ export function Object2dsScene(): React.JSX.Element {
 
   return (
     <Scene className="Object2dsScene" showStats={showStats}>
-      <PerspectiveCamera fov={45} near={0.1} far={100} makeDefault />
+      <PerspectiveCamera fov={45} near={0.1} far={1000} makeDefault />
       <OrbitControls
         autoRotateSpeed={3}
         enableDamping
