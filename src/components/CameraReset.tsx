@@ -5,7 +5,7 @@ import * as THREE from 'three';
 
 /**
  * Component that centers its children and provides a convenient way to adjust
- * the camera position and orbit controls target based on the computed center.
+ * the camera position and camera controls target based on the computed center.
  *
  * Use React's intrinsic `key` prop to control when the reset should happen (by
  * remounting the component and its children).
@@ -18,17 +18,17 @@ export function CameraReset({
   onReset: CameraResetListener;
 } & React.ComponentProps<typeof Center>): React.JSX.Element {
   const camera = useThree((state) => state.camera);
-  const orbitControls = useThree(
+  const controls = useThree(
     (state) => state.controls
-  ) as unknown as OrbitControls | null;
+  ) as unknown as CameraControls | null;
   const [isCentered, setIsCentered] = useState(false);
   const onCentered = useCallback(
     ({ center }: OnCenterCallbackProps): void => {
-      if (!orbitControls) return;
-      onReset(camera, orbitControls, center);
+      if (!controls) return;
+      onReset(camera, controls, center);
       setIsCentered(true);
     },
-    [camera, orbitControls, onReset]
+    [camera, controls, onReset]
   );
 
   return (
@@ -44,8 +44,8 @@ export function CameraReset({
 
 export type CameraResetListener = (
   camera: THREE.Camera,
-  orbitControls: OrbitControls,
+  controls: CameraControls,
   center: THREE.Vector3
 ) => void;
 
-type OrbitControls = { target: THREE.Vector3 };
+type CameraControls = { target: THREE.Vector3 };
