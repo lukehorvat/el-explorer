@@ -15,6 +15,6 @@ export function ActorsPage(): React.JSX.Element {
 const loader = async (): Promise<void> => {
   await AssetCache.runCacheTask(AssetCache.tasks.cacheAllActorDefs());
   await AssetCache.runCacheTask(
-    AssetCache.tasks.cacheMapDef('maps/newcharactermap.elm.gz')
+    AssetCache.tasks.cacheMapDef('maps/testermap.elm.gz')
   );
 };

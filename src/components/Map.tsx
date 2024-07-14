@@ -16,11 +16,12 @@ import { TILE_SIZE, WATER_TILE_ELEVATION } from '../io/map-defs';
  */
 export function GameMap({
   defPath,
-  showObject3ds,
-  showObject2ds,
-  showTiles,
-  showTileExtensions,
-  showSkybox,
+  showObject3ds = true,
+  showObject2ds = true,
+  showTiles = true,
+  showTileExtensions = true,
+  onlyWaterTileExtensions = true,
+  showSkybox = true,
   ...groupProps
 }: {
   defPath: string;
@@ -28,6 +29,7 @@ export function GameMap({
   showObject2ds?: boolean;
   showTiles?: boolean;
   showTileExtensions?: boolean;
+  onlyWaterTileExtensions?: boolean;
   showSkybox?: boolean;
 } & ThreeElements['group']): React.JSX.Element {
   const mapDef = AssetCache.mapDefs.get(defPath)!;
@@ -69,15 +71,19 @@ export function GameMap({
         ))}
       </group>
       <group visible={showTileExtensions}>
-        {[...groupMapTileExtensions(mapDef.tileMap, skyboxRadius + 100)].map(
-          ([tileId, tilePositions]) => (
-            <InstancedTile
-              key={tileId}
-              tileId={tileId}
-              tilePositions={tilePositions}
-            />
-          )
-        )}
+        {[
+          ...groupMapTileExtensions(
+            mapDef.tileMap,
+            skyboxRadius + 100,
+            onlyWaterTileExtensions
+          ),
+        ].map(([tileId, tilePositions]) => (
+          <InstancedTile
+            key={tileId}
+            tileId={tileId}
+            tilePositions={tilePositions}
+          />
+        ))}
       </group>
       <Skybox
         visible={showSkybox}

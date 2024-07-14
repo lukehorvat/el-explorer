@@ -23,7 +23,7 @@ export function ActorsScene(): React.JSX.Element {
   const [animationController, setAnimationController] = useAtom(
     ActorsPageState.animationController
   );
-  const mapDef = AssetCache.mapDefs.get('maps/newcharactermap.elm.gz')!;
+  const mapDef = AssetCache.mapDefs.get('maps/testermap.elm.gz')!;
   const tileMapCenterX = (mapDef.tileMap.width * TILE_SIZE) / 2;
   const tileMapCenterY = (mapDef.tileMap.height * TILE_SIZE) / 2;
 
@@ -59,12 +59,8 @@ export function ActorsScene(): React.JSX.Element {
       />
       <GameMap
         visible={showEnvironment}
-        defPath="maps/newcharactermap.elm.gz"
-        showObject3ds
-        showObject2ds
-        showTiles
-        showTileExtensions
-        showSkybox
+        defPath="maps/testermap.elm.gz"
+        onlyWaterTileExtensions={false}
       />
       <OrbitControls
         autoRotateSpeed={3}

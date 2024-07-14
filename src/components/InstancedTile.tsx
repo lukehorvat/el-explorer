@@ -79,7 +79,8 @@ export function groupMapTiles(
  */
 export function groupMapTileExtensions(
   tileMap: MapDef['tileMap'],
-  tileExtensionDistance = 0
+  tileExtensionDistance = 0,
+  onlyWaterTiles = true
 ): Map<number, THREE.Vector2Like[]> {
   const groups = new Map<number, THREE.Vector2Like[]>();
 
@@ -98,13 +99,17 @@ export function groupMapTileExtensions(
       y++
     ) {
       // Skip tiles inside the map.
-      if (x >= 0 && x < tileMap.width && y >= 0 && y < tileMap.height) continue;
+      if (x >= 0 && x < tileMap.width && y >= 0 && y < tileMap.height) {
+        continue;
+      }
 
       // Get the tile on the border of the map which could be extended to this position.
       const borderX = Math.min(Math.max(x, 0), tileMap.width - 1);
       const borderY = Math.min(Math.max(y, 0), tileMap.height - 1);
       const tileId = tileMap.tiles[borderY * tileMap.width + borderX];
-      if (!isWaterTile(tileId)) continue;
+      if (!isValidTile(tileId) || (onlyWaterTiles && !isWaterTile(tileId))) {
+        continue;
+      }
 
       let tilePositions = groups.get(tileId);
       if (!tilePositions) groups.set(tileId, (tilePositions = []));

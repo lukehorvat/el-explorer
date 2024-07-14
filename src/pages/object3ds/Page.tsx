@@ -19,6 +19,6 @@ export function Object3dsPage(): React.JSX.Element {
 const loader = async (): Promise<void> => {
   await AssetCache.runCacheTask(AssetCache.tasks.cacheAllObject3dDefs());
   await AssetCache.runCacheTask(
-    AssetCache.tasks.cacheMapDef('maps/newcharactermap.elm.gz')
+    AssetCache.tasks.cacheMapDef('maps/testermap.elm.gz')
   );
 };

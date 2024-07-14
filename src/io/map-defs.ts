@@ -195,6 +195,7 @@ function readHeader(buffer: ArrayBuffer): {
   offset += SizeOf.Uint32;
   const terrainOffset = view.getUint32(offset, true);
   offset += SizeOf.Uint32;
+  offset += 7 * SizeOf.Uint32; // Bytes reserved for future expansions.
 
   return {
     tileMapWidth,
