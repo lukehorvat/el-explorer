@@ -1,7 +1,7 @@
 .Scene {
   min-width: 0;
   min-height: 0;
-  background: var(--bs-dark-bg-subtle);
+  background: #000;
   -webkit-tap-highlight-color: transparent; /* Prevent Chrome's blue highlight when tapping on mobile. */
 }
 
