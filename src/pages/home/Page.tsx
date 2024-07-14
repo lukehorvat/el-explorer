@@ -1,5 +1,5 @@
 import React from 'react';
-import { OverlayTrigger, Stack, Tooltip } from 'react-bootstrap';
+import { Stack } from 'react-bootstrap';
 import { useSetAtom } from 'jotai';
 import { AppState, pages } from '../../app-state';
 import { Page } from '../../components/Page';
@@ -17,31 +17,15 @@ export function HomePage(): React.JSX.Element {
       >
         {(Object.keys(pages) as (keyof typeof pages)[])
           .filter((page) => page !== 'home')
-          .map<[page: keyof typeof pages, button: React.JSX.Element]>(
-            (page) => [
-              page,
-              <button // See: https://github.com/pmndrs/drei/issues/1193
-                className="btn btn-primary btn-lg"
-                onClick={() => pages[page].enabled && setPage(page)}
-                key={page}
-              >
-                {pages[page].name}
-              </button>,
-            ]
-          )
-          .map(([page, button]) =>
-            pages[page].enabled ? (
-              button
-            ) : (
-              <OverlayTrigger
-                overlay={<Tooltip>Coming soon!</Tooltip>}
-                placement="right"
-                key={page}
-              >
-                {button}
-              </OverlayTrigger>
-            )
-          )}
+          .map((page) => (
+            <button // See: https://github.com/pmndrs/drei/issues/1193
+              className="btn btn-primary btn-lg"
+              onClick={() => setPage(page)}
+              key={page}
+            >
+              {pages[page].name}
+            </button>
+          ))}
       </Stack>
     </Page>
   );
