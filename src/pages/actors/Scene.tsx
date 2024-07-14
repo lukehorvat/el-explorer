@@ -11,6 +11,7 @@ import { TILE_SIZE } from '../../io/map-defs';
 import './Scene.css';
 
 export function ActorsScene(): React.JSX.Element {
+  const mapDefPath = useAtomValue(ActorsPageState.mapDefPath);
   const actorType = useAtomValue(ActorsPageState.actorType);
   const skinType = useAtomValue(ActorsPageState.skinType);
   const showSkeleton = useAtomValue(ActorsPageState.showSkeleton);
@@ -23,7 +24,7 @@ export function ActorsScene(): React.JSX.Element {
   const [animationController, setAnimationController] = useAtom(
     ActorsPageState.animationController
   );
-  const mapDef = AssetCache.mapDefs.get('maps/testermap.elm.gz')!;
+  const mapDef = AssetCache.mapDefs.get(mapDefPath)!;
   const tileMapCenterX = (mapDef.tileMap.width * TILE_SIZE) / 2;
   const tileMapCenterY = (mapDef.tileMap.height * TILE_SIZE) / 2;
 
@@ -59,7 +60,7 @@ export function ActorsScene(): React.JSX.Element {
       />
       <GameMap
         visible={showEnvironment}
-        defPath="maps/testermap.elm.gz"
+        defPath={mapDefPath}
         onlyWaterTileExtensions={false}
       />
       <OrbitControls

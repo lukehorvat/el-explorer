@@ -11,12 +11,13 @@ import { TILE_SIZE } from '../../io/map-defs';
 import './Scene.css';
 
 export function Object3dsScene(): React.JSX.Element {
+  const mapDefPath = useAtomValue(Object3dsPageState.mapDefPath);
   const object3dDefPath = useAtomValue(Object3dsPageState.object3dDefPath);
   const skinType = useAtomValue(Object3dsPageState.skinType);
   const showEnvironment = useAtomValue(Object3dsPageState.showEnvironment);
   const showStats = useAtomValue(Object3dsPageState.showStats);
   const autoRotate = useAtomValue(Object3dsPageState.autoRotate);
-  const mapDef = AssetCache.mapDefs.get('maps/testermap.elm.gz')!;
+  const mapDef = AssetCache.mapDefs.get(mapDefPath)!;
   const tileMapCenterX = (mapDef.tileMap.width * TILE_SIZE) / 2;
   const tileMapCenterY = (mapDef.tileMap.height * TILE_SIZE) / 2;
 
@@ -48,7 +49,7 @@ export function Object3dsScene(): React.JSX.Element {
       />
       <GameMap
         visible={showEnvironment}
-        defPath="maps/testermap.elm.gz"
+        defPath={mapDefPath}
         onlyWaterTileExtensions={false}
       />
       <OrbitControls

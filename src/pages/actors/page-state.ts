@@ -3,6 +3,7 @@ import { AssetCache } from '../../lib/asset-cache';
 import { ActorSkinType } from '../../components/Actor';
 import { CalAnimationController } from '../../hooks/useCalAnimation';
 
+const mapDefPath = atom<string>('maps/testermap.elm.gz');
 const actorType = atom<number>(77); // Initially default to Feros.
 const actorTypeWithEffects = atom(
   (get) => get(actorType),
@@ -30,6 +31,7 @@ const animationSpeed = atom<number>(1);
 const animationController = atom<CalAnimationController | null>(null);
 
 export const ActorsPageState = {
+  mapDefPath,
   actorType: actorTypeWithEffects,
   skinType,
   showSkeleton,
