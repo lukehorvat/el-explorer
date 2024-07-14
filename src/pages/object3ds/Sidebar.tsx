@@ -67,9 +67,6 @@ function AppearanceSection(): React.JSX.Element {
   const moveToSkin = (direction: 'prev' | 'next'): void => {
     setSkinType(navigateTo(skinType, skinTypes, direction));
   };
-  const [showEnvironment, setShowEnvironment] = useAtom(
-    Object3dsPageState.showEnvironment
-  );
 
   return (
     <SidebarSection title="Appearance" icon="bi-palette-fill">
@@ -92,6 +89,19 @@ function AppearanceSection(): React.JSX.Element {
         </Form.Select>
         <SidebarNavButtons onNavigate={moveToSkin} />
       </Stack>
+    </SidebarSection>
+  );
+}
+
+function MiscSection(): React.JSX.Element {
+  const [showEnvironment, setShowEnvironment] = useAtom(
+    Object3dsPageState.showEnvironment
+  );
+  const [showStats, setShowStats] = useAtom(Object3dsPageState.showStats);
+  const [autoRotate, setAutoRotate] = useAtom(Object3dsPageState.autoRotate);
+
+  return (
+    <SidebarSection title="Miscellaneous" icon="bi-gear-fill">
       <Stack direction="horizontal" gap={2}>
         <Form.Label column="sm">Environment:</Form.Label>
         <Form.Check
@@ -100,16 +110,6 @@ function AppearanceSection(): React.JSX.Element {
           onChange={(event) => setShowEnvironment(event.target.checked)}
         />
       </Stack>
-    </SidebarSection>
-  );
-}
-
-function MiscSection(): React.JSX.Element {
-  const [showStats, setShowStats] = useAtom(Object3dsPageState.showStats);
-  const [autoRotate, setAutoRotate] = useAtom(Object3dsPageState.autoRotate);
-
-  return (
-    <SidebarSection title="Miscellaneous" icon="bi-gear-fill">
       <Stack direction="horizontal" gap={2}>
         <Form.Label column="sm">Auto rotate:</Form.Label>
         <Form.Check

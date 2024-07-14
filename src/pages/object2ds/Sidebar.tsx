@@ -58,11 +58,22 @@ function Object2dSection(): React.JSX.Element {
 }
 
 function MiscSection(): React.JSX.Element {
+  const [showEnvironment, setShowEnvironment] = useAtom(
+    Object2dsPageState.showEnvironment
+  );
   const [showStats, setShowStats] = useAtom(Object2dsPageState.showStats);
   const [autoRotate, setAutoRotate] = useAtom(Object2dsPageState.autoRotate);
 
   return (
     <SidebarSection title="Miscellaneous" icon="bi-gear-fill">
+      <Stack direction="horizontal" gap={2}>
+        <Form.Label column="sm">Environment:</Form.Label>
+        <Form.Check
+          type="checkbox"
+          checked={showEnvironment}
+          onChange={(event) => setShowEnvironment(event.target.checked)}
+        />
+      </Stack>
       <Stack direction="horizontal" gap={2}>
         <Form.Label column="sm">Auto rotate:</Form.Label>
         <Form.Check
