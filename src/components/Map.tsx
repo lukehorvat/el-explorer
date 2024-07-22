@@ -39,28 +39,6 @@ export function GameMap({
 
   return (
     <group {...groupProps}>
-      <group visible={showObject3ds}>
-        {[...groupMapObject3ds(mapDef.object3ds)].map(
-          ([defPath, object3ds]) => (
-            <InstancedObject3d
-              key={defPath}
-              defPath={defPath}
-              object3ds={object3ds}
-            />
-          )
-        )}
-      </group>
-      <group visible={showObject2ds}>
-        {[...groupMapObject2ds(mapDef.object2ds)].map(
-          ([defPath, object2ds]) => (
-            <InstancedObject2d
-              key={defPath}
-              defPath={defPath}
-              object2ds={object2ds}
-            />
-          )
-        )}
-      </group>
       <group visible={showTiles}>
         {[...groupMapTiles(mapDef.tileMap)].map(([tileId, tilePositions]) => (
           <InstancedTile
@@ -84,6 +62,28 @@ export function GameMap({
             tilePositions={tilePositions}
           />
         ))}
+      </group>
+      <group visible={showObject3ds}>
+        {[...groupMapObject3ds(mapDef.object3ds)].map(
+          ([defPath, object3ds]) => (
+            <InstancedObject3d
+              key={defPath}
+              defPath={defPath}
+              object3ds={object3ds}
+            />
+          )
+        )}
+      </group>
+      <group visible={showObject2ds}>
+        {[...groupMapObject2ds(mapDef.object2ds)].map(
+          ([defPath, object2ds]) => (
+            <InstancedObject2d
+              key={defPath}
+              defPath={defPath}
+              object2ds={object2ds}
+            />
+          )
+        )}
       </group>
       <Skybox
         visible={showSkybox}
