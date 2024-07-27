@@ -18,20 +18,12 @@ export function Skybox({
   return (
     <Sphere
       {...sphereProps}
-      args={[
-        radius,
-        undefined,
-        undefined,
-        undefined,
-        undefined,
-        undefined,
-        Math.PI / 2, // half-sphere (dome)
-      ]}
+      args={[radius]}
       scale={[1, 0.15, 1]} // ellipsoid
     >
       <meshBasicMaterial side={THREE.BackSide}>
         <GradientTexture
-          stops={[0.2, 0.4, 0.6, 0.8, 1]}
+          stops={[0.1, 0.2, 0.3, 0.4, 0.5]}
           colors={getSkyColors(mapName, isDungeonMap)}
         />
       </meshBasicMaterial>
