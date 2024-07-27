@@ -47,6 +47,7 @@ export interface MapDef {
     defPath: string;
     position: Vector3;
   }[];
+  isDungeon: boolean;
 }
 
 /**
@@ -106,6 +107,7 @@ export function readMapDef(buffer: ArrayBuffer): MapDef {
     object2ds,
     lights,
     particles,
+    isDungeon: header.isDungeon,
   };
 }
 

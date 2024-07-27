@@ -33,6 +33,7 @@ export function GameMap({
   showSkybox?: boolean;
 } & ThreeElements['group']): React.JSX.Element {
   const mapDef = AssetCache.mapDefs.get(defPath)!;
+  const mapName = defPath.match(/maps\/(.+)\.elm\.gz$/)![1];
   const tileMapCenterX = (mapDef.tileMap.width * TILE_SIZE) / 2;
   const tileMapCenterY = (mapDef.tileMap.height * TILE_SIZE) / 2;
   const skyboxRadius = 500;
@@ -91,6 +92,8 @@ export function GameMap({
         position-y={WATER_TILE_ELEVATION}
         position-z={-tileMapCenterY}
         radius={skyboxRadius}
+        mapName={mapName}
+        isDungeonMap={mapDef.isDungeon}
       />
     </group>
   );
