@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useRef } from 'react';
 import { Form, Stack } from 'react-bootstrap';
 import { useAtom } from 'jotai';
 import { AssetCache } from '../../lib/asset-cache';
@@ -28,6 +28,14 @@ function MapSection(): React.JSX.Element {
   const moveToMap = (direction: 'prev' | 'next'): void => {
     setMapDefPath(navigateTo(mapDefPath, sortedMapDefPaths, direction));
   };
+  const mapSelectRef = useRef<HTMLSelectElement>(null!);
+
+  useEffect(() => {
+    // After the user selects a map via the dropdown, they might try pressing keys
+    // to fly around. But the dropdown will intercept any key presses because it
+    // still has focus, causing buggy behavior. Therefore, lose the focus.
+    mapSelectRef.current.blur();
+  }, [mapDefPath]);
 
   return (
     <SidebarSection title="Map" icon="bi-globe-americas">
@@ -39,6 +47,7 @@ function MapSection(): React.JSX.Element {
           size="sm"
           value={mapDefPath}
           onChange={(event) => setMapDefPath(event.target.value)}
+          ref={mapSelectRef}
         >
           {sortedMapDefPaths.map((defPath) => (
             <option value={defPath} key={defPath}>
